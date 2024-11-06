@@ -1,12 +1,12 @@
 import { Grid2 as Grid, Tooltip } from '@mui/material';
 import { NumberLabelInput } from '../shared';
 import { DeathSaves } from '../death-saves';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
 import { currentHitPointsAtom, maxHitPointsAtom, proficiencyBonusAtom, temporaryHitPointsAtom } from './atoms';
 import { wisdomAtom } from '../abilities/atoms';
 import { calculateAbilityModifier } from '../../features/utils';
-import { skillAtom } from '../skills/atoms';
+import { skillAtom } from '../skills';
 
 export const TemporaryHitPoints = () => {
   const [temporaryHitPoints, setTemporaryHitPoints] = useAtom(temporaryHitPointsAtom);
@@ -28,15 +28,34 @@ export const MaxHitPoints = () => {
 
 export const PassivePerception = () => {
   const { proficiencyAndExpertise, modifier } = useAtomValue(skillAtom('Perception'));
+  // const [passivePerception, setPassivePerception] = useAtom(passivePerceptionAtom);
   const proficiencyBonus = useAtomValue(proficiencyBonusAtom);
   const { score: wisdomScore } = useAtomValue(wisdomAtom);
   const tooltipTitle = `10+${proficiencyBonus}{proficiencyBonus}*${proficiencyAndExpertise}{prof/exp}+${modifier}{modifier}+${calculateAbilityModifier(wisdomScore)}{wis}`;
+
+  const calculatedPassivePerception = useMemo(
+    () => 10 + proficiencyAndExpertise * proficiencyBonus + modifier + calculateAbilityModifier(wisdomScore),
+    [proficiencyAndExpertise, modifier, proficiencyBonus]
+  );
+
+  /*useEffect(() => {
+    const result = 10 + proficiencyAndExpertise * proficiencyBonus + modifier + calculateAbilityModifier(wisdomScore);
+  }, [proficiencyAndExpertise, modifier, proficiencyBonus]);
+
+  const handleChange = (event: any) => {
+    const { value } = event.target;
+    setPassivePerception(value === '' ? calculatedPassivePerception : +value);
+  };*/
 
   return (
     <Tooltip title={tooltipTitle}>
       <span>
         <NumberLabelInput
-          NumberInputProps={{ value: 10 + proficiencyAndExpertise * proficiencyBonus + modifier + calculateAbilityModifier(wisdomScore) }}
+          NumberInputProps={{
+            showIncButtons: false,
+            value: calculatedPassivePerception,
+            //onChange: handleChange,
+          }}
           label="Passive Perception"
         />
       </span>

@@ -1,6 +1,5 @@
-import { CharacterPreview, HalfPageContainer } from './pages';
+import { CharacterPreview, HalfPageContainer, MainContainer } from './pages';
 import React from 'react';
-import { MainContainer } from './pages';
 
 export const App = () => (
   <MainContainer>

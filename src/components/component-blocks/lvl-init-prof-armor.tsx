@@ -12,8 +12,16 @@ export const LvlAndClass = () => {
 
   return (
     <NumberTextFieldInput
-      TextFieldProps={{ value: classes, onChange: (e) => setClasses(e.target.value), label: 'Level & class', fullWidth: true }}
-      NumberInputProps={{ value: level, onChange: (e) => setLevel(+e.target.value) }}
+      TextFieldProps={{
+        value: classes,
+        onChange: (e) => setClasses(e.target.value),
+        label: 'Level & class',
+        fullWidth: true,
+      }}
+      NumberInputProps={{
+        value: level,
+        onChange: (event: any) => setLevel(+event.target.value),
+      }}
     />
   );
 };
@@ -39,11 +47,16 @@ export const ProficiencyBonus = () => {
 export const Initiative = () => {
   const [initiative, setInitiative] = useAtom(initiativeAtom);
   const { score: dexterityScore } = useAtomValue(dexterityAtom);
+
+  const handleChange = (event: any) => {
+    const { value } = event.target;
+    setInitiative(value === '' ? calculateAbilityModifier(dexterityScore) : +value);
+  };
   return (
     <NumberLabelInput
       NumberInputProps={{
-        value: initiative !== null ? initiative : calculateAbilityModifier(dexterityScore),
-        onChange: (e) => setInitiative(e.target.value === '' ? null : +e.target.value),
+        value: initiative,
+        onChange: handleChange,
       }}
       label={'Initiative'}
     />

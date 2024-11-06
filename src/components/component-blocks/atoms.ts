@@ -13,3 +13,4 @@ export const backgroundAtom = atomWithStorage('background', '');
 export const maxHitPointsAtom = atomWithStorage('maxHitPoints', 0);
 export const temporaryHitPointsAtom = atomWithStorage('temporary-hitPoints', 0);
 export const currentHitPointsAtom = atomWithStorage('current-hitPoints', 0);
+export const passivePerceptionAtom = atomWithStorage('passive-perception', 0);

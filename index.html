@@ -1,25 +1,26 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/dnd-icon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DnD Character Sheet</title>
-    <style>
-        @font-face {
-            font-family: "Special Elite";   /*Can be any text*/
-            src: local("SpecialElite"),
-            url("./src/assets/fonts/SpecialElite.ttf") format("truetype");
-        }
-        @font-face {
-            font-family: "Typewriter";   /*Can be any text*/
-            src: local("typewriter_regular"),
-            url("./src/assets/fonts/typewriter_regular.otf") format("truetype");
-        }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <link href="/dnd-icon.svg" rel="icon" type="image/svg+xml" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>DnD Character Sheet</title>
+  <style>
+      @font-face {
+          font-family: "Special Elite";   /*Can be any text*/
+          src: local("SpecialElite"),
+          url("./src/assets/fonts/SpecialElite.ttf") format("truetype");
+      }
+
+      @font-face {
+          font-family: "Typewriter";   /*Can be any text*/
+          src: local("typewriter_regular"),
+          url("./src/assets/fonts/typewriter_regular.otf") format("truetype");
+      }
+  </style>
+</head>
+<body style="background-color: gray">
+<div id="root"></div>
+<script src="/src/main.jsx" type="module"></script>
+</body>
 </html>

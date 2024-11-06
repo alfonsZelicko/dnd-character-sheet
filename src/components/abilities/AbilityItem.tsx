@@ -1,12 +1,13 @@
 import React, { ChangeEvent } from 'react';
-import { NumberInputProps, StyledPaper } from '../shared';
-import { Grid2 as Grid, Tooltip } from '@mui/material';
+import { StyledPaper } from '../shared';
+import { Grid2 as Grid } from '@mui/material';
 import { ellipsisWrapper } from '../../utils';
 import { useAtom } from 'jotai';
 import { AbilityModifierLabel, AbilityName, StyledAbilityInput } from './styledComponents';
 import { Abilities, AbilityItemType } from './types';
 import { calculateAbilityModifier, formatWithPlusSign } from '../../features/utils';
-import { getAbilityAtom, getAbilityFullName } from './atoms';
+import { getAbilityAtom } from './atoms';
+import { NumberInputProps } from '../shared/number-input/types';
 
 type AbilityInputProps = {
   ability: Abilities;
@@ -20,18 +21,18 @@ export const AbilityItem = ({ ability: _ability, NumberInputProps }: AbilityInpu
   };
 
   return (
-    <Tooltip title={getAbilityFullName(ability.type)} arrow>
-      <Grid container component={StyledPaper} size={12} alignItems={'flex-start'} sx={{ m: 1, mt: 0, mb: 2.5, mr: 0, py: 0 }}>
-        <Grid size={12}>
-          <AbilityName variant={'body1'} sx={ellipsisWrapper}>
-            {ability.type}
-          </AbilityName>
-          <StyledAbilityInput value={ability.score || 0} onChange={handleChange} {...NumberInputProps} />
-        </Grid>
-        <Grid size={12}>
-          <AbilityModifierLabel variant={'h3'}>{formatWithPlusSign(calculateAbilityModifier(ability.score))}</AbilityModifierLabel>
-        </Grid>
+    // <Tooltip title={getAbilityFullName(ability.type)} arrow>
+    <Grid container component={StyledPaper} size={12} alignItems={'flex-start'} sx={{ m: 1, mt: 0, mb: 2.5, mr: 0, py: 0 }}>
+      <Grid size={12}>
+        <AbilityName variant={'body1'} sx={ellipsisWrapper}>
+          {ability.type}
+        </AbilityName>
+        <StyledAbilityInput value={ability.score || 0} onChange={handleChange} {...NumberInputProps} />
       </Grid>
-    </Tooltip>
+      <Grid size={12}>
+        <AbilityModifierLabel variant={'h3'}>{formatWithPlusSign(calculateAbilityModifier(ability.score))}</AbilityModifierLabel>
+      </Grid>
+    </Grid>
+    // </Tooltip>
   );
 };

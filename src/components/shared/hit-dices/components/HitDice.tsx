@@ -4,6 +4,7 @@ import { useAtom } from 'jotai/index';
 import React from 'react';
 import { Grid2 as Grid } from '@mui/material';
 import { StandardNumberInput } from '../../number-input';
+import { StyledNumberField } from '../../number-input/styled';
 
 export const HitDice = ({ hitDiceAtom }: { hitDiceAtom: PrimitiveAtom<HitDiceType> }) => {
   const [hitDice, setHitDice] = useAtom(hitDiceAtom);
@@ -16,13 +17,13 @@ export const HitDice = ({ hitDiceAtom }: { hitDiceAtom: PrimitiveAtom<HitDiceTyp
   return (
     <Grid container direction={'row'} size={12}>
       <Grid size={3}>
-        <StandardNumberInput onChange={handleChange} name="level" variant={'standard'} value={hitDice.level} />
+        <StandardNumberInput onChange={handleChange} name="level" value={hitDice.level} />
       </Grid>
       <Grid size={6}>
-        <StandardNumberInput onChange={handleChange} name="die" variant={'standard'} type={'text'} value={hitDice.die} />
+        <StyledNumberField name="die" variant={'standard'} type={'text'} value={hitDice.die} />
       </Grid>
       <Grid size={3}>
-        <StandardNumberInput onChange={handleChange} name="usage" variant={'standard'} value={hitDice.usage} />
+        <StandardNumberInput onChange={handleChange} name="usage" value={hitDice.usage} />
       </Grid>
     </Grid>
   );

@@ -9,26 +9,6 @@ const createSkillAtom = (key: string, abilityType: Abilities) =>
     proficiencyAndExpertise: 0,
   });
 
-/*  return atom(
-    (get) => {
-      const abilityAtom = getAbilityAtom(abilityType);
-      const ability = get(abilityAtom);
-      const baseSkill = get(baseAtom);
-
-      return {
-        ...baseSkill,
-        score: ability.score,
-      };
-    },
-    (get, set, update: Partial<SkillType>) => {
-      set(baseAtom, {
-        ...get(baseAtom),
-        ...update,
-      });
-    }
-  );
-};*/
-
 export const skillAtoms: { [key in SkillsType]: ReturnType<typeof createSkillAtom> } = Object.fromEntries(
   (Object.entries(SkillList) as [SkillsType, Abilities][]).map(([skill, ability]) => [
     skill,

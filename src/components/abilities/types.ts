@@ -1,6 +1,6 @@
 export enum Abilities {
   Strength = 'str',
-  Dexterity = 'agi',
+  Dexterity = 'dex',
   Constitution = 'con',
   Intelligence = 'int',
   Charisma = 'cha',
