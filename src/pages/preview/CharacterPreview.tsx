@@ -1,14 +1,16 @@
-import { Grid2 as Grid, styled, TextField, Typography } from '@mui/material';
+import { Grid2 as Grid, styled, TextField } from '@mui/material';
 import {
   AbilityListView,
   BaseStats,
   Exhaustion,
+  HitDices,
+  HpDeathSavesPasPerception,
   Inspiration,
   NameRaceBackground,
   SavingThrows,
-  StyledPaper,
-  HpDeathSavesPasPerception,
+  Senses,
   SkillListView,
+  StyledPaper,
 } from '../../components';
 import React from 'react';
 import { HalfPageContainer } from '../layout';
@@ -51,6 +53,11 @@ export const CharacterPreview = () => (
           </Grid>
           <Grid size={5}>
             <Inspiration />
+          </Grid>
+        </Grid>
+        <Grid container size={12}>
+          <Grid size={6}>
+            <HitDices />
           </Grid>
         </Grid>
       </Grid>
