@@ -1,11 +1,12 @@
-import { ProfAndExpType, skillAtom, SkillsType } from './atoms';
+import { skillAtom } from './atoms';
 import { useAtom } from 'jotai/index';
-import React, { ChangeEvent, memo, useCallback, useRef } from 'react';
+import React, { ChangeEvent, memo, useCallback } from 'react';
 import { Checkbox, Tooltip } from '@mui/material';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import BookIcon from '@mui/icons-material/Book';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import SchoolIcon from '@mui/icons-material/School';
+import { ProfAndExpType, SkillsType } from './types';
 
 export const ExpertiseAndProficiency = memo(({ skillName }: { skillName: SkillsType }) => {
   const [{ proficiencyAndExpertise }, setSkill] = useAtom(skillAtom(skillName));
@@ -28,7 +29,7 @@ export const ExpertiseAndProficiency = memo(({ skillName }: { skillName: SkillsT
   }, []);
 
   const handleChangeExpOrProf = (event: ChangeEvent<HTMLInputElement>) => {
-    setSkill(prev => ({...prev, proficiencyAndExpertise: calcNextState(prev.proficiencyAndExpertise, event.target)}));
+    setSkill((prev) => ({ ...prev, proficiencyAndExpertise: calcNextState(prev.proficiencyAndExpertise, event.target) }));
   };
 
   return (

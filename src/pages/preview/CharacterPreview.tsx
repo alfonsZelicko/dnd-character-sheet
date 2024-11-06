@@ -1,23 +1,19 @@
-import { Grid2 as Grid, styled, TextField, Typography } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import {
   AbilityListView,
   BaseStats,
   Exhaustion,
+  HitDices,
+  HpDeathSavesPasPerception,
   Inspiration,
   NameRaceBackground,
   SavingThrows,
-  StyledPaper,
-  HpDeathSavesPasPerception,
+  Senses,
   SkillListView,
+  StyledPaper,
 } from '../../components';
 import React from 'react';
 import { HalfPageContainer } from '../layout';
-
-export const StyledTextFieldArea = styled(TextField)({'& .MuiInputBase-root': {
-    p: 1,
-    overflow: 'hidden',
-    '& textarea': { fontSize: '1rem', p:0, paddingTop: '0 !important',overflow: 'hidden', }
-  }})
 
 export const CharacterPreview = () => (
   <HalfPageContainer>
@@ -33,8 +29,7 @@ export const CharacterPreview = () => (
         </Grid>
         <Grid container size={12}>
           <Grid size={4} component={StyledPaper} padding={0}>
-            <Typography></Typography>
-            <StyledTextFieldArea name='sences' maxRows={5} placeholder="List of special sences" multiline />
+            <Senses />
           </Grid>
           <Grid container component={StyledPaper} size={8}>
             <SavingThrows />
@@ -51,6 +46,11 @@ export const CharacterPreview = () => (
           </Grid>
           <Grid size={5}>
             <Inspiration />
+          </Grid>
+        </Grid>
+        <Grid container size={12}>
+          <Grid size={6}>
+            <HitDices />
           </Grid>
         </Grid>
       </Grid>

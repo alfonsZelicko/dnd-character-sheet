@@ -31,3 +31,5 @@ export const SkillList = {
 } as const;
 
 export type SkillsType = keyof typeof SkillList;
+
+export type SkillItemProps = { skillName: SkillsType; type?: 'basic' | 'primary' };

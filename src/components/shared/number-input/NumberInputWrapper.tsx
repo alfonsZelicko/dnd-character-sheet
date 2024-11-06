@@ -7,7 +7,6 @@ export type InputPlacement = 'left' | 'right';
 export type InputWrapperProps = Omit<Pick<Grid2Props, 'size'>, 'label'> & {
   children?: ReactNode;
   NumberInputProps?: TextFieldProps;
-  label?: ReactNode;
   inputPlacement?: InputPlacement;
 };
 

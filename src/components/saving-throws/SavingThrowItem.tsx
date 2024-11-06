@@ -9,6 +9,7 @@ import { useAtomValue } from 'jotai';
 import { calculateAbilityModifier } from '../../features/utils';
 import { Abilities } from '../abilities/types';
 import { proficiencyBonusAtom } from '../component-blocks';
+import { StyledNumberField } from '../shared/number-input/styled';
 
 type SavingThrowItemProps = { ability: Abilities };
 
@@ -33,21 +34,23 @@ export const SavingThrowItem = ({ ability: _ability }: SavingThrowItemProps) => 
         <Tooltip title={'Proficiency'}>
           <Checkbox name="proficiency" checked={proficiency} onChange={handleAbProfChance} icon={<BookOutlinedIcon />} checkedIcon={<BookIcon />} />
         </Tooltip>
-        <StandardNumberInput value={savingThrowValue} size={'small'} fullWidth sx={{ width: '30px' }} variant={'standard'} />
-        {/*<Typography variant={'h6'} sx={{ fontSize: '1.4em', width: 40, textAlign: 'center', color: 'rgba(0,0,0,0.7)' }}>
-          {formatWithPlusSign(savingThrowValue)}
-        </Typography>*/}
+        <StyledNumberField value={savingThrowValue} size={'small'} fullWidth sx={{ width: '30px' }} variant={'standard'} />
         <Tooltip title={getAbilityFullName(ability)}>
           <Typography paddingLeft={1} paddingRight={1} textTransform={'uppercase'} fontSize={'1.5rem'} fontWeight={700}>
             {ability}
           </Typography>
         </Tooltip>
         <Box>
-          <Tooltip title={'Modification'}>
-            <span>
-              <StandardNumberInput value={modification || ''} onChange={handleChange} name="modification" placeholder={'+'} fullWidth sx={{ width: '30px' }} variant={'standard'} />
-            </span>
-          </Tooltip>
+          <StandardNumberInput
+            value={modification || ''}
+            onChange={handleChange}
+            name="modification"
+            placeholder={'+'}
+            fullWidth
+            sx={{ width: '30px' }}
+            variant={'standard'}
+            type={'number'}
+          />
         </Box>
       </Grid>
     </>
