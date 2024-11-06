@@ -47,12 +47,12 @@ export const PassivePerception = () => {
 export const HpDeathSavesPasPerception = () => {
   return (
     <Grid size={12} container spacing={2}>
-      <Grid container size={5.5}>
+      <Grid container size={6}>
         <TemporaryHitPoints />
         <CurrentHitPoints />
         <MaxHitPoints />
       </Grid>
-      <Grid container size={6.5}>
+      <Grid container size={6}>
         <PassivePerception />
         <DeathSaves />
       </Grid>
