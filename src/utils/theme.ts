@@ -84,7 +84,7 @@ export const theme = createTheme({
     MuiFormLabel: {
       styleOverrides: {
         root: {
-          fontSize: '1em',
+          fontSize: '1rem',
           fontWeight: 400,
           textTransform: 'uppercase',
           left: 'unset !important',

@@ -52,6 +52,7 @@ export const CharacterPreview = () => (
           <Grid size={6}>
             <HitDices />
           </Grid>
+          <Grid size={6}>Ahoj svete</Grid>
         </Grid>
       </Grid>
     </Grid>

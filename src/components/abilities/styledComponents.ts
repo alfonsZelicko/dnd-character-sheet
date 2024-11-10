@@ -5,15 +5,15 @@ import { InputColor, MainColor, MainContentColor } from '../../utils';
 export const StyledAbilityInput = styled(NumberInput)({
   position: 'absolute',
   transform: 'translate(-40%, 30%)',
-  width: '40px',
-  height: '41px',
+  width: '4vw',
+  height: '4vw',
   '& input': {
     background: MainContentColor,
-    height: '22px',
+    height: '2vw',
     fontSize: '1.7rem',
     color: MainColor,
     fontWeight: 400,
-    paddingTop: '13px !important',
+    paddingTop: '1.3vw !important',
   },
 });
 

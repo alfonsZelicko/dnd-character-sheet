@@ -1,10 +1,9 @@
-import { CharacterPreview, HalfPageContainer, MainContainer } from './pages';
+import { CharacterPreview, MainContainer } from './pages';
 import React from 'react';
 
 export const App = () => (
   <MainContainer>
     <CharacterPreview />
-    <HalfPageContainer> Prava polovina</HalfPageContainer>
   </MainContainer>
 );
 

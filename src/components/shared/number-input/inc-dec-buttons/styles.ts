@@ -16,4 +16,5 @@ export const WrapperPaperSx: SxProps = {
   borderRadius: 0,
   border: 0,
   boxShadow: 'none',
+  overflow: 'hidden',
 };
