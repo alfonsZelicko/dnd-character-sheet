@@ -4,6 +4,7 @@ import React from 'react';
 import { Grid2 as Grid } from '@mui/material';
 import { StyledPaper } from '../PaperWrapper';
 import { Header, HitDice } from './components';
+import { ComponentLabel } from '../component-label';
 
 export const HitDices = () => {
   const [hitDices] = useAtom(hitDicesAtomsAtom);
@@ -14,6 +15,7 @@ export const HitDices = () => {
       {hitDices.map((hitDiceAtom, index) => (
         <HitDice hitDiceAtom={hitDiceAtom} key={index} />
       ))}
+      <ComponentLabel>Hit Dices</ComponentLabel>
     </Grid>
   );
 };
