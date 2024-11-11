@@ -22,15 +22,13 @@ const Background = () => {
 };
 
 export const NameRaceBackground = () => (
-  <Grid container spacing={2} id={'overview'}>
-    <Grid size={{ xs: 4 }}>
+  <Grid container size={12} spacing={2} id={'overview'}>
+    <Grid size={{ xs: 5 }}>
       <Name />
     </Grid>
-    <Grid size={{ xs: 5 }}>
+    <Grid size={{ xs: 7 }}>
       <Race />
     </Grid>
-    <Grid size={{ xs: 3 }}>
-      <Background />
-    </Grid>
+    {/* <Grid size={{ xs: 3 }}><Background /></Grid> */}
   </Grid>
 );

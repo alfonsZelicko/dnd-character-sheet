@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid2 as Grid, Typography } from '@mui/material';
-import { StyledPaper } from '../shared';
+import { ComponentLabel, StyledPaper } from '../shared';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -23,9 +23,6 @@ const SavingThrowsConfig = {
 
 export const DeathSaves = () => (
   <Grid container size={12} component={StyledPaper}>
-    <Grid container size={12} component={Typography} textTransform={'uppercase'}>
-      Death Saving Throws
-    </Grid>
     <Grid size={12} container>
       <DeathSavesCounter {...SavingThrowsConfig.success} />
       <Grid size={'grow'} component={Typography} textAlign={'right'} lineHeight={2}>
@@ -38,5 +35,6 @@ export const DeathSaves = () => (
       </Grid>
       <DeathSavesCounter {...SavingThrowsConfig.failure} />
     </Grid>
+    <ComponentLabel>Death Saves</ComponentLabel>
   </Grid>
 );

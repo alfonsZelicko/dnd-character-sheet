@@ -35,7 +35,7 @@ export const SkillItem = React.memo(({ skillName, type = 'basic' }: SkillItemPro
     <Grid container alignItems="flex-start" mb={0}>
       <Grid sx={{ flexGrow: 1, display: 'flex' }}>
         <ExpertiseAndProficiency skillName={skillName} />
-        <StandardNumberInput showIncButtons={false} name={'score'} value={calculatedBonus} sx={{ width: '50px' }} variant={'standard'} />
+        <StandardNumberInput disabled showIncButtons={false} name={'score'} value={calculatedBonus} sx={{ width: '50px' }} variant={'standard'} />
         <Typography sx={ellipsisWrapper} variant="body1" fontSize={'1.2rem'} fontWeight={600} color={type === 'basic' ? 'primary' : 'textDisabled'}>
           {skillName}
           <Tooltip title={getAbilityFullName(ability)}>

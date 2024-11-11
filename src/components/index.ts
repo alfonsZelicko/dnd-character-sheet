@@ -8,3 +8,4 @@ export * from './death-saves';
 export * from './saving-throws';
 export * from './simple-components';
 export * from './skills';
+export * from './character-preview';

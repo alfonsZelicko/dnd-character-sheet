@@ -1,20 +1,17 @@
 import { Typography, TypographyProps } from '@mui/material';
-import React, { ReactNode } from 'react';
-
-export type ComponentLabelProps = {
-  children?: ReactNode;
-  TypographyProps?: TypographyProps
-};
+import React from 'react';
 
 const defaultTypographyProps: TypographyProps = {
-  textTransform:'uppercase',
-  variant:'h6',
-  width:'100%',
-  textAlign:'right',
-  fontWeight:400
-}
+  textTransform: 'uppercase',
+  variant: 'h6',
+  width: '100%',
+  textAlign: 'right',
+  fontWeight: 400,
+  display: 'none',
+};
 
-export const ComponentLabel  = ({children, TypographyProps}: ComponentLabelProps) =>
-  <Typography  {...defaultTypographyProps} {...TypographyProps}>
+export const ComponentLabel = ({ children, ...restProps }: TypographyProps) => (
+  <Typography {...defaultTypographyProps} {...restProps}>
     {children}
- </Typography>
+  </Typography>
+);

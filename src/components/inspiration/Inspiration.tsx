@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, styled } from '@mui/material';
+import { Checkbox, FormControlLabel, Grid2 as Grid, styled } from '@mui/material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import React from 'react';
@@ -14,7 +14,7 @@ const LocalCheckbox = () => {
   const [inspiration, setInspiration] = useAtom(inspirationAtom);
   return (
     <Checkbox
-      sx={{ marginTop: '0', paddingRight: 1, paddingLeft: 1 }}
+      sx={{ marginTop: '0' }}
       checked={inspiration}
       onChange={() => setInspiration((prev) => !prev)}
       size={'large'}
@@ -26,8 +26,16 @@ const LocalCheckbox = () => {
 
 export const Inspiration = () => {
   return (
-    <Box component={StyledPaper} sx={{ pt: 0.8, /*paddingBottom: '14px'/*, height: '45px'*/ }}>
-      <StyledFormControlLabel control={<LocalCheckbox />} label="Inspiration" />
-    </Box>
+    <Grid size={12} component={StyledPaper} sx={{ pt: 0.8, pl: 1.5 }}>
+      <StyledFormControlLabel
+        control={<LocalCheckbox />}
+        label="Inspiration"
+        slotProps={{
+          typography: {
+            sx: { paddingLeft: '8px' },
+          },
+        }}
+      />
+    </Grid>
   );
 };

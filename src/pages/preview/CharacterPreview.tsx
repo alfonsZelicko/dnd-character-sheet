@@ -1,15 +1,15 @@
-import { Grid2 as Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import {
   AbilityListView,
   BaseStats,
-  Exhaustion,
-  HitDices,
+  CharacterPreview as CharacterPicture,
   HpDeathSavesPasPerception,
   Inspiration,
   NameRaceBackground,
+  PassivePerception,
   SavingThrows,
-  Senses,
   SkillListView,
+  SmallNotes,
   StyledPaper,
 } from '../../components';
 import React from 'react';
@@ -17,41 +17,39 @@ import { HalfPageContainer } from '../layout';
 
 export const CharacterPreview = () => (
   <HalfPageContainer>
-    <NameRaceBackground />
-    <Grid container size={7} alignItems={'flex-start'} justifyContent="flex-start">
-      <BaseStats />
-      <Grid id={'skills-and-abilities'} container size={12}>
-        <Grid id={'ability-view'} container size={3} gap={0} alignItems="flex-start" padding={0}>
-          <AbilityListView />
-        </Grid>
-        <Grid id={'skills'} component={StyledPaper} size={9}>
-          <SkillListView />
-        </Grid>
-        <Grid container size={12}>
-          <Grid size={4} component={StyledPaper} padding={0}>
-            <Senses />
+    <Grid container size={7}>
+      <NameRaceBackground />
+      <Grid container size={7} alignItems={'flex-start'} justifyContent="flex-start">
+        <BaseStats />
+        <Grid id={'skills-and-abilities'} container size={12}>
+          <Grid id={'ability-view'} container size={3} gap={0} alignItems="flex-start" padding={0}>
+            <AbilityListView />
           </Grid>
-          <Grid container component={StyledPaper} size={8}>
+          <Grid id={'skills'} component={StyledPaper} size={9}>
+            <SkillListView />
+          </Grid>
+          <Grid container size={8} component={StyledPaper}>
             <SavingThrows />
           </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
-    <Grid id="" container size={5} alignItems="flex-start">
-      <Grid container size={12}>
-        <HpDeathSavesPasPerception />
-        <Grid container size={12}>
-          <Grid size={7}>
-            <Exhaustion />
-          </Grid>
-          <Grid size={5}>
+          <Grid container size={4} spacing={2}>
+            <PassivePerception />
             <Inspiration />
           </Grid>
         </Grid>
-        <Grid container size={12}>
-          <Grid size={6}>
-            <HitDices />
-          </Grid>
+      </Grid>
+      <Grid id="" container size={5} alignItems="flex-start">
+        <Grid container size={12} sx={{ flexDirection: 'column', height: '100%' }}>
+          <HpDeathSavesPasPerception />
+          <CharacterPicture />
+          <Box
+            component={StyledPaper}
+            sx={{
+              width: '100%',
+              flexGrow: 1,
+            }}
+          >
+            <SmallNotes rows={5} />
+          </Box>
         </Grid>
       </Grid>
     </Grid>

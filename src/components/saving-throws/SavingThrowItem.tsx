@@ -30,7 +30,7 @@ export const SavingThrowItem = ({ ability: _ability }: SavingThrowItemProps) => 
 
   return (
     <>
-      <Grid size={12} display={'inline-flex'} alignItems="center">
+      <Grid size={12} display={'inline-flex'} alignItems="center" sx={{ height: '25px' }}>
         <Tooltip title={'Proficiency'}>
           <Checkbox name="proficiency" checked={proficiency} onChange={handleAbProfChance} icon={<BookOutlinedIcon />} checkedIcon={<BookIcon />} />
         </Tooltip>
