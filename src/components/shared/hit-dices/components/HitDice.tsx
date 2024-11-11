@@ -20,7 +20,7 @@ export const HitDice = ({ hitDiceAtom }: { hitDiceAtom: PrimitiveAtom<HitDiceTyp
         <StandardNumberInput onChange={handleChange} name="level" value={hitDice.level} />
       </Grid>
       <Grid size={6}>
-        <StyledNumberField name="die" variant={'standard'} type={'text'} value={hitDice.die} />
+        <StyledNumberField disabled name="die" variant={'standard'} type={'text'} value={hitDice.die} />
       </Grid>
       <Grid size={3}>
         <StandardNumberInput onChange={handleChange} name="usage" value={hitDice.usage} />

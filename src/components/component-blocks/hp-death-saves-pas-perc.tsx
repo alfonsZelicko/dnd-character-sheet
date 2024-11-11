@@ -1,5 +1,5 @@
 import { Grid2 as Grid, Tooltip } from '@mui/material';
-import { NumberLabelInput } from '../shared';
+import { HitDices, NumberLabelInput } from '../shared';
 import { DeathSaves } from '../death-saves';
 import React, { useMemo } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
@@ -7,6 +7,7 @@ import { currentHitPointsAtom, maxHitPointsAtom, proficiencyBonusAtom, temporary
 import { wisdomAtom } from '../abilities/atoms';
 import { calculateAbilityModifier } from '../../features/utils';
 import { skillAtom } from '../skills';
+import { Exhaustion } from '../exhaustion';
 
 export const TemporaryHitPoints = () => {
   const [temporaryHitPoints, setTemporaryHitPoints] = useAtom(temporaryHitPointsAtom);
@@ -54,6 +55,11 @@ export const PassivePerception = () => {
           NumberInputProps={{
             showIncButtons: false,
             value: calculatedPassivePerception,
+            slotProps: {
+              input: {
+                readOnly: true,
+              },
+            },
             //onChange: handleChange,
           }}
           label="Passive Perception"
@@ -65,15 +71,18 @@ export const PassivePerception = () => {
 
 export const HpDeathSavesPasPerception = () => {
   return (
-    <Grid size={12} container spacing={2}>
-      <Grid container size={6}>
+    <Grid size={12} container spacing={2} justifyContent={'flex-start'}>
+      <Grid container size={5.5} direction="column">
         <TemporaryHitPoints />
         <CurrentHitPoints />
         <MaxHitPoints />
+
+        <Exhaustion />
       </Grid>
-      <Grid container size={6}>
-        <PassivePerception />
+      <Grid container size={6.5} direction="column">
+        {/* <CharacterPreview /> */}
         <DeathSaves />
+        <HitDices />
       </Grid>
     </Grid>
   );
