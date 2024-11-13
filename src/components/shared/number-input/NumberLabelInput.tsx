@@ -2,12 +2,12 @@ import { SxProps, Theme } from '@mui/material';
 import React from 'react';
 import { InputPlacement, NumberInputWrapper } from './NumberInputWrapper';
 import { NumberLabelInputProps } from './types';
-import { StyledLabel } from './styled';
+import { StyledLabel } from '../text-input';
 
 const getPlacementSx = (inputPlacement: InputPlacement): SxProps<Theme> => {
   return inputPlacement === 'left'
     ? { borderRadius: '0 4px  4px 0', borderLeft: 'none', textAlign: 'right' }
-    : { borderRadius: '4px 0 0 4px', borderRight: 'none', textAlign: 'left' };
+    : { borderRadius: '4px 0 0 4px', borderRight: 'none', textAlign: 'left', flexGrow: 1 };
 };
 
 export const NumberLabelInput = ({ NumberInputProps, StyledLabelProps, label, size, inputPlacement = 'left' }: NumberLabelInputProps) => (

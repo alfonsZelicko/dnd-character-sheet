@@ -1,31 +1,14 @@
 import { Grid2 as Grid, Tooltip } from '@mui/material';
-import { HitDices, NumberLabelInput } from '../shared';
+import { NumberLabelInput } from '../shared';
 import { DeathSaves } from '../death-saves';
 import React, { useMemo } from 'react';
-import { useAtom, useAtomValue } from 'jotai';
-import { currentHitPointsAtom, maxHitPointsAtom, proficiencyBonusAtom, temporaryHitPointsAtom } from './atoms';
+import { useAtomValue } from 'jotai';
 import { wisdomAtom } from '../abilities/atoms';
 import { calculateAbilityModifier } from '../../features/utils';
 import { skillAtom } from '../skills';
 import { Exhaustion } from '../exhaustion';
-
-export const TemporaryHitPoints = () => {
-  const [temporaryHitPoints, setTemporaryHitPoints] = useAtom(temporaryHitPointsAtom);
-
-  return <NumberLabelInput NumberInputProps={{ value: temporaryHitPoints, onChange: (e) => setTemporaryHitPoints(+e.target.value) }} label="Tmp. Hit points" />;
-};
-
-export const CurrentHitPoints = () => {
-  const [currentHitPoints, setCurrentHitPoints] = useAtom(currentHitPointsAtom);
-
-  return <NumberLabelInput NumberInputProps={{ value: currentHitPoints, onChange: (e) => setCurrentHitPoints(+e.target.value) }} label="Current Hit points" />;
-};
-
-export const MaxHitPoints = () => {
-  const [maxHitPoints, setMaxHitPoints] = useAtom(maxHitPointsAtom);
-
-  return <NumberLabelInput NumberInputProps={{ value: maxHitPoints, onChange: (e) => setMaxHitPoints(+e.target.value) }} label="Max Hit points" />;
-};
+import { HitDices } from '../hit-dices';
+import { CurrentHitPoints, MaxHitPoints, proficiencyBonusAtom, TemporaryHitPoints } from '../simple-components';
 
 export const PassivePerception = () => {
   const { proficiencyAndExpertise, modifier } = useAtomValue(skillAtom('Perception'));
@@ -57,7 +40,7 @@ export const PassivePerception = () => {
             value: calculatedPassivePerception,
             slotProps: {
               input: {
-                readOnly: true,
+                disabled: true,
               },
             },
             //onChange: handleChange,

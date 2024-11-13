@@ -1,8 +1,10 @@
 import { Box, Grid2 as Grid } from '@mui/material';
 import {
   AbilityListView,
+  AttackList,
   BaseStats,
   CharacterPreview as CharacterPicture,
+  FeatList,
   HpDeathSavesPasPerception,
   Inspiration,
   NameRaceBackground,
@@ -17,16 +19,18 @@ import { HalfPageContainer } from '../layout';
 
 export const CharacterPreview = () => (
   <HalfPageContainer>
-    <Grid container size={7}>
+    <Grid container size={{ xs: 12, lg: 7 }}>
       <NameRaceBackground />
-      <Grid container size={7} alignItems={'flex-start'} justifyContent="flex-start">
+      <Grid container size={7.5} alignItems={'space-between'} justifyContent="flex-start">
         <BaseStats />
         <Grid id={'skills-and-abilities'} container size={12}>
-          <Grid id={'ability-view'} container size={3} gap={0} alignItems="flex-start" padding={0}>
-            <AbilityListView />
-          </Grid>
-          <Grid id={'skills'} component={StyledPaper} size={9}>
-            <SkillListView />
+          <Grid container size={12}>
+            <Grid id={'ability-view'} flex={1} justifyContent={'space-between'} display={'flex'} flexDirection={'column'} maxWidth={100}>
+              <AbilityListView />
+            </Grid>
+            <Grid id={'skills'} component={StyledPaper} minWidth={325} flex={1}>
+              <SkillListView />
+            </Grid>
           </Grid>
           <Grid container size={8} component={StyledPaper}>
             <SavingThrows />
@@ -37,7 +41,7 @@ export const CharacterPreview = () => (
           </Grid>
         </Grid>
       </Grid>
-      <Grid id="" container size={5} alignItems="flex-start">
+      <Grid id="" container size={4.5} alignItems="flex-start">
         <Grid container size={12} sx={{ flexDirection: 'column', height: '100%' }}>
           <HpDeathSavesPasPerception />
           <CharacterPicture />
@@ -48,9 +52,17 @@ export const CharacterPreview = () => (
               flexGrow: 1,
             }}
           >
-            <SmallNotes rows={5} />
+            <SmallNotes rows={5} variant={'outlined'} />
           </Box>
         </Grid>
+      </Grid>
+    </Grid>
+    <Grid container size={{ xs: 12, lg: 5 }} direction={'column'}>
+      <Grid size={12}>
+        <AttackList />
+      </Grid>
+      <Grid container size={12} direction={'row'}>
+        <FeatList />
       </Grid>
     </Grid>
   </HalfPageContainer>

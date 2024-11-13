@@ -8,3 +8,7 @@ export const ellipsisWrapper: SxProps = {
 };
 
 export const dottedBorder: Property.Border = '1px dotted rgba(132,110,84,0.50)';
+
+export function mergeStyles<T extends object>(...styles: T[]): T {
+  return Object.assign({}, ...styles);
+}

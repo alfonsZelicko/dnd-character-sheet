@@ -113,5 +113,59 @@ export const theme = createTheme({
         },
       },
     },
+    MuiCssBaseline: {
+      defaultProps: {
+        enableColorScheme: true,
+      },
+      styleOverrides: {
+        '*': {
+          '&::-webkit-scrollbar': {
+            '&-thumb': {
+              background: 'darkgray',
+              borderRadius: '4px',
+            },
+            '&-track': {
+              background: 'inherit',
+            },
+            height: '4px',
+            width: '4px',
+          },
+        },
+        body: {
+          '&::-webkit-scrollbar': {
+            '&-thumb': {
+              borderRadius: '6px',
+            },
+            height: '6px',
+            width: '6px',
+          },
+        },
+      },
+    },
   },
 });
+
+/*styleOverrides: {
+  '*': {
+    '&::-webkit-scrollbar': {
+      '&-thumb': {
+        background: colors.darkNight[400].color,
+          borderRadius: '4px',
+      },
+      '&-track': {
+        background: 'inherit',
+      },
+      height: '4px',
+        width: '4px',
+    },
+  },
+  body: {
+    '&::-webkit-scrollbar': {
+      '&-thumb': {
+        borderRadius: '6px',
+      },
+      height: '6px',
+        width: '6px',
+    },
+  },
+},*/

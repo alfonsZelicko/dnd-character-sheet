@@ -6,9 +6,9 @@ import { useAtom, useAtomValue } from 'jotai';
 import { getAbilityAtom, getAbilityFullName } from '../abilities/atoms';
 import { skillAtom } from './atoms';
 import { calculateAbilityModifier } from '../../features/utils';
-import { proficiencyBonusAtom } from '../component-blocks';
 import { ExpertiseAndProficiency } from './ExpertiseAndProficiency';
 import { SkillItemProps } from './types';
+import { proficiencyBonusAtom } from '../simple-components';
 
 export const SkillItem = React.memo(({ skillName, type = 'basic' }: SkillItemProps) => {
   const [{ ability, proficiencyAndExpertise, modifier }, setSkill] = useAtom(skillAtom(skillName));

@@ -22,7 +22,7 @@ export const StyledTextField = styled(TextField)({
   },
 });
 
-export const StyledNumberField = styled(TextField)({
+export const StyledStandardTextField = styled(TextField)({
   mr: 2,
   input: {
     textAlign: 'center',
@@ -44,4 +44,27 @@ export const StyledLabel = styled(Typography)({
   fontWeight: 400,
   textTransform: 'uppercase',
   height: '45px',
+});
+
+export const StyledTextFieldArea = styled(TextField)({
+  '& .MuiInputBase-root': {
+    padding: '4px',
+    overflow: 'hidden',
+    '& textarea': {
+      fontSize: '1rem',
+      paddingTop: '0 !important',
+      overflow: 'hidden',
+      fontWeight: 200,
+      backgroundImage: `
+        repeating-linear-gradient(
+          to bottom,
+          transparent,
+          transparent calc(1.3rem - 1px),
+          #d3d3d3 calc(1.3rem - 1px),
+          #d3d3d3 1.3rem
+        )
+      `,
+      backgroundSize: '100% 1.5rem',
+    },
+  },
 });
