@@ -3,5 +3,4 @@ export * from './number-input';
 export * from './text-input';
 export * from './component-label';
 export * from './overflow-tooltip';
-export * from './hit-dices';
 export * from './number-input/inc-dec-buttons';

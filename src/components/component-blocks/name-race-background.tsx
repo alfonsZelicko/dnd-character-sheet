@@ -1,8 +1,8 @@
 import { Grid2 as Grid } from '@mui/material';
 import React from 'react';
 import { TextInput } from '../shared';
-import { backgroundAtom, nameAtom, raceAtom } from './atoms';
 import { useAtom } from 'jotai';
+import { nameAtom, raceAtom, Speed } from '../simple-components';
 
 const Name = () => {
   const [name, setName] = useAtom(nameAtom);
@@ -15,19 +15,16 @@ const Race = () => {
   return <TextInput value={race} onChange={(e) => setRace(e.target.value)} label={'Race'} variant={'filled'} />;
 };
 
-const Background = () => {
-  const [background, setBackground] = useAtom(backgroundAtom);
-
-  return <TextInput value={background} onChange={(e) => setBackground(e.target.value)} label={'Background'} variant={'filled'} />;
-};
-
 export const NameRaceBackground = () => (
   <Grid container size={12} spacing={2} id={'overview'}>
-    <Grid size={{ xs: 5 }}>
+    <Grid size={{ xs: 4 }}>
       <Name />
     </Grid>
-    <Grid size={{ xs: 7 }}>
+    <Grid size={{ xs: 6 }}>
       <Race />
+    </Grid>
+    <Grid size={{ xs: 2 }}>
+      <Speed />
     </Grid>
     {/* <Grid size={{ xs: 3 }}><Background /></Grid> */}
   </Grid>

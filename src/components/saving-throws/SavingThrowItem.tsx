@@ -3,13 +3,12 @@ import { useAtom } from 'jotai/index';
 import { Box, Checkbox, Grid2 as Grid, Tooltip, Typography } from '@mui/material';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import BookIcon from '@mui/icons-material/Book';
-import { StandardNumberInput } from '../shared';
+import { StandardNumberInput, StyledStandardTextField } from '../shared';
 import React, { ChangeEvent, useMemo } from 'react';
 import { useAtomValue } from 'jotai';
 import { calculateAbilityModifier } from '../../features/utils';
 import { Abilities } from '../abilities/types';
-import { proficiencyBonusAtom } from '../component-blocks';
-import { StyledNumberField } from '../shared/number-input/styled';
+import { proficiencyBonusAtom } from '../simple-components';
 
 type SavingThrowItemProps = { ability: Abilities };
 
@@ -34,7 +33,7 @@ export const SavingThrowItem = ({ ability: _ability }: SavingThrowItemProps) => 
         <Tooltip title={'Proficiency'}>
           <Checkbox name="proficiency" checked={proficiency} onChange={handleAbProfChance} icon={<BookOutlinedIcon />} checkedIcon={<BookIcon />} />
         </Tooltip>
-        <StyledNumberField value={savingThrowValue} size={'small'} fullWidth sx={{ width: '30px' }} variant={'standard'} />
+        <StyledStandardTextField value={savingThrowValue} size={'small'} fullWidth sx={{ width: '30px' }} variant={'standard'} />
         <Tooltip title={getAbilityFullName(ability)}>
           <Typography paddingLeft={1} paddingRight={1} textTransform={'uppercase'} fontSize={'1.5rem'} fontWeight={700}>
             {ability}

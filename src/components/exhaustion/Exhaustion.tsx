@@ -41,17 +41,28 @@ export const Exhaustion = () => {
   };
 
   return (
-    <Box sx={{ width: '100%', padding: '4px 0' }} component={StyledPaper}>
-      {[1, 2, 3, 4, 5, 6].map((value, idx: number) => (
-        <StyledCheckBox
-          size={'small'}
-          checked={value <= exhaustion}
-          onChange={() => handleCheckboxChange(value)}
-          icon={iconsList[idx].icon}
-          checkedIcon={iconsList[idx].checkedIcon}
-          key={idx}
-        />
-      ))}
+    <Box
+      sx={{
+        width: '100%',
+        padding: '4px 0',
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column' /*, justifyItems: 'center'*/,
+      }}
+      component={StyledPaper}
+    >
+      <Box>
+        {[1, 2, 3, 4, 5, 6].map((value, idx: number) => (
+          <StyledCheckBox
+            size={'small'}
+            checked={value <= exhaustion}
+            onChange={() => handleCheckboxChange(value)}
+            icon={iconsList[idx].icon}
+            checkedIcon={iconsList[idx].checkedIcon}
+            key={idx}
+          />
+        ))}
+      </Box>
       <ComponentLabel sx={{ display: 'block', fontSize: '15px', pr: 1 }}>Exhaust. level</ComponentLabel>
     </Box>
   );

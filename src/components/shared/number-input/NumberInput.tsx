@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { IncrementDecrementButtons } from './inc-dec-buttons';
 import { ActionButtonType, BaseNumberInputType, NumberInputProps } from './types';
-import { StyledNumberField, StyledTextField } from './styled';
+import { StyledStandardTextField, StyledTextField } from '../text-input';
 
 const BaseNumberInput = ({ showIncButtons = true, onChange, value, anchorEl, setAnchorEl, restProps, InputComponent }: BaseNumberInputType) => {
   const handleFocus = (event: any) => {
@@ -80,4 +80,4 @@ const NumberInputBase = ({
 
 export const NumberInput = (props: NumberInputProps) => <NumberInputBase {...props} type="number" InputComponent={StyledTextField} />;
 
-export const StandardNumberInput = (props: NumberInputProps) => <NumberInputBase {...props} variant={'standard'} InputComponent={StyledNumberField} />;
+export const StandardNumberInput = (props: NumberInputProps) => <NumberInputBase {...props} variant={'standard'} InputComponent={StyledStandardTextField} />;
