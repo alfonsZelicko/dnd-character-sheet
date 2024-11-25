@@ -27,6 +27,15 @@
       "error",
       2
     ],
+    "react/jsx-sort-props": [
+      "error",
+      {
+        "callbacksLast": true,
+        "shorthandFirst": true,
+        "noSortAlphabetically": false,
+        "reservedFirst": true
+      }
+    ],
     "react/jsx-wrap-multilines": "error",
     "react/no-string-refs": "error",
     "react/react-in-jsx-scope": "off",

@@ -6,3 +6,6 @@ export * from './Initiative';
 export * from './Hitpoints';
 export * from './ProficiencyBonus';
 export * from './LvLAndClass';
+export * from './Race';
+export * from './Name';
+export * from './PassivePerception';

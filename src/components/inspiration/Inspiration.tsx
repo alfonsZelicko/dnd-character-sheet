@@ -26,7 +26,7 @@ const LocalCheckbox = () => {
 
 export const Inspiration = () => {
   return (
-    <Grid size={12} component={StyledPaper} sx={{ pt: 0.8, pl: 1.5 }}>
+    <Grid size={12} component={StyledPaper} sx={{ pt: 0.8, pl: 1.5, height: 50 }}>
       <StyledFormControlLabel
         control={<LocalCheckbox />}
         label="Inspiration"

@@ -37,7 +37,7 @@ export const Exhaustion = () => {
   const [exhaustion, setExhaustionLevel] = useAtom(exhaustionAtom);
 
   const handleCheckboxChange = (value: number) => {
-    setExhaustionLevel((prev) => (prev === 1 && value === 1 ? 0 : value));
+    setExhaustionLevel((prev) => (prev === value ? value - 1 : value));
   };
 
   return (
@@ -47,11 +47,11 @@ export const Exhaustion = () => {
         padding: '4px 0',
         display: 'flex',
         alignItems: 'center',
-        flexDirection: 'column' /*, justifyItems: 'center'*/,
+        flexDirection: 'column',
       }}
       component={StyledPaper}
     >
-      <Box>
+      <Box minWidth={132}>
         {[1, 2, 3, 4, 5, 6].map((value, idx: number) => (
           <StyledCheckBox
             size={'small'}
@@ -63,7 +63,9 @@ export const Exhaustion = () => {
           />
         ))}
       </Box>
-      <ComponentLabel sx={{ display: 'block', fontSize: '15px', pr: 1 }}>Exhaust. level</ComponentLabel>
+      <ComponentLabel sx={{ display: 'block', fontSize: '15px', pr: 1 }}>
+        Exhaust. level <strong>[{exhaustion}]</strong>
+      </ComponentLabel>
     </Box>
   );
 };

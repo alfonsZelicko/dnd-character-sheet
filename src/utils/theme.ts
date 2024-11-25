@@ -113,6 +113,22 @@ export const theme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      defaultProps: {
+        variant: 'standard',
+      },
+      styleOverrides: {
+        select: {
+          minHeight: 'unset',
+          overflow: 'hidden',
+          paddingTop: '8px !important',
+          paddingBottom: '0 !important',
+          fontWeight: 200,
+          fontSize: '1rem',
+          lineHeight: '1rem',
+        },
+      },
+    },
     MuiCssBaseline: {
       defaultProps: {
         enableColorScheme: true,
