@@ -4,12 +4,13 @@ import { useAtom } from 'jotai';
 import { FeatAtomsAtom } from './atoms';
 import { Grid2 as Grid } from '@mui/material';
 import { FeatListProps } from './types';
+import { StyledPaper } from '../shared';
 
 export const FeatList = ({ GridProps }: FeatListProps) => {
   const [feats] = useAtom(FeatAtomsAtom);
 
   return feats.map((feat, index) => (
-    <Grid size={4} key={index} {...GridProps}>
+    <Grid key={index} size={12} component={StyledPaper} sx={{ py: 0 }} {...GridProps}>
       <FeatItem featAtom={feat} />
     </Grid>
   ));

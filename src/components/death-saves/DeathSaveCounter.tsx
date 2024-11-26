@@ -11,7 +11,7 @@ type DeathSavesCounterProps = {
 export const DeathSavesCounter = ({ atom, checkedIcon, icon }: DeathSavesCounterProps) => {
   const [deathSave, setDeathSave] = useAtom<number>(atom);
   const handleDeathSaveCheck = (value: number) => {
-    setDeathSave(deathSave === 1 && value === 1 ? 0 : value);
+    setDeathSave((prev) => (prev === value ? value - 1 : value));
   };
 
   return (

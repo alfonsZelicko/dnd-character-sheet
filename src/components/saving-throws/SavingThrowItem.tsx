@@ -6,7 +6,7 @@ import BookIcon from '@mui/icons-material/Book';
 import { StandardNumberInput, StyledStandardTextField } from '../shared';
 import React, { ChangeEvent, useMemo } from 'react';
 import { useAtomValue } from 'jotai';
-import { calculateAbilityModifier } from '../../features/utils';
+import { calculateAbilityModifier, formatWithPlusSign } from '../../features/utils';
 import { Abilities } from '../abilities/types';
 import { proficiencyBonusAtom } from '../simple-components';
 
@@ -28,30 +28,41 @@ export const SavingThrowItem = ({ ability: _ability }: SavingThrowItemProps) => 
   };
 
   return (
-    <>
-      <Grid size={12} display={'inline-flex'} alignItems="center" sx={{ height: '25px' }}>
-        <Tooltip title={'Proficiency'}>
-          <Checkbox name="proficiency" checked={proficiency} onChange={handleAbProfChance} icon={<BookOutlinedIcon />} checkedIcon={<BookIcon />} />
-        </Tooltip>
-        <StyledStandardTextField value={savingThrowValue} size={'small'} fullWidth sx={{ width: '30px' }} variant={'standard'} />
-        <Tooltip title={getAbilityFullName(ability)}>
-          <Typography paddingLeft={1} paddingRight={1} textTransform={'uppercase'} fontSize={'1.5rem'} fontWeight={700}>
-            {ability}
-          </Typography>
-        </Tooltip>
-        <Box>
-          <StandardNumberInput
-            value={modification || ''}
-            onChange={handleChange}
-            name="modification"
-            placeholder={'+'}
-            fullWidth
-            sx={{ width: '30px' }}
-            variant={'standard'}
-            type={'number'}
-          />
-        </Box>
-      </Grid>
-    </>
+    <Grid size={12} display={'inline-flex'} alignItems="center" sx={{ height: '25px' }}>
+      <Tooltip title={'Proficiency'}>
+        <Checkbox
+          name="proficiency"
+          checked={proficiency}
+          onChange={handleAbProfChance}
+          icon={<BookOutlinedIcon />}
+          checkedIcon={<BookIcon />}
+        />
+      </Tooltip>
+      <StyledStandardTextField
+        value={formatWithPlusSign(savingThrowValue)}
+        size={'small'}
+        fullWidth
+        sx={{ width: '30px' }}
+        variant={'standard'}
+        disabled
+      />
+      <Tooltip title={getAbilityFullName(ability)}>
+        <Typography paddingLeft={1} paddingRight={1} textTransform={'uppercase'} fontSize={'1.5rem'} fontWeight={700}>
+          {ability}
+        </Typography>
+      </Tooltip>
+      <Box>
+        <StandardNumberInput
+          value={modification || ''}
+          onChange={handleChange}
+          name="modification"
+          placeholder={'+'}
+          fullWidth
+          sx={{ width: '30px' }}
+          variant={'standard'}
+          type={'number'}
+        />
+      </Box>
+    </Grid>
   );
 };

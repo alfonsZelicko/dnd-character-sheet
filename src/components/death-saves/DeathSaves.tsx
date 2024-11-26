@@ -22,7 +22,7 @@ const SavingThrowsConfig = {
 };
 
 export const DeathSaves = () => (
-  <Grid container size={12} component={StyledPaper}>
+  <Grid container component={StyledPaper}>
     <Grid size={12} container>
       <DeathSavesCounter {...SavingThrowsConfig.success} />
       <Grid size={'grow'} component={Typography} textAlign={'right'} lineHeight={2}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledPaper, StyledStandardTextField, StyledTextFieldArea } from '../shared';
+import { StyledStandardTextField, StyledTextFieldArea } from '../shared';
 import { Box } from '@mui/material';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 import { FeatType } from './types';
@@ -14,7 +14,7 @@ export const FeatItem = ({ featAtom }: { featAtom: PrimitiveAtom<FeatType> }) =>
   };
 
   return (
-    <Box component={StyledPaper} sx={{ py: 0 }}>
+    <Box sx={{ py: 0 }}>
       <StyledStandardTextField
         fullWidth
         value={feat.featName}
@@ -28,7 +28,7 @@ export const FeatItem = ({ featAtom }: { featAtom: PrimitiveAtom<FeatType> }) =>
         value={feat.featDescription}
         onChange={handleOnChange}
         name={'featDescription'}
-        rows={3}
+        rows={2}
         variant="outlined"
         fullWidth
         placeholder="Some small important notes"

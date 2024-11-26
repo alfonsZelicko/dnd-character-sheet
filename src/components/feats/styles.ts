@@ -6,5 +6,6 @@ export const FeatNameSx: SxProps<Theme> = {
     textAlign: 'right',
     fontWeight: 200,
     padding: '0 !important',
+    height: '1.8rem',
   },
 };

@@ -3,10 +3,11 @@ import React from 'react';
 import { StyledPaper, StyledStandardTextField } from '../shared';
 import { AttackItemProps } from './types';
 import { useAtom } from 'jotai';
+import { attackNameSx, commonPropsSx, noteSx } from './styles';
 
 const commonProps = {
   variant: 'standard' as 'standard',
-  sx: { ' input': { textAlign: 'center', fontSize: '1rem', fontWeight: 300 } },
+  sx: commonPropsSx,
   fullWidth: true,
 };
 
@@ -23,15 +24,15 @@ export const AttackItem = ({ attackAtom }: AttackItemProps) => {
   };
 
   return (
-    <Grid container size={12} spacing={1} component={StyledPaper}>
+    <Grid container size={12} spacing={1} component={StyledPaper} className={'paperItem'}>
       <Grid container size={12} sx={{ alignItems: 'center', flexWrap: 'nowrap' }}>
-        <StyledGrid sx={{ flexGrow: 1 }}>
+        <StyledGrid size={'grow'}>
           <StyledStandardTextField
             value={attackName}
             name={'attackName'}
             onChange={handleChange}
             {...commonProps}
-            sx={{ ' input': { textAlign: 'Left', fontSize: '1rem', fontWeight: 'bold' } }}
+            sx={attackNameSx}
           />
         </StyledGrid>
         <StyledGrid sx={{ width: '30px' }}>
@@ -48,13 +49,7 @@ export const AttackItem = ({ attackAtom }: AttackItemProps) => {
         </StyledGrid>
       </Grid>
       <StyledGrid size={12}>
-        <StyledStandardTextField
-          value={note}
-          name={'note'}
-          onChange={handleChange}
-          {...commonProps}
-          sx={{ ' input': { textAlign: 'Left', fontSize: '1rem', fontWeight: 300 } }}
-        />
+        <StyledStandardTextField value={note} name={'note'} onChange={handleChange} {...commonProps} sx={noteSx} />
       </StyledGrid>
     </Grid>
   );

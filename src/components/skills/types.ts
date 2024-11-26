@@ -9,7 +9,7 @@ export type SkillType = {
   proficiencyAndExpertise: ProfAndExpType;
 };
 
-export const SkillList = {
+export const SkillsList = {
   Acrobatics: Abilities.Dexterity,
   AnimalHandling: Abilities.Wisdom,
   Arcana: Abilities.Intelligence,
@@ -30,6 +30,6 @@ export const SkillList = {
   Survival: Abilities.Wisdom,
 } as const;
 
-export type SkillsType = keyof typeof SkillList;
+export type SkillsType = keyof typeof SkillsList;
 
 export type SkillItemProps = { skillName: SkillsType; type?: 'basic' | 'primary' };

@@ -18,14 +18,6 @@ const initAttackAtomsValue: AttackAtomType[] = [
     range: '',
     note: '',
   },
-  {
-    attackBonus: '',
-    damageType: '',
-    damage: '',
-    attackName: '',
-    range: '',
-    note: '',
-  },
 ];
 
 export const AttackAtoms = atomWithStorage<AttackAtomType[]>('attacks-list', initAttackAtomsValue);

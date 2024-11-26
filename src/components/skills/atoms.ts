@@ -1,6 +1,6 @@
 import { atomWithStorage } from 'jotai/utils';
 import { Abilities } from '../abilities/types';
-import { SkillList, SkillsType, SkillType } from './types';
+import { SkillsList, SkillsType, SkillType } from './types';
 
 const createSkillAtom = (key: string, abilityType: Abilities) =>
   atomWithStorage<SkillType>(key, {
@@ -10,7 +10,7 @@ const createSkillAtom = (key: string, abilityType: Abilities) =>
   });
 
 export const skillAtoms: { [key in SkillsType]: ReturnType<typeof createSkillAtom> } = Object.fromEntries(
-  (Object.entries(SkillList) as [SkillsType, Abilities][]).map(([skill, ability]) => [
+  (Object.entries(SkillsList) as [SkillsType, Abilities][]).map(([skill, ability]) => [
     skill,
     createSkillAtom(`skill-${skill.toLowerCase().replace(/ /g, '')}`, ability),
   ])

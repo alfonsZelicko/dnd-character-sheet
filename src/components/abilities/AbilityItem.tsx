@@ -23,7 +23,7 @@ export const AbilityItem = ({ ability: _ability, NumberInputProps }: AbilityInpu
   return (
     // <Tooltip title={getAbilityFullName(ability.type)} arrow>
     <Grid container component={StyledPaper} size={12} alignItems={'flex-start'} sx={{ margin: '0 0 10px 4px', py: 0 }}>
-      <Grid size={12}>
+      <Grid size={12} position={'relative'}>
         <AbilityName variant={'body1'} sx={ellipsisWrapper}>
           {ability.type}
         </AbilityName>

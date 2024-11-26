@@ -5,7 +5,7 @@ import { StandardNumberInput } from '../shared';
 import { useAtom, useAtomValue } from 'jotai';
 import { getAbilityAtom, getAbilityFullName } from '../abilities/atoms';
 import { skillAtom } from './atoms';
-import { calculateAbilityModifier } from '../../features/utils';
+import { calculateAbilityModifier, formatWithPlusSign } from '../../features/utils';
 import { ExpertiseAndProficiency } from './ExpertiseAndProficiency';
 import { SkillItemProps } from './types';
 import { proficiencyBonusAtom } from '../simple-components';
@@ -23,20 +23,37 @@ export const SkillItem = React.memo(({ skillName, type = 'basic' }: SkillItemPro
 
   const calculatedBonus = useMemo(() => {
     let result = calculateAbilityModifier(score);
-    result += proficiencyAndExpertise * proficiencyBonus;
-    result += modifier;
+    result += proficiencyAndExpertise * proficiencyBonus + (modifier || 0);
+    result += modifier || 0;
 
     return result;
   }, [score, modifier, proficiencyAndExpertise, proficiencyBonus]);
 
-  //const tooltipTitle = `${calculateAbilityModifier(score)}{${ability}}+${proficiencyBonus}{proficiencyBonus}*${proficiencyAndExpertise}{prof/exp}+${modifier}{modifier}`;
+  const tooltipTitle = `${calculateAbilityModifier(score)}{${ability}}+${proficiencyBonus}{proficiencyBonus}*${proficiencyAndExpertise}{prof/exp}+${modifier}{modifier}`;
 
   return (
-    <Grid container alignItems="flex-start" mb={0}>
+    <Grid container mb={0}>
       <Grid sx={{ flexGrow: 1, display: 'flex' }}>
         <ExpertiseAndProficiency skillName={skillName} />
-        <StandardNumberInput disabled showIncButtons={false} name={'score'} value={calculatedBonus} sx={{ width: '50px' }} variant={'standard'} />
-        <Typography sx={ellipsisWrapper} variant="body1" fontSize={'1.2rem'} fontWeight={600} color={type === 'basic' ? 'primary' : 'textDisabled'}>
+        <Tooltip title={tooltipTitle} open={false}>
+          <span>
+            <StandardNumberInput
+              disabled
+              showIncButtons={false}
+              name={'score'}
+              value={formatWithPlusSign(calculatedBonus)}
+              sx={{ width: '50px' }}
+              variant={'standard'}
+            />
+          </span>
+        </Tooltip>
+        <Typography
+          sx={ellipsisWrapper}
+          variant="body1"
+          fontSize={'1.2rem'}
+          fontWeight={600}
+          color={type === 'basic' ? 'primary' : 'textDisabled'}
+        >
           {skillName}
           <Tooltip title={getAbilityFullName(ability)}>
             <span style={{ opacity: 0.7 }}> ({ability})</span>
@@ -45,7 +62,7 @@ export const SkillItem = React.memo(({ skillName, type = 'basic' }: SkillItemPro
       </Grid>
       <Grid sx={{ width: 40 }}>
         <StandardNumberInput
-          value={modifier || ''}
+          value={modifier ? formatWithPlusSign(modifier) : ''}
           name={'modifier'}
           onChange={handleChange}
           placeholder={'+'}

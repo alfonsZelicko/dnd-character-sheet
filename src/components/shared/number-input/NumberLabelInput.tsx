@@ -6,7 +6,13 @@ import { StyledLabel } from '../text-input';
 
 const getPlacementSx = (inputPlacement: InputPlacement): SxProps<Theme> => {
   return inputPlacement === 'left'
-    ? { borderRadius: '0 4px  4px 0', borderLeft: 'none', textAlign: 'right' }
+    ? {
+        borderRadius: '0 4px  4px 0',
+        borderLeft: 'none',
+        textAlign: 'right',
+        display: 'block',
+        maxHeight: '3.0em',
+      }
     : { borderRadius: '4px 0 0 4px', borderRight: 'none', textAlign: 'left', flexGrow: 1 };
 };
 

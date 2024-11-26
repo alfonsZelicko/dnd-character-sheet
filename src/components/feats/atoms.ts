@@ -3,16 +3,16 @@ import { FeatType } from './types';
 
 const initFeatAtomValue: FeatType[] = [
   {
-    featDescription: 'Lorem Ipsum',
-    featName: 'Lorem',
+    featDescription: 'Feat Description',
+    featName: 'FeatName',
   },
   {
-    featDescription: 'Lorem Ipsum',
-    featName: 'Lorem',
+    featDescription: 'Feat Description',
+    featName: 'FeatName',
   },
   {
-    featDescription: 'Lorem Ipsum',
-    featName: 'Lorem',
+    featDescription: 'Feat Description',
+    featName: 'FeatName',
   },
 ];
 

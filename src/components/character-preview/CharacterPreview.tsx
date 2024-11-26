@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import React, { useState, DragEvent } from 'react';
+import React, { DragEvent } from 'react';
 import { CharacterPictureAtom } from './atoms';
 import { useAtom } from 'jotai';
 
