@@ -9,3 +9,4 @@ export * from './LvLAndClass';
 export * from './Race';
 export * from './Name';
 export * from './PassivePerception';
+export * from './SmallInventory';

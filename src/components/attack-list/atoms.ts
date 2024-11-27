@@ -3,11 +3,11 @@ import { AttackAtomType } from './types';
 
 const initAttackAtomsValue: AttackAtomType[] = [
   {
-    attackBonus: '+9',
-    damageType: 'force',
-    damage: '1d10 + 5',
-    attackName: 'Eldritch Blast',
-    range: '150 feet',
+    attackBonus: '',
+    damageType: '',
+    damage: '',
+    attackName: '',
+    range: '',
     note: '',
   },
   {

@@ -11,10 +11,10 @@ export const SavingThrows = () => (
       <SavingThrowItem ability={Abilities.Dexterity} />
       <SavingThrowItem ability={Abilities.Constitution} />
     </Grid>
-    <Grid size={6} justifyContent={'flex-end'}>
-      <SavingThrowItem ability={Abilities.Intelligence} />
-      <SavingThrowItem ability={Abilities.Wisdom} />
-      <SavingThrowItem ability={Abilities.Charisma} />
+    <Grid size={6} justifyItems={'flex-end'}>
+      <SavingThrowItem ability={Abilities.Intelligence} WrapperProps={{ justifyContent: 'flex-end' }} />
+      <SavingThrowItem ability={Abilities.Wisdom} WrapperProps={{ justifyContent: 'flex-end' }} />
+      <SavingThrowItem ability={Abilities.Charisma} WrapperProps={{ justifyContent: 'flex-end' }} />
     </Grid>
     <ComponentLabel>Saving Throws</ComponentLabel>
   </Grid>

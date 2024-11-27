@@ -14,7 +14,7 @@ export const FeatItem = ({ featAtom }: { featAtom: PrimitiveAtom<FeatType> }) =>
   };
 
   return (
-    <Box sx={{ py: 0 }}>
+    <Box sx={{ p: 0 }}>
       <StyledStandardTextField
         fullWidth
         value={feat.featName}
@@ -33,6 +33,7 @@ export const FeatItem = ({ featAtom }: { featAtom: PrimitiveAtom<FeatType> }) =>
         fullWidth
         placeholder="Some small important notes"
         multiline
+        // sx={{ height: 68, '& .MuiInputBase-root textArea': { paddingTop: '0 !important' } }}
       />
     </Box>
   );
