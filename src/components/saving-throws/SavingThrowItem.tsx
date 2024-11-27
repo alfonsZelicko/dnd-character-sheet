@@ -9,10 +9,11 @@ import { useAtomValue } from 'jotai';
 import { calculateAbilityModifier, formatWithPlusSign } from '../../features/utils';
 import { Abilities } from '../abilities/types';
 import { proficiencyBonusAtom } from '../simple-components';
+import { GridProps } from '@mui/material/Grid';
 
-type SavingThrowItemProps = { ability: Abilities };
+type SavingThrowItemProps = { ability: Abilities; WrapperProps?: GridProps };
 
-export const SavingThrowItem = ({ ability: _ability }: SavingThrowItemProps) => {
+export const SavingThrowItem = ({ ability: _ability, WrapperProps }: SavingThrowItemProps) => {
   const [{ type: ability, score, modification, proficiency }, setAtom] = useAtom(getAbilityAtom(_ability));
   const proficiencyBonus = useAtomValue(proficiencyBonusAtom);
   const savingThrowValue = useMemo(
@@ -28,7 +29,7 @@ export const SavingThrowItem = ({ ability: _ability }: SavingThrowItemProps) => 
   };
 
   return (
-    <Grid size={12} display={'inline-flex'} alignItems="center" sx={{ height: '25px' }}>
+    <Grid size={12} display={'inline-flex'} alignItems="center" sx={{ height: '25px' }} {...WrapperProps}>
       <Tooltip title={'Proficiency'}>
         <Checkbox
           name="proficiency"

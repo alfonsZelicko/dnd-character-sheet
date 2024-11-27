@@ -20,6 +20,7 @@ import {
   Race,
   SavingThrows,
   SkillList,
+  SmallInventory,
   SmallNotes,
   Speed,
   StyledPaper,
@@ -27,7 +28,6 @@ import {
 } from '../../components';
 import React from 'react';
 import { HalfPageContainer } from '../layout';
-import { mergedPaperListSx } from '../../utils';
 
 export const CharacterPreview = () => (
   <HalfPageContainer>
@@ -106,7 +106,7 @@ export const CharacterPreview = () => (
       </Grid>
     </Grid>
 
-    <Grid container alignContent={'flex-start'} size={{ xs: 12, lg: 5 }}>
+    <Grid container alignContent={'space-between'} size={{ xs: 12, lg: 5 }}>
       <Grid size={{ xs: 8, lg: 12 }}>
         <AttackList />
       </Grid>
@@ -115,20 +115,16 @@ export const CharacterPreview = () => (
       </Grid>
       <Grid
         container
-        sx={mergedPaperListSx()}
-        spacing={{ xs: 2, lg: 0 }}
+        // sx={mergedPaperListSx()}
+        justifyContent={'space-between'}
+        spacing={{ xs: 2, lg: 1 }}
         size={{ xs: 12, lg: 4 }}
         direction={{ xs: 'row', lg: 'column' }}
       >
         <FeatList GridProps={{ size: { xs: 4, lg: 12 }, className: 'paperItem' }} />
       </Grid>
-      <Grid container size={12} height={415}>
-        <Grid size={6}>
-          <SmallNotes rows={15} variant={'outlined'} />
-        </Grid>
-        <Grid size={6}>
-          <SmallNotes rows={15} variant={'outlined'} />
-        </Grid>
+      <Grid container size={12} height={415} component={StyledPaper}>
+        <SmallInventory />
       </Grid>
     </Grid>
   </HalfPageContainer>

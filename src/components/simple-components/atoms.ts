@@ -1,4 +1,4 @@
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage, splitAtom } from 'jotai/utils';
 
 export const armorAtom = atomWithStorage('armor', 0);
 export const initiativeAtom = atomWithStorage<number | null>('initiative', 0);
@@ -16,3 +16,6 @@ export const currentHitPointsAtom = atomWithStorage('current-hitPoints', 0);
 
 export const speedAtom = atomWithStorage('speed', 0);
 export const sensesAtom = atomWithStorage('senses', '');
+
+export const inventoryAtoms = atomWithStorage('inventory', ['', '', '']);
+export const inventoryAtomsAtom = splitAtom(inventoryAtoms);

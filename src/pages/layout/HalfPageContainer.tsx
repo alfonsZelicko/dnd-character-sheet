@@ -9,7 +9,7 @@ export const HalfPageContainer = ({ children, ...restProps }: GridProps) => {
       size={{ xs: 12 }}
       spacing={2}
       component={Paper}
-      sx={{ p: 2, m: 2, boxShadow: '0 0 10px rgba(0,0,0,0.3)' }}
+      sx={{ p: 2, m: 2, my: 1.5, boxShadow: '0 0 10px rgba(0,0,0,0.3)' }}
       {...restProps}
     >
       <Grid container>{children}</Grid>
