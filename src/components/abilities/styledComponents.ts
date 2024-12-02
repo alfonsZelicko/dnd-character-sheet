@@ -3,8 +3,7 @@ import { NumberInput } from '../shared';
 import { InputColor, MainColor, MainContentColor } from '../../utils';
 
 export const StyledAbilityInput = styled(NumberInput)({
-  position: 'absolute',
-  transform: 'translate(-40%, 30%)',
+  transform: 'translate(-5px, 5px)',
   width: '40px',
   height: '41px',
   '& input': {
@@ -22,7 +21,6 @@ export const AbilityModifierLabel = styled(Typography)({
   textAlign: 'right',
   fontWeight: 400,
   fontFamily: 'Special Elite',
-  marginTop: '-1rem',
 });
 
 export const AbilityName = styled(Typography)({

@@ -22,15 +22,29 @@ export const AbilityItem = ({ ability: _ability, NumberInputProps }: AbilityInpu
 
   return (
     // <Tooltip title={getAbilityFullName(ability.type)} arrow>
-    <Grid container component={StyledPaper} size={12} alignItems={'flex-start'} sx={{ margin: '0 0 10px 4px', py: 0 }}>
-      <Grid size={12} position={'relative'}>
-        <AbilityName variant={'body1'} sx={ellipsisWrapper}>
-          {ability.type}
-        </AbilityName>
-        <StyledAbilityInput value={ability.score || 0} onChange={handleChange} {...NumberInputProps} />
+    <Grid container component={StyledPaper} size={12} alignItems={'flex-start'} sx={{ margin: '0 0 10px 4px', p: 0 }}>
+      <Grid container width={40} position={'relative'} direction={'column'}>
+        <Grid size={12}>
+          <AbilityName variant={'body1'} sx={ellipsisWrapper}>
+            {ability.type}
+          </AbilityName>
+        </Grid>
+        <Grid size={12}>
+          <StyledAbilityInput value={ability.score || 0} onChange={handleChange} {...NumberInputProps} />
+        </Grid>
       </Grid>
-      <Grid size={12}>
-        <AbilityModifierLabel variant={'h3'}>{formatWithPlusSign(calculateAbilityModifier(ability.score))}</AbilityModifierLabel>
+      <Grid
+        size={'grow'}
+        sx={{
+          height: '65px',
+          display: 'flex',
+          alignItems: 'flex-end',
+          pr: 2,
+        }}
+      >
+        <AbilityModifierLabel variant={'h3'}>
+          {formatWithPlusSign(calculateAbilityModifier(ability.score))}
+        </AbilityModifierLabel>
       </Grid>
     </Grid>
     // </Tooltip>

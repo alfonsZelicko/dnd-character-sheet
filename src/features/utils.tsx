@@ -1,3 +1,6 @@
+import React from 'react';
+import { Tooltip } from '@mui/material';
+
 export const formatWithPlusSign = (abilityModifier: number) =>
   (abilityModifier ? (abilityModifier < 0 ? '' : '+') : '') + `${abilityModifier}`;
 
@@ -40,3 +43,41 @@ export function importJSONToLocalStorage(): void {
     alert('Failed to import data. Please provide valid JSON!');
   }
 }
+
+const slides = ['Character Preview', 'Inventory'];
+
+export const renderIndicator = (
+  onClickHandler: (e: React.MouseEvent | React.KeyboardEvent) => void,
+  isSelected: boolean,
+  index: number
+) => {
+  const tooltipText = slides[index] || '';
+
+  return (
+    <Tooltip title={tooltipText} key={index} arrow>
+      <div
+        onClick={onClickHandler}
+        onKeyDown={onClickHandler}
+        role="button"
+        tabIndex={0}
+        style={{
+          cursor: 'pointer',
+          margin: '0 8px',
+          padding: '5px',
+          display: 'inline-block',
+        }}
+      >
+        <span
+          style={{
+            transition: 'all 0.5s',
+            width: '12px',
+            height: '12px',
+            backgroundColor: isSelected ? '#333' : '#ccc',
+            borderRadius: '50%',
+            display: 'inline-block',
+          }}
+        />
+      </div>
+    </Tooltip>
+  );
+};

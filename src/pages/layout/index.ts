@@ -1,2 +1,2 @@
-export * from './HalfPageContainer';
+export * from './PageContainer';
 export * from './MainContainer';
