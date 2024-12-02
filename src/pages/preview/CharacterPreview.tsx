@@ -27,11 +27,10 @@ import {
   TemporaryHitPoints,
 } from '../../components';
 import React from 'react';
-import { HalfPageContainer } from '../layout';
 
 export const CharacterPreview = () => (
-  <HalfPageContainer>
-    <Grid container size={{ xs: 12, lg: 7 }} direction={'column'}>
+  <Grid container size={12} spacing={1}>
+    <Grid container size={{ xs: 12, lg: 7.5 }} direction={'column'}>
       <Grid container size={12}>
         {/*Name, etc...*/}
         <Grid size={{ xs: 4 }}>
@@ -47,7 +46,7 @@ export const CharacterPreview = () => (
 
       <Grid container size={12} flexGrow={1}>
         <Grid container size={7}>
-          {/*Left - Armor, etc... */}
+          {/*Left - Armor, etc...*/}
           <Grid container size={12}>
             <Grid size={12}>
               <LvlAndClass />
@@ -62,13 +61,12 @@ export const CharacterPreview = () => (
               <Armor />
             </Grid>
           </Grid>
-
-          {/* left - abilities, skills, etc...*/}
+          {/*left - abilities, skills, etc...*/}
           <Grid container size={12} alignContent={'space-between'}>
             <Grid justifyContent={'space-between'} display={'flex'} flexDirection={'column'} maxWidth={100}>
               <AbilityListView />
             </Grid>
-            <Grid id={'skills'} component={StyledPaper} minWidth={325} size={'grow'}>
+            <Grid id={'skills'} component={StyledPaper} minWidth={320} size={'grow'}>
               <SkillList />
             </Grid>
             <Grid size={8}>
@@ -80,8 +78,7 @@ export const CharacterPreview = () => (
             </Grid>
           </Grid>
         </Grid>
-
-        {/* left - hp, character preview... */}
+        {/*left - hp, character preview...*/}
         <Grid container size={5}>
           <Grid container>
             <Grid container size={5.5} justifyContent={'space-between'}>
@@ -106,7 +103,7 @@ export const CharacterPreview = () => (
       </Grid>
     </Grid>
 
-    <Grid container alignContent={'space-between'} size={{ xs: 12, lg: 5 }}>
+    <Grid container alignContent={'space-between'} size={{ xs: 12, lg: 4.5 }}>
       <Grid size={{ xs: 8, lg: 12 }}>
         <AttackList />
       </Grid>
@@ -127,5 +124,5 @@ export const CharacterPreview = () => (
         <SmallInventory />
       </Grid>
     </Grid>
-  </HalfPageContainer>
+  </Grid>
 );

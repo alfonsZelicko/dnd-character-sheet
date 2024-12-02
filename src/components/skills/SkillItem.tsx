@@ -42,7 +42,7 @@ export const SkillItem = React.memo(({ skillName, type = 'basic' }: SkillItemPro
               showIncButtons={false}
               name={'score'}
               value={formatWithPlusSign(calculatedBonus)}
-              sx={{ width: '50px' }}
+              sx={{ width: '45px' }}
               variant={'standard'}
             />
           </span>
