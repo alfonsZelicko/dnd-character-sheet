@@ -7,34 +7,47 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-build-stats": "node dev-utils/generate-stats.js",
+    "generate-component": "plop --plopfile dev-utils/plopfile.js"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^6.1.3",
-    "@mui/material": "^6.0.2",
-    "jotai": "^2.10.1",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/icons-material": "^6.1.9",
+    "@mui/material": "^6.1.9",
+    "jotai": "^2.10.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-responsive-carousel": "^3.2.23"
   },
   "devDependencies": {
-    "@eslint/js": "^9.9.0",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "eslint": "^9.9.0",
+    "@eslint/js": "^9.16.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react-swc": "^3.7.2",
+    "change-case": "^5.4.4",
+    "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
-    "eslint-plugin-unused-imports": "^4.1.3",
-    "globals": "^15.9.0",
-    "nx": "20.0.0",
-    "prettier": "^3.3.3",
-    "vite": "5.4.6"
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "globals": "^15.13.0",
+    "nx": "20.1.4",
+    "plop": "^4.0.1",
+    "prettier": "^3.4.2",
+    "rollup-plugin-visualizer": "^5.12.0",
+    "vite": "6.0.2",
+    "vite-plugin-compression": "^0.5.1"
   },
-  "nx": {}
+  "nx": {},
+  "scriptsComments": {
+    "dev": "Start the development server with live reload to preview and test the app during development.",
+    "build": "Generate an optimized production build of the app and output it to the 'dist' directory.",
+    "lint": "Check the app's codebase for syntax and style errors based on defined linting rules.",
+    "preview": "Serve the production build locally to test the app as it would appear in a deployed environment.",
+    "generate-build-stats": "Generates report visualizing the bundle structure, showing the size of each library and module."
+  }
 }

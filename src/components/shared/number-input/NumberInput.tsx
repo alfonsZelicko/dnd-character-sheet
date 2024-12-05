@@ -3,7 +3,15 @@ import { IncrementDecrementButtons } from './inc-dec-buttons';
 import { ActionButtonType, BaseNumberInputType, NumberInputProps } from './types';
 import { StyledStandardTextField, StyledTextField } from '../text-input';
 
-const BaseNumberInput = ({ showIncButtons = true, onChange, value, anchorEl, setAnchorEl, restProps, InputComponent }: BaseNumberInputType) => {
+const BaseNumberInput = ({
+  showIncButtons = true,
+  onChange,
+  value,
+  anchorEl,
+  setAnchorEl,
+  restProps,
+  InputComponent,
+}: BaseNumberInputType) => {
   const handleFocus = (event: any) => {
     setAnchorEl(event.currentTarget);
 
@@ -48,7 +56,9 @@ const BaseNumberInput = ({ showIncButtons = true, onChange, value, anchorEl, set
 
   return (
     <>
-      {showIncButtons && <IncrementDecrementButtons callAction={handleChange} anchorEl={anchorEl} setAnchorEl={setAnchorEl} />}
+      {showIncButtons && (
+        <IncrementDecrementButtons callAction={handleChange} anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+      )}
       <InputComponent onFocus={handleFocus} onBlur={handleBlur} value={value} onChange={onChange} {...restProps} />
     </>
   );
@@ -78,6 +88,10 @@ const NumberInputBase = ({
   );
 };
 
-export const NumberInput = (props: NumberInputProps) => <NumberInputBase {...props} type="number" InputComponent={StyledTextField} />;
+export const NumberInput = (props: NumberInputProps) => (
+  <NumberInputBase {...props} type="number" InputComponent={StyledTextField} />
+);
 
-export const StandardNumberInput = (props: NumberInputProps) => <NumberInputBase {...props} variant={'standard'} InputComponent={StyledStandardTextField} />;
+export const StandardNumberInput = (props: NumberInputProps) => (
+  <NumberInputBase {...props} variant={'standard'} InputComponent={StyledStandardTextField} />
+);
