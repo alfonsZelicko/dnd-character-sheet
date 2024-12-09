@@ -6,6 +6,9 @@ export const formatWithPlusSign = (abilityModifier: number) =>
 
 export const calculateAbilityModifier = (abilityScore: number): number => Math.floor((abilityScore - 10) / 2);
 
+export const removeLeadingZeros = (value: string | number): string =>
+  typeof value === 'string' ? value.replace(/^0+(?=\d)/, '') : removeLeadingZeros(value.toString());
+
 // Export all localStorage items as a JSON object
 export function exportLocalStorageToJSON(): void {
   const localStorageData: Record<string, string | null> = {};

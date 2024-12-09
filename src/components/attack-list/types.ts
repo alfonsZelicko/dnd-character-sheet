@@ -1,6 +1,6 @@
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 
-export type AttackAtomType = {
+export type AttackType = {
   attackName: string;
   attackBonus: string;
   range: string;
@@ -10,5 +10,5 @@ export type AttackAtomType = {
 };
 
 export type AttackItemProps = {
-  attackAtom: PrimitiveAtom<AttackAtomType>;
+  attackAtom: PrimitiveAtom<AttackType>;
 };

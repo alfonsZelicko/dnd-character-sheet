@@ -11,3 +11,4 @@ export * from './character-preview';
 export * from './attack-list';
 export * from './hit-dices';
 export * from './features';
+export * from './companion';

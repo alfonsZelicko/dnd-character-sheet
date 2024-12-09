@@ -4,13 +4,12 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { renderIndicator } from '../../features/utils';
 import { PageContainer } from '../layout';
 import { CharacterPreview } from '../preview';
-import { useInputFocusTracker, useKeyboardNavigation } from '../../utils';
+import { Companion } from '../../components';
 
 export const MainContainer = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const isInputFocused = useInputFocusTracker();
-
-  useKeyboardNavigation({ isInputFocused, setCurrentSlide });
+  const [currentSlide, setCurrentSlide] = useState(
+    parseInt(new URLSearchParams(window.location.search).get('page') || '0')
+  );
 
   const updateSlideInQuery = (index: number) => {
     const params = new URLSearchParams(window.location.search);
@@ -26,7 +25,7 @@ export const MainContainer = () => {
       renderIndicator={renderIndicator}
       showArrows={false}
       autoPlay={false}
-      swipeable
+      swipeable={true}
       emulateTouch
       selectedItem={currentSlide}
       onChange={(index) => {
@@ -38,7 +37,7 @@ export const MainContainer = () => {
         <CharacterPreview />
       </PageContainer>
       <PageContainer>
-        <></>
+        <Companion />
       </PageContainer>
     </Carousel>
   );

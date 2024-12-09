@@ -5,6 +5,7 @@ import { StandardNumberInput, StyledStandardTextField } from '../../shared';
 import React, { useCallback } from 'react';
 import { MenuItem, Select } from '@mui/material';
 import { featureCommonProps, useFeatureChange } from './utils';
+import { removeLeadingZeros } from '../../../features/utils';
 
 export const FeatureName = ({ featureAtom }: { featureAtom: PrimitiveAtom<FeatureItemType> }) => {
   const featureName = useAtomValue(featureAtom).featureName;
@@ -41,7 +42,13 @@ export const FeatureNumberInput = ({
   const handleChange = useFeatureChange(featureAtom);
 
   return (
-    <StandardNumberInput type="number" value={value} name={name} onChange={handleChange} {...featureCommonProps} />
+    <StandardNumberInput
+      type="number"
+      value={removeLeadingZeros(value)}
+      name={name}
+      onChange={handleChange}
+      {...featureCommonProps}
+    />
   );
 };
 

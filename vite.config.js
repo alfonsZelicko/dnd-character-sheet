@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
-import { visualizer } from 'rollup-plugin-visualizer';
 import { join } from 'path';
 import { copyFileSync, existsSync, mkdirSync } from 'fs';
 
@@ -19,16 +18,11 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    /*viteCompression({
-      algorithm: 'brotliCompress',
-      ext: '.br',
-      threshold: 10240,
-    }),*/
-    visualizer({
-      open: true,
+    /*visualizer({
+      open: false,
       filename: join(buildUtilsFolderName, 'stats-visualization.html'),
       template: 'treemap',
-    }),
+    }),*/
     {
       name: 'copy-chrome-extension-files',
       apply: 'build',
