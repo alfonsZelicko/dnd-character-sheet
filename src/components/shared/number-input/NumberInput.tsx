@@ -1,9 +1,19 @@
 import React, { ChangeEvent, useState } from 'react';
 import { IncrementDecrementButtons } from './inc-dec-buttons';
-import { ActionButtonType, BaseNumberInputType, NumberInputProps } from './types';
+import { ActionButtonType, NumberInputProps } from './types';
 import { StyledStandardTextField, StyledTextField } from '../text-input';
 
-const BaseNumberInput = ({ showIncButtons = true, onChange, value, anchorEl, setAnchorEl, restProps, InputComponent }: BaseNumberInputType) => {
+const CombinedNumberInput = ({
+  showIncButtons = true,
+  onChange,
+  value,
+  InputComponent,
+  ...restProps
+}: NumberInputProps & {
+  InputComponent: React.ElementType;
+}) => {
+  const [anchorEl, setAnchorEl] = useState<(EventTarget & (HTMLInputElement | HTMLTextAreaElement)) | null>(null);
+
   const handleFocus = (event: any) => {
     setAnchorEl(event.currentTarget);
 
@@ -48,36 +58,19 @@ const BaseNumberInput = ({ showIncButtons = true, onChange, value, anchorEl, set
 
   return (
     <>
-      {showIncButtons && <IncrementDecrementButtons callAction={handleChange} anchorEl={anchorEl} setAnchorEl={setAnchorEl} />}
+      {showIncButtons && (
+        <IncrementDecrementButtons callAction={handleChange} anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+      )}
       <InputComponent onFocus={handleFocus} onBlur={handleBlur} value={value} onChange={onChange} {...restProps} />
     </>
   );
 };
 
-const NumberInputBase = ({
-  showIncButtons = true,
-  onChange,
-  value,
-  InputComponent,
-  ...restProps
-}: NumberInputProps & {
-  InputComponent: React.ElementType;
-}) => {
-  const [anchorEl, setAnchorEl] = useState<(EventTarget & (HTMLInputElement | HTMLTextAreaElement)) | null>(null);
+// Example usage of the combined component instance
+export const NumberInput = (props: NumberInputProps) => (
+  <CombinedNumberInput {...props} type="number" InputComponent={StyledTextField} />
+);
 
-  return (
-    <BaseNumberInput
-      showIncButtons={showIncButtons}
-      onChange={onChange}
-      value={value as number}
-      anchorEl={anchorEl}
-      setAnchorEl={setAnchorEl}
-      restProps={restProps}
-      InputComponent={InputComponent}
-    />
-  );
-};
-
-export const NumberInput = (props: NumberInputProps) => <NumberInputBase {...props} type="number" InputComponent={StyledTextField} />;
-
-export const StandardNumberInput = (props: NumberInputProps) => <NumberInputBase {...props} variant={'standard'} InputComponent={StyledStandardTextField} />;
+export const StandardNumberInput = (props: NumberInputProps) => (
+  <CombinedNumberInput {...props} variant={'standard'} InputComponent={StyledStandardTextField} />
+);

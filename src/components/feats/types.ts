@@ -1,4 +1,4 @@
-import { Grid2Props } from '@mui/material';
+import { BoxProps, Grid2Props } from '@mui/material';
 
 export type FeatType = {
   featName: string;
@@ -7,4 +7,5 @@ export type FeatType = {
 
 export type FeatListProps = {
   GridProps?: Grid2Props;
+  WrapperProps?: BoxProps;
 };

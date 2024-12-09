@@ -8,7 +8,7 @@ export type NumberInputProps = Omit<TextFieldProps, 'variant'> & {
   variant?: TextFieldVariants;
 };
 
-export type BaseNumberInputType = {
+export type BaseNumberInputProps = {
   showIncButtons: boolean;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   value: unknown;

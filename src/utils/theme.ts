@@ -48,6 +48,9 @@ export const theme = createTheme({
     },
     MuiTextField: {
       defaultProps: {
+        onMouseDown: (e) => {
+          e.stopPropagation();
+        },
         autoComplete: 'off',
         slotProps: {
           inputLabel: {

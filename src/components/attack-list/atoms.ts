@@ -1,7 +1,7 @@
 import { atomWithStorage, splitAtom } from 'jotai/utils';
-import { AttackAtomType } from './types';
+import { AttackType } from './types';
 
-const initAttackAtomsValue: AttackAtomType[] = [
+const initAttackAtomsValue: AttackType[] = [
   {
     attackBonus: '',
     damageType: '',
@@ -20,5 +20,5 @@ const initAttackAtomsValue: AttackAtomType[] = [
   },
 ];
 
-export const AttackAtoms = atomWithStorage<AttackAtomType[]>('attacks-list', initAttackAtomsValue);
+export const AttackAtoms = atomWithStorage<AttackType[]>('attacks-list', initAttackAtomsValue);
 export const AttackAtomsAtom = splitAtom(AttackAtoms);

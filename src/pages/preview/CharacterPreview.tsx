@@ -114,11 +114,12 @@ export const CharacterPreview = () => (
         container
         // sx={mergedPaperListSx()}
         justifyContent={'space-between'}
-        spacing={{ xs: 2, lg: 1 }}
+        spacing={{ xs: 2, lg: 0 }}
         size={{ xs: 12, lg: 4 }}
         direction={{ xs: 'row', lg: 'column' }}
+        component={StyledPaper}
       >
-        <FeatList GridProps={{ size: { xs: 4, lg: 12 }, className: 'paperItem' }} />
+        <FeatList GridProps={{ size: { xs: 4, lg: 12 } }} />
       </Grid>
       <Grid container size={12} height={415} component={StyledPaper}>
         <SmallInventory />

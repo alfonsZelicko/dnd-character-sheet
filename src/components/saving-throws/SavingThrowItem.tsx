@@ -1,6 +1,6 @@
 import { getAbilityAtom, getAbilityFullName } from '../abilities/atoms';
 import { useAtom } from 'jotai/index';
-import { Box, Checkbox, Grid2 as Grid, Tooltip, Typography } from '@mui/material';
+import { Box, Checkbox, Grid2 as Grid, Grid2Props, Tooltip, Typography } from '@mui/material';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import BookIcon from '@mui/icons-material/Book';
 import { StandardNumberInput, StyledStandardTextField } from '../shared';
@@ -9,9 +9,8 @@ import { useAtomValue } from 'jotai';
 import { calculateAbilityModifier, formatWithPlusSign } from '../../features/utils';
 import { Abilities } from '../abilities/types';
 import { proficiencyBonusAtom } from '../simple-components';
-import { GridProps } from '@mui/material/Grid';
 
-type SavingThrowItemProps = { ability: Abilities; WrapperProps?: GridProps };
+type SavingThrowItemProps = { ability: Abilities; WrapperProps?: Grid2Props };
 
 export const SavingThrowItem = ({ ability: _ability, WrapperProps }: SavingThrowItemProps) => {
   const [{ type: ability, score, modification, proficiency }, setAtom] = useAtom(getAbilityAtom(_ability));
@@ -52,14 +51,13 @@ export const SavingThrowItem = ({ ability: _ability, WrapperProps }: SavingThrow
           {ability}
         </Typography>
       </Tooltip>
-      <Box>
+      <Box width={30}>
         <StandardNumberInput
           value={modification || ''}
           onChange={handleChange}
           name="modification"
           placeholder={'+'}
           fullWidth
-          sx={{ width: '30px' }}
           variant={'standard'}
           type={'number'}
         />

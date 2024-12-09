@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "DnD Character Sheet",
+  "version": "1.0",
+  "description": "DnD character sheet v0.8",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "DnD Game",
+    "default_icon": {
+      "48": "app-icon.png"
+    }
+  },
+  "permissions": [
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}
