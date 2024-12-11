@@ -67,7 +67,7 @@ export const theme = createTheme({
           padding: '4px 4px 0 0',
           lineHeight: '1rem',
           height: '45px',
-          background: MainContentColor,
+          background: 'transparent',
         },
       },
     },

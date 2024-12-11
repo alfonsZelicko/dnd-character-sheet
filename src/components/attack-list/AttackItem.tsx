@@ -44,7 +44,7 @@ export const AttackItem = ({ attackAtom }: AttackItemProps) => {
         <StyledGrid sx={{ width: '70px' }}>
           <StyledStandardTextField value={damage} name={'damage'} onChange={handleChange} {...commonProps} />
         </StyledGrid>
-        <StyledGrid size={2}>
+        <StyledGrid size={2.5}>
           <StyledStandardTextField value={damageType} name={'damageType'} onChange={handleChange} {...commonProps} />
         </StyledGrid>
       </Grid>

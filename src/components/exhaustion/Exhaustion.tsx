@@ -51,7 +51,7 @@ export const Exhaustion = () => {
       }}
       component={StyledPaper}
     >
-      <Box minWidth={132}>
+      <Box minWidth={132} width={'100%'} display="flex" justifyContent="space-between" padding={'0 8px'}>
         {[1, 2, 3, 4, 5, 6].map((value, idx: number) => (
           <StyledCheckBox
             size={'small'}
