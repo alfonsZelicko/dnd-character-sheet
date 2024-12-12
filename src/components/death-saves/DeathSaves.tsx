@@ -10,13 +10,13 @@ import { DeathSavesCounter } from './DeathSaveCounter';
 
 const SavingThrowsConfig = {
   success: {
-    checkedIcon: <CancelIcon />,
-    icon: <CancelOutlinedIcon />,
+    checkedIcon: <CheckCircleIcon />,
+    icon: <CheckCircleOutlineIcon />,
     atom: deathSaveSuccessAtom,
   },
   failure: {
-    checkedIcon: <CheckCircleIcon />,
-    icon: <CheckCircleOutlineIcon />,
+    checkedIcon: <CancelIcon />,
+    icon: <CancelOutlinedIcon />,
     atom: deathSaveFailureAtom,
   },
 };
@@ -30,7 +30,7 @@ export const DeathSaves = () => (
       </Grid>
     </Grid>
     <Grid size={12} container>
-      <Grid size={'grow'} component={Typography} lineHeight={1.8}>
+      <Grid size={'grow'} component={Typography} textAlign={'left'} lineHeight={1.8}>
         Failure
       </Grid>
       <DeathSavesCounter {...SavingThrowsConfig.failure} />

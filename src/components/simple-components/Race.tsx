@@ -5,6 +5,7 @@ import { useAtom } from 'jotai';
 
 export const Race = () => {
   const [race, setRace] = useAtom(raceAtom);
+
   return (
     <TextInput
       value={race}

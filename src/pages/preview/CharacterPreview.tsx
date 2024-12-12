@@ -30,7 +30,7 @@ import React from 'react';
 
 export const CharacterPreview = () => (
   <Grid container size={12} spacing={1}>
-    <Grid container size={{ xs: 12, lg: 7.5 }} direction={'column'}>
+    <Grid container size={{ xs: 12, lg: 7 }} direction={'column'}>
       <Grid container size={12}>
         {/*Name, etc...*/}
         <Grid size={{ xs: 4 }}>
@@ -80,30 +80,28 @@ export const CharacterPreview = () => (
         </Grid>
         {/*left - hp, character preview...*/}
         <Grid container size={5}>
-          <Grid container>
-            <Grid container size={5.5} justifyContent={'space-between'}>
-              <TemporaryHitPoints />
-              <CurrentHitPoints />
-              <MaxHitPoints />
+          <Grid container size={5.5} justifyContent={'space-between'}>
+            <TemporaryHitPoints />
+            <CurrentHitPoints />
+            <MaxHitPoints />
 
-              <Exhaustion />
-            </Grid>
-            <Grid container size={6.5} justifyContent={'space-between'}>
-              <HitDices />
-              <DeathSaves />
-            </Grid>
-            <Grid size={12}>
-              <CharacterPicture />
-            </Grid>
-            <Grid size={12}>
-              <SmallNotes rows={5} variant={'outlined'} />
-            </Grid>
+            <Exhaustion />
+          </Grid>
+          <Grid container size={6.5} justifyContent={'space-between'}>
+            <HitDices />
+            <DeathSaves />
+          </Grid>
+          <Grid size={12}>
+            <CharacterPicture />
+          </Grid>
+          <Grid size={12}>
+            <SmallNotes rows={5} variant={'outlined'} />
           </Grid>
         </Grid>
       </Grid>
     </Grid>
 
-    <Grid container alignContent={'space-between'} size={{ xs: 12, lg: 4.5 }}>
+    <Grid container alignContent={'space-between'} size={{ xs: 12, lg: 5 }}>
       <Grid size={{ xs: 8, lg: 12 }}>
         <AttackList />
       </Grid>

@@ -1,27 +1,30 @@
-import { Box, BoxProps, Grid2 as Grid } from '@mui/material';
-import React from 'react';
-import { GridProps } from '@mui/material/Grid';
-import { MainContentColor } from '../../utils';
+import { Box, BoxProps, Grid2 as Grid, Grid2Props } from '@mui/material';
+import React, { forwardRef } from 'react';
 
-type PageContainerProps = GridProps & {
+type PageContainerProps = Grid2Props & {
   children: React.ReactNode;
   BoxProps?: BoxProps;
 };
 
-export const PageContainer = ({ children, BoxProps, ...restProps }: PageContainerProps) => {
+export const PageContainer = forwardRef<HTMLDivElement, PageContainerProps>(function PageContainer(
+  { children, BoxProps, ...restProps }: PageContainerProps,
+  ref
+) {
   return (
     <Box
       sx={{
         alignItems: 'center',
-        minHeight: '100vh',
+        minHeight: 'calc(100vh - 49px)',
+        width: '100%',
         display: 'flex',
-        backgroundColor: MainContentColor,
+        backgroundColor: 'transparent',
       }}
       {...BoxProps}
+      ref={ref}
     >
       <Grid container size={12} padding={2} {...restProps}>
         {children}
       </Grid>
     </Box>
   );
-};
+});

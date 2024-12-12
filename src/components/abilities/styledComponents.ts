@@ -1,13 +1,13 @@
 import { styled, Typography } from '@mui/material';
 import { NumberInput } from '../shared';
-import { InputColor, MainColor, MainContentColor } from '../../utils';
+import { InputColor, MainColor } from '../../utils';
 
 export const StyledAbilityInput = styled(NumberInput)({
   transform: 'translate(-5px, 5px)',
   width: '40px',
   height: '41px',
   '& input': {
-    background: MainContentColor,
+    background: 'url("src/assets/app-bg.png") center center',
     height: '22px',
     fontSize: '1.7rem',
     color: MainColor,

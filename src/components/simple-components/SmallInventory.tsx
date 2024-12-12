@@ -14,7 +14,7 @@ export const SmallInventory = () => {
           <Notes
             rows={15}
             variant={'outlined'}
-            placeholder={'Inventory ' + (index + 1)}
+            placeholder={'Notes ' + (index + 1)}
             atom={atom}
             WrapperProps={{ component: 'div' }}
           />

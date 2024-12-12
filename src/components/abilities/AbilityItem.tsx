@@ -10,7 +10,16 @@ import { getAbilityAtom } from './atoms';
 
 export const AbilityItemUi = ({ ability, handleChange, NumberInputProps }: AbilityUIProps) => {
   return (
-    <Grid container component={StyledPaper} size={12} alignItems={'flex-start'} sx={{ margin: '0 0 10px 4px', p: 0 }}>
+    <Grid
+      container
+      component={StyledPaper}
+      size={12}
+      alignItems={'flex-start'}
+      sx={{
+        margin: '0 0 10px 4px',
+        p: 0,
+      }}
+    >
       <Grid container width={40} position={'relative'} direction={'column'}>
         <Grid size={12}>
           <AbilityName variant={'body1'} sx={ellipsisWrapper}>
