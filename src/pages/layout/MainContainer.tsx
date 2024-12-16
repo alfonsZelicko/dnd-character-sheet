@@ -1,36 +1,49 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { MainMenu } from '../../components/main-menu';
+import { mergeSx, usePageNavigation, useSmoothScrollToSlide } from '../../utils';
+import { Box, Grid2 as Grid } from '@mui/material';
+import { PageContainer } from './PageContainer';
+import { horizontalContainerSx, imageBackgroundSx, slideSx } from './styles';
 import { CharacterPreview } from '../preview';
 import { Inventory } from '../inventory';
-import { PageContainer } from './PageContainer';
-import { MainMenu } from '../../components/main-menu';
-import TabPanel from '@mui/lab/TabPanel';
-import { TabContext } from '@mui/lab';
-import { usePageNavigation } from '../../utils';
-import { Box } from '@mui/material';
 
+export const SECTIONS = [
+  {
+    component: <CharacterPreview />,
+    label: 'Character Preview',
+  },
+  {
+    component: <Inventory />,
+    label: 'Inventory',
+  },
+];
 export const MainContainer = () => {
-  const [page] = usePageNavigation();
+  const pageRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [page] = usePageNavigation(pageRef);
+  useSmoothScrollToSlide(page, containerRef);
 
   return (
-    <Box
-      sx={{
-        backgroundImage: 'url(src/assets/app-bg.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
-      <TabContext value={page}>
-        <MainMenu />
-        <PageContainer>
-          <TabPanel value={0} sx={{ p: 0 }} keepMounted>
-            <CharacterPreview />
-          </TabPanel>
-          <TabPanel value={1} sx={{ p: 0 }} keepMounted>
-            <Inventory />
-          </TabPanel>
-        </PageContainer>
-      </TabContext>
-    </Box>
+    <>
+      <MainMenu />
+      <PageContainer ref={pageRef}>
+        <Box ref={containerRef} sx={horizontalContainerSx}>
+          <Grid
+            container
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: `${SECTIONS.length * 100}%`,
+            }}
+          >
+            {SECTIONS.map(({ component }, index) => (
+              <Grid key={index} sx={mergeSx(slideSx, imageBackgroundSx)} padding={1}>
+                <Box sx={{ height: '100%' }}>{component}</Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </PageContainer>
+    </>
   );
 };

@@ -1,19 +1,8 @@
-import { SxProps, Tab, Theme } from '@mui/material';
-import { MainColor, usePageNavigation } from '../../utils';
+import { Tab, Tabs } from '@mui/material';
+import { usePageNavigation } from '../../utils';
 import React from 'react';
-import { TabList } from '@mui/lab';
-
-const a11yProps = (index: number) => {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-};
-
-const generateTabSx = (isAtime: boolean): SxProps<Theme> => ({
-  background: isAtime ? '#816e5b99' : '#816e5b29',
-  '&.Mui-selected': { color: 'white' },
-});
+import { a11yProps, generateTabSx, MainMenuColorOpacity } from './shared';
+import { SECTIONS } from '../../pages';
 
 export const MainMenu = () => {
   const [page, setSearchParams] = usePageNavigation();
@@ -23,15 +12,18 @@ export const MainMenu = () => {
   };
 
   return (
-    <TabList
+    <Tabs
+      value={page}
       onChange={handleChangePage}
       aria-label="basic tabs example"
       variant="fullWidth"
-      sx={{ borderBottom: '1px solid ' + MainColor }}
+      sx={{
+        borderBottom: `1px solid ${MainMenuColorOpacity}`,
+        '& .MuiTabs-indicator': { height: '100%', zIndex: 1, background: MainMenuColorOpacity },
+      }}
     >
-      <Tab label="Character Preview" {...a11yProps(0)} sx={generateTabSx(page === 0)} />
-      <Tab label="Inventory" {...a11yProps(1)} sx={generateTabSx(page === 1)} />
-      <Tab label="... what next?" {...a11yProps(2)} sx={generateTabSx(page === 2)} />
-    </TabList>
+      <Tab label={SECTIONS[0].label} {...a11yProps(0)} sx={generateTabSx} />
+      <Tab label={SECTIONS[1].label} {...a11yProps(1)} sx={generateTabSx} />
+    </Tabs>
   );
 };

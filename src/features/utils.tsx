@@ -1,6 +1,8 @@
 import React from 'react';
 import { Tooltip } from '@mui/material';
 
+import { SECTIONS } from '../pages';
+
 export const formatWithPlusSign = (abilityModifier: number) =>
   (abilityModifier ? (abilityModifier < 0 ? '' : '+') : '') + `${abilityModifier}`;
 
@@ -47,14 +49,12 @@ export function importJSONToLocalStorage(): void {
   }
 }
 
-const slides = ['Character Preview', 'Inventory'];
-
 export const renderIndicator = (
   onClickHandler: (e: React.MouseEvent | React.KeyboardEvent) => void,
   isSelected: boolean,
   index: number
 ) => {
-  const tooltipText = slides[index] || '';
+  const tooltipText = SECTIONS[index].label || '';
 
   return (
     <Tooltip title={tooltipText} key={index} arrow>
@@ -83,4 +83,8 @@ export const renderIndicator = (
       </div>
     </Tooltip>
   );
+};
+
+export const isHighlighting = () => {
+  return window.getSelection && window.getSelection()?.type === 'Range';
 };

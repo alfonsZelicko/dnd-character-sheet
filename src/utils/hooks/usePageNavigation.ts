@@ -1,20 +1,36 @@
 import { useSearchParams } from 'react-router-dom';
+import { RefObject, useEffect } from 'react';
+import { useTouchSwipe } from './useTouchSwipe';
 
-export const usePageNavigation = () => {
+import { SECTIONS } from '../../pages';
+
+export const usePageNavigation = (ref?: RefObject<HTMLElement>) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { direction } = useTouchSwipe(ref, { direction: 'horizontal', threshold: 200 });
+  const page = +(searchParams.get('page') || 0);
 
-  const handleChangeQuery = (newPage: number | ((prevPage: number | null) => number)) => {
-    const currentPage = searchParams.get('page');
-    const parsedPage = currentPage !== null ? parseInt(currentPage, 10) : null;
+  const handleSwipe = (direction: 'left' | 'right') => {
+    if (direction === 'left') {
+      handleChangeQueryPage(page >= SECTIONS.length - 1 ? SECTIONS.length - 1 : page + 1);
+    } else {
+      handleChangeQueryPage(page <= 0 ? 0 : page - 1);
+    }
+  };
 
-    const newPageValue = typeof newPage === 'function' ? newPage(parsedPage) : newPage;
+  useEffect(() => {
+    if (direction === 'left' || direction === 'right') {
+      handleSwipe(direction);
+    }
+  }, [direction]);
 
-    if (parsedPage === newPageValue) return;
+  const handleChangeQueryPage = (newPage: number) => {
+    if (newPage > SECTIONS.length) return;
+    if (page === newPage) return;
 
     const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set('page', newPageValue.toString());
+    newSearchParams.set('page', newPage.toString());
     setSearchParams(newSearchParams);
   };
 
-  return [+(searchParams.get('page') || 0), handleChangeQuery] as const;
+  return [page, handleChangeQueryPage] as const;
 };

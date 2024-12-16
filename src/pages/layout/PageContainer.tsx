@@ -1,5 +1,7 @@
 import { Box, BoxProps, Grid2 as Grid, Grid2Props } from '@mui/material';
 import React, { forwardRef } from 'react';
+import { imageBackgroundSx, mainPageContainerSx } from './styles';
+import { mergeSx } from '../../utils';
 
 type PageContainerProps = Grid2Props & {
   children: React.ReactNode;
@@ -11,18 +13,8 @@ export const PageContainer = forwardRef<HTMLDivElement, PageContainerProps>(func
   ref
 ) {
   return (
-    <Box
-      sx={{
-        alignItems: 'center',
-        minHeight: 'calc(100vh - 49px)',
-        width: '100%',
-        display: 'flex',
-        backgroundColor: 'transparent',
-      }}
-      {...BoxProps}
-      ref={ref}
-    >
-      <Grid container size={12} padding={2} {...restProps}>
+    <Box sx={mergeSx(mainPageContainerSx, imageBackgroundSx)} {...BoxProps} ref={ref}>
+      <Grid container size={12} padding={0} {...restProps}>
         {children}
       </Grid>
     </Box>

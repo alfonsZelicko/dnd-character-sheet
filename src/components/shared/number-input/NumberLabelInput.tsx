@@ -3,6 +3,7 @@ import React from 'react';
 import { InputPlacement, NumberInputWrapper } from './NumberInputWrapper';
 import { NumberLabelInputProps } from './types';
 import { StyledLabel } from '../text-input';
+import { mergeSx } from '../../../utils';
 
 const getPlacementSx = (inputPlacement: InputPlacement): SxProps<Theme> => {
   return inputPlacement === 'left'
@@ -13,12 +14,29 @@ const getPlacementSx = (inputPlacement: InputPlacement): SxProps<Theme> => {
         display: 'block',
         maxHeight: '3.0em',
       }
-    : { borderRadius: '4px 0 0 4px', borderRight: 'none', textAlign: 'left', flexGrow: 1 };
+    : {
+        borderRadius: '4px 0 0 4px',
+        borderRight: 'none',
+        textAlign: 'left',
+        flexGrow: 1,
+      };
 };
 
-export const NumberLabelInput = ({ NumberInputProps, StyledLabelProps, label, size, inputPlacement = 'left' }: NumberLabelInputProps) => (
+const commonLabelSx: SxProps = {
+  wordWrap: 'break-word',
+  whiteSpace: 'normal',
+  lineHeight: '1.2rem',
+};
+
+export const NumberLabelInput = ({
+  NumberInputProps,
+  StyledLabelProps,
+  label,
+  size,
+  inputPlacement = 'left',
+}: NumberLabelInputProps) => (
   <NumberInputWrapper size={size} inputPlacement={inputPlacement} NumberInputProps={{ ...NumberInputProps }}>
-    <StyledLabel variant={'body1'} {...StyledLabelProps} sx={getPlacementSx(inputPlacement)}>
+    <StyledLabel variant={'body1'} {...StyledLabelProps} sx={mergeSx(getPlacementSx(inputPlacement), commonLabelSx)}>
       {label}
     </StyledLabel>
   </NumberInputWrapper>

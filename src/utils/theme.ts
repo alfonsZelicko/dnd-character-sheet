@@ -1,9 +1,9 @@
 import { createTheme } from '@mui/material';
 import { dottedBorder } from './css-styles';
 
-export const MainColor = '#816e5b';
+export const MainColor = '#685746';
 export const MainContentColor = '#fee8c6';
-export const InputColor = 'rgba(0,0,0,0.7)';
+export const InputColor = '#4a3c2c';
 
 /* redesign of the Material-UI components */
 

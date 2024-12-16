@@ -28,7 +28,7 @@ export const SavingThrowItem = ({ ability: _ability, WrapperProps }: SavingThrow
   };
 
   return (
-    <Grid size={12} display={'inline-flex'} alignItems="center" sx={{ height: '25px' }} {...WrapperProps}>
+    <Grid size={12} display={'inline-flex'} alignItems="center" height={'auto'} {...WrapperProps}>
       <Tooltip title={'Proficiency'}>
         <Checkbox
           name="proficiency"
@@ -38,14 +38,15 @@ export const SavingThrowItem = ({ ability: _ability, WrapperProps }: SavingThrow
           checkedIcon={<BookIcon />}
         />
       </Tooltip>
-      <StyledStandardTextField
-        value={formatWithPlusSign(savingThrowValue)}
-        size={'small'}
-        fullWidth
-        sx={{ width: '30px' }}
-        variant={'standard'}
-        disabled
-      />
+      <Box width={45}>
+        <StyledStandardTextField
+          value={formatWithPlusSign(savingThrowValue)}
+          size={'small'}
+          fullWidth
+          variant={'standard'}
+          disabled
+        />
+      </Box>
       <Tooltip title={getAbilityFullName(ability)}>
         <Typography paddingLeft={1} paddingRight={1} textTransform={'uppercase'} fontSize={'1.5rem'} fontWeight={700}>
           {ability}
