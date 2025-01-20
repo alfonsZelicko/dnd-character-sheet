@@ -48,9 +48,10 @@ export const StyledLabel = styled(Typography)({
 
 export const StyledTextFieldArea = styled(TextField)({
   '& .MuiInputBase-root': {
-    padding: '4px',
+    padding: '4px 4px 0 4px',
     overflow: 'hidden',
     '& textarea': {
+      paddingBottom: '0 !important',
       fontSize: '1rem',
       paddingTop: '0 !important',
       overflow: 'hidden',

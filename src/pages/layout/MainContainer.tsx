@@ -7,6 +7,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import { TabContext } from '@mui/lab';
 import { usePageNavigation } from '../../utils';
 import { Box } from '@mui/material';
+import { RestPage } from '../rest';
 
 export const MainContainer = () => {
   const [page] = usePageNavigation();
@@ -28,6 +29,9 @@ export const MainContainer = () => {
           </TabPanel>
           <TabPanel value={1} sx={{ p: 0 }} keepMounted>
             <Inventory />
+          </TabPanel>
+          <TabPanel value={2} sx={{ p: 0 }} keepMounted>
+            <RestPage />
           </TabPanel>
         </PageContainer>
       </TabContext>

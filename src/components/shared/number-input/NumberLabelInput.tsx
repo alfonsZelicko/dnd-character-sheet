@@ -16,8 +16,18 @@ const getPlacementSx = (inputPlacement: InputPlacement): SxProps<Theme> => {
     : { borderRadius: '4px 0 0 4px', borderRight: 'none', textAlign: 'left', flexGrow: 1 };
 };
 
-export const NumberLabelInput = ({ NumberInputProps, StyledLabelProps, label, size, inputPlacement = 'left' }: NumberLabelInputProps) => (
-  <NumberInputWrapper size={size} inputPlacement={inputPlacement} NumberInputProps={{ ...NumberInputProps }}>
+export const NumberLabelInput = ({
+  NumberInputProps,
+  StyledLabelProps,
+  label,
+  size,
+  inputPlacement = 'left',
+}: NumberLabelInputProps) => (
+  <NumberInputWrapper
+    size={size}
+    inputPlacement={inputPlacement}
+    NumberInputProps={{ ...NumberInputProps }}
+  >
     <StyledLabel variant={'body1'} {...StyledLabelProps} sx={getPlacementSx(inputPlacement)}>
       {label}
     </StyledLabel>

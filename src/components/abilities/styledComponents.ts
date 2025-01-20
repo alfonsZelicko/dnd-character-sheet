@@ -28,5 +28,5 @@ export const AbilityName = styled(Typography)({
   textTransform: 'uppercase',
   color: InputColor,
   fontSize: '1.3rem',
-  paddingBottom: 1,
+  paddingLeft: 8,
 });
