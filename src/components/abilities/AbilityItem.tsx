@@ -18,6 +18,9 @@ export const AbilityItemUi = ({ ability, handleChange, NumberInputProps }: Abili
       sx={{
         margin: '0 0 10px 4px',
         p: 0,
+        '&:last-child': {
+          marginBottom: 0
+        }
       }}
     >
       <Grid container width={40} position={'relative'} direction={'column'}>
