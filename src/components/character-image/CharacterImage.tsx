@@ -3,7 +3,7 @@ import React, { DragEvent } from 'react';
 import { CharacterPictureAtom } from './atoms';
 import { useAtom } from 'jotai';
 
-export const CharacterPreview = () => {
+export const CharacterImage = () => {
   const [imageBase64, setImageBase64] = useAtom(CharacterPictureAtom);
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
@@ -18,14 +18,12 @@ export const CharacterPreview = () => {
     }
   };
 
-  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
-
   return (
     <Box
       onDrop={handleDrop}
-      onDragOver={handleDragOver}
+      onDragOver={(e) => {
+        e.preventDefault();
+      }}
       sx={{
         width: '100%',
         height: '380px',

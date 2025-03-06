@@ -9,10 +9,6 @@ export const ellipsisWrapper: SxProps = {
 
 export const dottedBorder: Property.Border = '1px dotted rgba(132,110,84,0.50)';
 
-export function mergeStyles<T extends object>(...styles: T[]): T {
-  return Object.assign({}, ...styles);
-}
-
 export const mergedPaperListSx = (): SxProps<Theme> => ({
   '& .paperItem': {
     borderRadius: 0,
@@ -31,3 +27,10 @@ export const mergeSx = (...sxProps: (SxProps<Theme> | undefined)[]): SxProps<The
   (sxProps || [])
     ?.filter(Boolean)
     .reduce((acc: SxProps<Theme>[], sx) => [...acc, ...(Array.isArray(sx) ? sx : [sx])], []) as SxProps<Theme>;
+
+export const scrollBackgroundSx = {
+  backgroundImage: 'url(src/assets/app-bg.png)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center center',
+  backgroundRepeat: 'no-repeat',
+};
