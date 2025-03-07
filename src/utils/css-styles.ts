@@ -1,5 +1,6 @@
 import { SxProps, Theme } from '@mui/material';
 import { Property } from 'csstype';
+import appBg from '../assets/app-bg.png';
 
 export const ellipsisWrapper: SxProps = {
   textOverflow: 'ellipsis',
@@ -29,7 +30,7 @@ export const mergeSx = (...sxProps: (SxProps<Theme> | undefined)[]): SxProps<The
     .reduce((acc: SxProps<Theme>[], sx) => [...acc, ...(Array.isArray(sx) ? sx : [sx])], []) as SxProps<Theme>;
 
 export const scrollBackgroundSx = {
-  backgroundImage: 'url(src/assets/app-bg.png)',
+  backgroundImage: `url(${appBg})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center center',
   backgroundRepeat: 'no-repeat',
