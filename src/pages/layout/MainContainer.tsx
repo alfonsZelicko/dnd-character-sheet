@@ -3,35 +3,42 @@ import { CharacterPreview } from '../preview';
 import { Inventory } from '../inventory';
 import { PageContainer } from './PageContainer';
 import { MainMenu } from '../../components/main-menu';
-import TabPanel from '@mui/lab/TabPanel';
+import TabPanel, { TabPanelProps } from '@mui/lab/TabPanel';
 import { TabContext } from '@mui/lab';
-import { usePageNavigation } from '../../utils';
+import { mergeSx, scrollBackgroundSx, usePageNavigation } from '../../utils';
 import { Box } from '@mui/material';
-import { RestPage } from '../rest';
+import { Rest } from '../rest';
+
+/* merging tabPanelProps with some default SX, ...*/
+const commonTabPanelProps = (props?: Omit<TabPanelProps, 'value'>): Omit<TabPanelProps, 'value'> => ({
+  keepMounted: true,
+  ...props,
+  sx: mergeSx(
+    {
+      p: 0,
+      alignSelf: 'stretch',
+      alignContent: 'center',
+    },
+    props?.sx ? props.sx : {}
+  ),
+});
 
 export const MainContainer = () => {
   const [page] = usePageNavigation();
 
   return (
-    <Box
-      sx={{
-        backgroundImage: 'url(src/assets/app-bg.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
+    <Box sx={scrollBackgroundSx}>
       <TabContext value={page}>
         <MainMenu />
         <PageContainer>
-          <TabPanel value={0} sx={{ p: 0 }} keepMounted>
+          <TabPanel value={0} {...commonTabPanelProps()}>
             <CharacterPreview />
           </TabPanel>
-          <TabPanel value={1} sx={{ p: 0 }} keepMounted>
+          <TabPanel value={1} {...commonTabPanelProps({ sx: { width: '100%' } })}>
             <Inventory />
           </TabPanel>
-          <TabPanel value={2} sx={{ p: 0 }} keepMounted>
-            <RestPage />
+          <TabPanel value={2} {...commonTabPanelProps()}>
+            <Rest />
           </TabPanel>
         </PageContainer>
       </TabContext>

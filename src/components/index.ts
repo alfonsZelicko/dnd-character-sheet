@@ -7,7 +7,7 @@ export * from './saving-throws';
 export * from './simple-components';
 export * from './skills';
 export * from './feats';
-export * from './character-preview';
+export * from './character-image';
 export * from './attack-list';
 export * from './hit-dices';
 export * from './features';

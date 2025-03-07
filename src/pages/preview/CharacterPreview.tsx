@@ -3,7 +3,7 @@ import {
   AbilityListView,
   Armor,
   AttackList,
-  CharacterPreview as CharacterPicture,
+  CharacterImage as CharacterPicture,
   CurrentHitPoints,
   DeathSaves,
   Exhaustion,

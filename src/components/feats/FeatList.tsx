@@ -25,7 +25,17 @@ export const FeatList = ({ GridProps, WrapperProps }: FeatListProps) => {
   const [feats] = useAtom(FeatAtomsAtom);
 
   return feats.map((feat, index) => (
-    <Grid key={index} size={12} sx={{ py: 0 }} {...GridProps}>
+    <Grid
+      key={index}
+      size={12}
+      sx={{
+        py: 0,
+        '& textarea:last-child': {
+          paddingBottom: '2px !important',
+        },
+      }}
+      {...GridProps}
+    >
       {/*<FeatItem featAtom={feat} />*/}
       <Notes
         atom={feat}

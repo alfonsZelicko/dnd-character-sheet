@@ -1,5 +1,4 @@
 import { styled, TextField, Typography } from '@mui/material';
-import { dottedBorder } from '../../../utils';
 
 export const StyledTextField = styled(TextField)({
   width: '50px',
@@ -38,24 +37,23 @@ export const StyledStandardTextField = styled(TextField)({
 
 export const StyledLabel = styled(Typography)({
   marginTop: '1px',
-  padding: '4px 4px 0 4px',
   lineHeight: '1rem',
-  border: dottedBorder,
   fontWeight: 400,
   textTransform: 'uppercase',
-  height: '45px',
 });
 
 export const StyledTextFieldArea = styled(TextField)({
   '& .MuiInputBase-root': {
     padding: '4px 4px 0 4px',
     overflow: 'hidden',
+    height: '100%',
     '& textarea': {
       paddingBottom: '0 !important',
       fontSize: '1rem',
       paddingTop: '0 !important',
       overflow: 'hidden',
       fontWeight: 200,
+      height: '100% !important',
       backgroundImage: `
         repeating-linear-gradient(
           to bottom,
