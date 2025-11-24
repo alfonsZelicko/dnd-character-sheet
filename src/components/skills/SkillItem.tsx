@@ -23,7 +23,7 @@ export const SkillItem = React.memo(({ skillName, type = 'basic' }: SkillItemPro
 
   const calculatedBonus = useMemo(() => {
     let result = calculateAbilityModifier(score);
-    result += proficiencyAndExpertise * proficiencyBonus + (modifier || 0);
+    result += proficiencyAndExpertise * proficiencyBonus;
     result += modifier || 0;
 
     return result;
