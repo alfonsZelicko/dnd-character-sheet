@@ -34,6 +34,7 @@ export const Wrapper = ({ children, anchorEl, setAnchorEl }: WrapperType) => {
   );
 };
 
+/* TODO: it is not working well - need to repair it again*/
 export const IncrementDecrementButtons = ({ callAction, ...restProps }: IncDecButtonsType) => (
   <Wrapper {...restProps}>
     <Buttons callAction={callAction} />

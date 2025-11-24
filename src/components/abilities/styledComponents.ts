@@ -7,6 +7,7 @@ export const StyledAbilityInput = styled(NumberInput)({
   width: '40px',
   height: '41px',
   '& input': {
+    /* TODO: generate smaller pictures */
     background: 'url("src/assets/app-bg.png") center center',
     height: '22px',
     fontSize: '1.7rem',

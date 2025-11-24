@@ -9,6 +9,8 @@ export const calculateAbilityModifier = (abilityScore: number): number => Math.f
 export const removeLeadingZeros = (value: string | number): string =>
   typeof value === 'string' ? value.replace(/^0+(?=\d)/, '') : removeLeadingZeros(value.toString());
 
+
+/*  ---- import/export helpers ---- */
 // Export all localStorage items as a JSON object
 export function exportLocalStorageToJSON(): void {
   const localStorageData: Record<string, string | null> = {};
@@ -49,6 +51,8 @@ export function importJSONToLocalStorage(): void {
 
 const slides = ['Character Preview', 'Inventory'];
 
+
+//TODO: imho this is no more usefull - remove it?
 export const renderIndicator = (
   onClickHandler: (e: React.MouseEvent | React.KeyboardEvent) => void,
   isSelected: boolean,
