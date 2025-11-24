@@ -32,21 +32,18 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      # 3. Corepack activation and prepared pnpm
-      - name: Enable Corepack and pnpm
+      # 3. Enable Corepack and install dependencies
+      - name: Enable Corepack and install PNPM dependencies
         run: |
           corepack enable
           corepack prepare pnpm@10.23.0 --activate
+          pnpm install
 
-      # 4. Dependency instalation
-      - name: Install dependencies
-        run: pnpm install
-
-      # 5. Aplication build
+      # 4. Aplication build
       - name: Build app
         run: pnpm run build
 
-      # 6. Upload artifact into GitHub Pages
+      # 5. Upload artifact into GitHub Pages
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
