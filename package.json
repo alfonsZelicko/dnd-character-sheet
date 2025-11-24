@@ -51,5 +51,6 @@
     "lint": "Check the app's codebase for syntax and style errors based on defined linting rules.",
     "preview": "Serve the production build locally to test the app as it would appear in a deployed environment.",
     "generate-build-stats": "Generates report visualizing the bundle structure, showing the size of each library and module."
-  }
+  },
+  "packageManager": "pnpm@9.12.3"
 }

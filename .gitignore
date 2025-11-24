@@ -23,7 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-
+# Cursor IDE server config
+.cursor/*
 
 .nx/cache
 .nx/workspace-data
