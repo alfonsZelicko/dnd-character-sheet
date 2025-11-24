@@ -12,7 +12,10 @@ const manifestPath = join(buildUtilsDir, 'manifest.json');
 const backgroundScriptPath = join(buildUtilsDir, 'background.js');
 
 // https://vitejs.dev/config/
+const basePath = process.env.VITE_BASE_PATH ?? '/';
+
 export default defineConfig({
+  base: basePath,
   build: {
     outDir: 'dist',
   },
