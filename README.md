@@ -48,3 +48,10 @@ The demo is published automatically from `main` whenever the workflow in `.githu
 Future Plans
 As this project evolves, I may consider porting it to Electron for a desktop app experience. If you’d be interested in
 helping out with this transition, feel free to reach out!
+
+# TODO
+- add "custom xml layout configuration"
+- add more features: 
+   - companion list
+   - better inventory
+   - detailed features, etc. ...
