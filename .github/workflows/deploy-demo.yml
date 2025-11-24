@@ -44,6 +44,8 @@ jobs:
       # 5. Build application
       - name: Build app
         run: pnpm run build
+        env:
+          VITE_BASE_PATH: /dnd-character-sheet/
 
       # 6. Upload artifact into GitHub Pages
       - name: Upload Pages artifact
