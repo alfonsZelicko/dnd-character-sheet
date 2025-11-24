@@ -26,6 +26,9 @@ importers:
       beautiful-react-hooks:
         specifier: ^5.0.2
         version: 5.0.3(react-dom@18.3.1(react@18.3.1))(react-router-dom@7.9.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(rxjs@7.8.2)
+      csstype:
+        specifier: ^3.2.3
+        version: 3.2.3
       jotai:
         specifier: ^2.10.3
         version: 2.15.1(@babel/template@7.27.2)(@types/react@18.3.27)(react@18.3.1)
