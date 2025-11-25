@@ -37,7 +37,7 @@ const CombinedNumberInput = ({
   const handleChange = (action: ActionButtonType) => {
     if (!onChange) return;
 
-    const currentValue = typeof value === 'number' ? value : 0;
+    const currentValue = Number(value) || 0;
 
     const mockEvent = {
       target: {
