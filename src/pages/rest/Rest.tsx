@@ -4,12 +4,18 @@ import React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { useAtom } from 'jotai';
 import { showIncDecButtonsAtom } from '../../components/shared/number-input/inc-dec-buttons/atoms';
+import { ApplyCharaPicMask } from '../../components/character-image/atoms';
 
 export const Rest = () => {
   const [getShowHideBtns, setShowHideBtns] = useAtom(showIncDecButtonsAtom);
+  const [getApplyMask, setApplyMask] = useAtom(ApplyCharaPicMask);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeShowIncDecBtns = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowHideBtns(event.target.checked);
+  };
+
+  const handleChangeAplyCharImgMask = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setApplyMask(event.target.checked);
   };
   
   return(
@@ -31,7 +37,8 @@ export const Rest = () => {
         Character Import
       </Button>
       <br/>
-      <FormControlLabel control={<Checkbox checked={getShowHideBtns} onChange={handleChange} />} label="Show inc/dec buttons" />
+      <FormControlLabel control={<Checkbox checked={!!getApplyMask} onChange={handleChangeAplyCharImgMask} />} label="Aply Character image mask" />
+      <FormControlLabel control={<Checkbox checked={getShowHideBtns} onChange={handleChangeShowIncDecBtns} />} label="Show inc/dec buttons" />
     </Grid>
   )
 };

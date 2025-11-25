@@ -1,15 +1,16 @@
 import { Box, SxProps, Theme, Typography } from '@mui/material';
 import React, { DragEvent, useRef } from 'react';
-import { CharacterPictureAtom } from './atoms';
-import { useAtom } from 'jotai';
+import { ApplyCharaPicMask, CharacterPictureAtom } from './atoms';
+import { useAtom, useAtomValue } from 'jotai';
 import imageMask from '../../assets/character-image-mask.png';
 
 const MAX_SIZE = 1 * 1024 * 1024; // 1 MB
 
 const fileCheck = (file: File | undefined) => !file || !file.type.startsWith('image/') || file.size > MAX_SIZE;
 
-export const CharacterImage = ({applyMask = true}) => {
+export const CharacterImage = () => {
   const [imageBase64, setImageBase64] = useAtom(CharacterPictureAtom);
+  const applyMask = useAtomValue(ApplyCharaPicMask);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
