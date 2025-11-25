@@ -10,7 +10,9 @@ Thus do I invite thee to step forth, explore, and, if thou wilt, lend a hand in 
 
 Shouldst thou wish to try the tool without commitment and glimpse how it behaves, behold the demo below.
 
-<a href="https://alfonsZelicko.github.io/dnd-character-sheet" target="_blank" rel="noopener noreferrer">I wish to behold the DEMO.</a>
+<a href="https://alfonsZelicko.github.io/dnd-character-sheet" target="_blank" rel="noopener noreferrer">I wish to behold the DEMO</a>
+
+![UI Preview](dev-utils/screen.jpg)
 
 The [demo](https://alfonsZelicko.github.io/dnd-character-sheet) is conjured and published automatically from `main` whenever the workflow in `.github/workflows/deploy-demo.yml` completes its task in triumph.
 
