@@ -12,7 +12,9 @@ Shouldst thou wish to try the tool without commitment and glimpse how it behaves
 
 <a href="https://alfonsZelicko.github.io/dnd-character-sheet" target="_blank" rel="noopener noreferrer">I wish to behold the DEMO</a>
 
-![UI Preview](dev-utils/screen.jpg)
+<div align="center">
+  <img src="dev-utils/screen.jpg" alt="Screenshot" width="50%">
+</div>
 
 The [demo](https://alfonsZelicko.github.io/dnd-character-sheet) is conjured and published automatically from `main` whenever the workflow in `.github/workflows/deploy-demo.yml` completes its task in triumph.
 
