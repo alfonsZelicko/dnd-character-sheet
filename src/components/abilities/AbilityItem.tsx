@@ -7,29 +7,15 @@ import { AbilityModifierLabel, AbilityName, StyledAbilityInput } from './styledC
 import { Abilities, AbilityInputProps, AbilityItemType, AbilityUIProps } from './types';
 import { calculateAbilityModifier, formatWithPlusSign, removeLeadingZeros } from '../../features/utils';
 import { getAbilityAtom } from './atoms';
+import { abilityInputContainer, abilityModifierBox, labelContainer } from './styles';
 
 export const AbilityItemUi = ({ ability, handleChange, NumberInputProps }: AbilityUIProps) => {
   const modifier = calculateAbilityModifier(ability.score);
 
-  const paperContainerStyles = {
-    margin: '0 0 10px 4px',
-    clipPath: 'polygon(0 0, 100% 0, 100% 100%, calc(0% + 36px) 100%, calc(0% + 36px) 35px, 0 35px)',
-    p: 0,
-    '&:last-child': {
-      marginBottom: 0
-    }
-  };
-
   return (
     <Grid container sx={{ position: 'relative' }}> 
 
-      <Grid sx={{ 
-          position: 'absolute', 
-          zIndex: 2, 
-          left: '5px', 
-          top: '30px', 
-          width: 30 
-      }}>
+      <Grid sx={abilityInputContainer}>
         <StyledAbilityInput
           value={removeLeadingZeros(ability.score) || ''}
           onChange={handleChange}
@@ -37,29 +23,13 @@ export const AbilityItemUi = ({ ability, handleChange, NumberInputProps }: Abili
         />
       </Grid>
       <Grid size={12}>
-        <StyledPaper
-          sx={{
-            ...paperContainerStyles,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-          }}
-        >
+        <StyledPaper sx={labelContainer}>
           <Box width={40} position={'relative'} sx={{ flexDirection: 'column' }}> 
             <AbilityName variant={'body1'} sx={ellipsisWrapper}>
               {ability.type}
             </AbilityName>
           </Box>
-          <Box
-            sx={{
-              height: '65px',
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'flex-end',
-              pr: 2,
-              flexGrow: 1,
-            }}
-          >
+          <Box sx={abilityModifierBox}>
             <AbilityModifierLabel variant={'h3'}>
               {formatWithPlusSign(modifier)}
             </AbilityModifierLabel>
