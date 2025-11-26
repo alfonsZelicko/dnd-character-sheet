@@ -2,6 +2,8 @@
 
 Behold, traveler, and lend thine ear. This humble work is my personal endeavor, wherein I tinker with curious libraries of the React realm, most notably [Jotai](https://github.com/pmndrs/jotai) and [MUI](https://mui.com/) - Yet this library hath been altered in its appearance, reshaped greatly to match the vision I held in mind. At present, the creation takes the shape of a modest character scroll for the great game of DnD. Its features are simple still, yet many more lie waiting upon the road ahead. All memories are kept within the browser’s own hidden vault, localStorage, that the demo may remain ever light and wholly static.
 
+This journal has been carefully attuned for full-screen use upon a tablet, where it feels most at home. Should any soul desire it shaped for a different resolution or device, I would gladly reforge it—no such request is unwelcome.
+
 And know this as well: should any brave soul wish to join the crafting of this tool, or desire to wield it for their own adventures, I shall gladly offer guidance to set it running. The project stands almost ready to serve as a Chrome extension, and I can swiftly forge the magic needed to synchronize one’s character across many devices, so long as the wanderer is signed into the browser. New ideas for improvements are most welcome. For now, the tool is shaped to fit the peculiar dimensions of my own tablet, yet I am willing to reshape it for others—my motivation merely slumbers.
 
 Thus do I invite thee to step forth, explore, and, if thou wilt, lend a hand in shaping what may yet become a finer artifact.
