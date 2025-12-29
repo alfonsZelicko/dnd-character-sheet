@@ -12,7 +12,7 @@ Thus do I invite thee to step forth, explore, and, if thou wilt, lend a hand in 
 
 Shouldst thou wish to try the tool without commitment and glimpse how it behaves, behold the demo below.
 
-<a href="https://alfonsZelicko.github.io/dnd-character-sheet" target="_blank" rel="noopener noreferrer">I wish to behold the DEMO</a>
+<a href="https://alfonsZelicko.github.io/dnd-character-sheet" target="_blank" rel="noopener noreferrer">DEMO</a>
 
 <div align="center">
   <img src="dev-utils/screen.jpg" alt="Screenshot" width="50%">
