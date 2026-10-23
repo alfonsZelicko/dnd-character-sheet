@@ -28,7 +28,7 @@ export const NumberLabelInput = ({
       {...StyledLabelProps}
       sx={mergeSx(
         getPlacementSx(inputPlacement),
-        { textAlign: inputPlacement, border: dottedBorder, height: '3rem', padding: '6px' },
+        { textAlign: inputPlacement, border: dottedBorder, height: '3rem', padding: '6px', alignContent: 'center' },
         StyledLabelProps?.sx ? StyledLabelProps?.sx : {}
       )}
     >

@@ -31,13 +31,13 @@ export const MainContainer = () => {
       <TabContext value={page}>
         <MainMenu />
         <PageContainer>
-          <TabPanel value={0} {...commonTabPanelProps()}>
+          <TabPanel value={'0'} {...commonTabPanelProps()}>
             <CharacterPreview />
           </TabPanel>
-          <TabPanel value={1} {...commonTabPanelProps({ sx: { width: '100%' } })}>
+          <TabPanel value={'1'} {...commonTabPanelProps({ sx: { width: '100%' } })}>
             <Inventory />
           </TabPanel>
-          <TabPanel value={2} {...commonTabPanelProps()}>
+          <TabPanel value={'2'} {...commonTabPanelProps()}>
             <Rest />
           </TabPanel>
         </PageContainer>

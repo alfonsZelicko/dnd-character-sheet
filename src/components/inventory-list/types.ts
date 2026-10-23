@@ -6,6 +6,12 @@ export type InventoryItemType = {
   quantity: number;
 };
 
+export type MagicItemType = {
+  name: string;
+  description: string;
+  attuned: boolean;
+};
+
 export type InventoryListProps = {
   inventoryItems: PrimitiveAtom<InventoryItemType>[];
 };

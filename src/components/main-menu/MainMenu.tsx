@@ -18,7 +18,7 @@ const generateTabSx = (isAtime: boolean): SxProps<Theme> => ({
 export const MainMenu = () => {
   const [page, setSearchParams] = usePageNavigation();
 
-  const handleChangePage = (_event: React.SyntheticEvent, newPage: number) => {
+  const handleChangePage = (_event: React.SyntheticEvent, newPage: string) => {
     setSearchParams(newPage);
   };
 
@@ -29,9 +29,9 @@ export const MainMenu = () => {
       variant="fullWidth"
       sx={{ borderBottom: '1px solid ' + MainColor }}
     >
-      <Tab label="Character Preview" {...a11yProps(0)} sx={generateTabSx(page === 0)} />
-      <Tab label="InventoryList (beta)" {...a11yProps(1)} sx={generateTabSx(page === 1)} />
-      <Tab label="... what next?" {...a11yProps(2)} sx={generateTabSx(page === 2)} />
+      <Tab label="Character Preview" value={'0'} {...a11yProps(0)} sx={generateTabSx(page === '0')} />
+      <Tab label="InventoryList (beta)" value={'1'} {...a11yProps(1)} sx={generateTabSx(page === '1')} />
+      <Tab label="... what next?" value={'2'} {...a11yProps(2)} sx={generateTabSx(page === '2')} />
     </TabList>
   );
 };

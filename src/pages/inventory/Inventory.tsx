@@ -1,26 +1,34 @@
 import React from 'react';
 import { Grid2 as Grid } from '@mui/material';
-import { InventoryList } from '../../components/inventory-list';
-import { useAtomValue } from 'jotai/index';
-import { BackpackAtomsAtom, QuickSlotAtomsAtom } from '../../components/inventory-list/atoms';
-import { NumberLabelInput, StyledLabel, StyledPaper } from '../../components';
+import {
+  BackpackAtomsAtom,
+  CopperCoins,
+  GoldCoins,
+  InventoryList,
+  MagicItem,
+  QuickSlotAtomsAtom,
+  SilverCoins,
+  StyledLabel,
+  StyledPaper,
+} from '../../components';
+import { useAtomValue } from 'jotai';
 
 export const Inventory = () => {
   const backpackItems = useAtomValue(BackpackAtomsAtom);
   const quickSlotItems = useAtomValue(QuickSlotAtomsAtom);
 
   return (
-    <Grid container size={12} spacing={1}>
+    <Grid container size={12} spacing={1} alignItems="stretch">
       <Grid container size={4} direction={'column'}>
         <Grid container flexDirection={'row'} component={StyledPaper}>
           <Grid size={4}>
-            <NumberLabelInput label={'Gold coins'} NumberInputProps={{ sx: { width: '80px' } }} />
+            <GoldCoins />
           </Grid>
           <Grid size={4}>
-            <NumberLabelInput label={'Silver coins'} NumberInputProps={{ sx: { width: '80px' } }} />
+            <SilverCoins />
           </Grid>
           <Grid size={4}>
-            <NumberLabelInput label={'Copper coins'} NumberInputProps={{ sx: { width: '80px' } }} />
+            <CopperCoins />
           </Grid>
           <Grid size={12}>
             <StyledLabel textAlign={'right'}>Moneyyy</StyledLabel>
@@ -28,6 +36,13 @@ export const Inventory = () => {
         </Grid>
         <InventoryList inventoryItems={backpackItems} nameDescription={'Backpack Inventory'} />
         <InventoryList inventoryItems={quickSlotItems} nameDescription={'Quick slots'} />
+      </Grid>
+      <Grid container size={3} direction="column" sx={{ alignSelf: 'stretch', justifyContent: 'space-between' }}>
+        <MagicItem />
+        <MagicItem />
+        <MagicItem />
+        <MagicItem />
+        <MagicItem />
       </Grid>
     </Grid>
   );

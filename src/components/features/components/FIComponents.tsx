@@ -1,6 +1,6 @@
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 import { FeatureItemType, RestType } from '../types';
-import { useAtomValue } from 'jotai/index';
+import { useAtomValue } from 'jotai';
 import { StandardNumberInput, StyledStandardTextField } from '../../shared';
 import React, { useCallback } from 'react';
 import { MenuItem, Select } from '@mui/material';

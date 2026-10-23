@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { useAtom } from 'jotai/index';
+import { useAtom } from 'jotai';
 import { StyledPaper, StyledTextFieldArea } from '../shared';
 import React from 'react';
 import { NoteProps } from './types';
