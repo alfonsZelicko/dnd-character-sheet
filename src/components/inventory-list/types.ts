@@ -12,6 +12,14 @@ export type MagicItemType = {
   attuned: boolean;
 };
 
+export type MagicItemsProps = {
+  magicItems: PrimitiveAtom<MagicItemType>[];
+};
+
+export type MagicItemProps = {
+  magicItemAtom: PrimitiveAtom<MagicItemType>;
+};
+
 export type InventoryListProps = {
   inventoryItems: PrimitiveAtom<InventoryItemType>[];
 };

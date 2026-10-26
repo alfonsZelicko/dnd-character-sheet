@@ -28,6 +28,7 @@ export const AttackItem = ({ attackAtom }: AttackItemProps) => {
       <Grid container size={12} sx={{ alignItems: 'center', flexWrap: 'nowrap' }}>
         <StyledGrid size={'grow'}>
           <StyledStandardTextField
+            placeholder={'Weapon Name'}
             value={attackName}
             name={'attackName'}
             onChange={handleChange}
@@ -36,20 +37,51 @@ export const AttackItem = ({ attackAtom }: AttackItemProps) => {
           />
         </StyledGrid>
         <StyledGrid sx={{ width: '30px' }}>
-          <StyledStandardTextField value={attackBonus} name={'attackBonus'} onChange={handleChange} {...commonProps} />
+          <StyledStandardTextField
+            placeholder={'B.'}
+            value={attackBonus}
+            name={'attackBonus'}
+            onChange={handleChange}
+            {...commonProps}
+          />
         </StyledGrid>
         <StyledGrid sx={{ width: '60px' }}>
-          <StyledStandardTextField value={range} name={'range'} onChange={handleChange} {...commonProps} />
+          <StyledStandardTextField
+            placeholder={'Range'}
+            value={range}
+            name={'range'}
+            onChange={handleChange}
+            {...commonProps}
+          />
         </StyledGrid>
         <StyledGrid sx={{ width: '70px' }}>
-          <StyledStandardTextField value={damage} name={'damage'} onChange={handleChange} {...commonProps} />
+          <StyledStandardTextField
+            placeholder={'DMG'}
+            value={damage}
+            name={'damage'}
+            onChange={handleChange}
+            {...commonProps}
+          />
         </StyledGrid>
         <StyledGrid size={2.5}>
-          <StyledStandardTextField value={damageType} name={'damageType'} onChange={handleChange} {...commonProps} />
+          <StyledStandardTextField
+            placeholder={'dmg type'}
+            value={damageType}
+            name={'damageType'}
+            onChange={handleChange}
+            {...commonProps}
+          />
         </StyledGrid>
       </Grid>
       <StyledGrid size={12}>
-        <StyledStandardTextField value={note} name={'note'} onChange={handleChange} {...commonProps} sx={noteSx} />
+        <StyledStandardTextField
+          placeholder={'Weapon Description'}
+          value={note}
+          name={'note'}
+          onChange={handleChange}
+          {...commonProps}
+          sx={noteSx}
+        />
       </StyledGrid>
     </Grid>
   );

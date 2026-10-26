@@ -5,7 +5,8 @@ import {
   CopperCoins,
   GoldCoins,
   InventoryList,
-  MagicItem,
+  MagicItemAtomsAtom,
+  MagicItems,
   QuickSlotAtomsAtom,
   SilverCoins,
   StyledLabel,
@@ -16,6 +17,7 @@ import { useAtomValue } from 'jotai';
 export const Inventory = () => {
   const backpackItems = useAtomValue(BackpackAtomsAtom);
   const quickSlotItems = useAtomValue(QuickSlotAtomsAtom);
+  const magicItems = useAtomValue(MagicItemAtomsAtom);
 
   return (
     <Grid container size={12} spacing={1} alignItems="stretch">
@@ -38,11 +40,7 @@ export const Inventory = () => {
         <InventoryList inventoryItems={quickSlotItems} nameDescription={'Quick slots'} />
       </Grid>
       <Grid container size={3} direction="column" sx={{ alignSelf: 'stretch', justifyContent: 'space-between' }}>
-        <MagicItem />
-        <MagicItem />
-        <MagicItem />
-        <MagicItem />
-        <MagicItem />
+        <MagicItems magicItems={magicItems} />
       </Grid>
     </Grid>
   );

@@ -35,6 +35,8 @@ const initMagicItemAtomsValue: MagicItemType[] = [
   { name: '', description: '', attuned: false },
   { name: '', description: '', attuned: false },
   { name: '', description: '', attuned: false },
+  { name: '', description: '', attuned: false },
+  { name: '', description: '', attuned: false },
 ];
 
 const initGoldCoinsAtomsValue: number = 0;
@@ -48,3 +50,5 @@ export const BackpackAtoms = atomWithStorage<InventoryItemType[]>('backpack-atom
 export const BackpackAtomsAtom = splitAtom(BackpackAtoms);
 export const QuickSlotAtoms = atomWithStorage<InventoryItemType[]>('quickSlot-atom', initQuickSlotInventoryAtomsValue);
 export const QuickSlotAtomsAtom = splitAtom(QuickSlotAtoms);
+export const MagicItemAtoms = atomWithStorage<MagicItemType[]>('magic-item-atoms', initMagicItemAtomsValue);
+export const MagicItemAtomsAtom = splitAtom(MagicItemAtoms);
