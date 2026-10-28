@@ -8,14 +8,13 @@ export const classAtom = atomWithStorage('classes', '');
 
 export const nameAtom = atomWithStorage('name', '');
 export const raceAtom = atomWithStorage('race', '');
-export const backgroundAtom = atomWithStorage('background', '');
 
 export const maxHitPointsAtom = atomWithStorage('maxHitPoints', 0);
 export const temporaryHitPointsAtom = atomWithStorage('temporary-hitPoints', 0);
 export const currentHitPointsAtom = atomWithStorage('current-hitPoints', 0);
 
 export const speedAtom = atomWithStorage('speed', 0);
-export const sensesAtom = atomWithStorage('senses', '');
+export const characterDescriptionAtom = atomWithStorage('character-description', '');
 
-export const inventoryAtoms = atomWithStorage('inventory', ['', '', '']);
-export const inventoryAtomsAtom = splitAtom(inventoryAtoms);
+export const noteAtoms = atomWithStorage('notes', ['', '', '']);
+export const noteAtomsAtom = splitAtom(noteAtoms);

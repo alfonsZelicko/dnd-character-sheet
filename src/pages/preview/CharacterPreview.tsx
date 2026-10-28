@@ -95,7 +95,7 @@ export const CharacterPreview = () => (
             <CharacterPicture />
           </Grid>
           <Grid size={12}>
-            <SmallNotes rows={5} variant={'outlined'} />
+            <SmallNotes rows={5} variant={'outlined'} placeholder={'Character description'} />
           </Grid>
         </Grid>
       </Grid>

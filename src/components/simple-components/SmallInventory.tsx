@@ -1,11 +1,11 @@
 import { useAtom } from 'jotai';
-import { inventoryAtomsAtom } from './atoms';
+import { noteAtomsAtom } from './atoms';
 import { Grid2 as Grid } from '@mui/material';
 import React from 'react';
 import { Notes } from '../notes';
 
 export const SmallInventory = () => {
-  const [inventory] = useAtom(inventoryAtomsAtom);
+  const [inventory] = useAtom(noteAtomsAtom);
 
   return (
     <>
