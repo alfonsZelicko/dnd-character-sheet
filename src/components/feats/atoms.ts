@@ -29,5 +29,5 @@ import { atomWithStorage, splitAtom } from 'jotai/utils';
 ];*/
 
 // export const FeatAtoms = atomWithStorage<FeatType[]>('featsAtom', initFeatAtomValue);
-export const FeatAtoms = atomWithStorage<string[]>('featsAtom', ['', '', '', '', '','']);
+export const FeatAtoms = atomWithStorage<string[]>('featsAtom', ['', '', '', '', '',''], undefined, { getOnInit: true });
 export const FeatAtomsAtom = splitAtom(FeatAtoms);

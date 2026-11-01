@@ -14,7 +14,7 @@ export const temporaryHitPointsAtom = atomWithStorage('temporary-hitPoints', 0);
 export const currentHitPointsAtom = atomWithStorage('current-hitPoints', 0);
 
 export const speedAtom = atomWithStorage('speed', 0);
-export const characterDescriptionAtom = atomWithStorage('character-description', '');
+export const characterDescriptionAtom = atomWithStorage('character-description', '', undefined, { getOnInit: true });
 
-export const noteAtoms = atomWithStorage('notes', ['', '', '']);
+export const noteAtoms = atomWithStorage('notes', ['', '', ''], undefined, { getOnInit: true });
 export const noteAtomsAtom = splitAtom(noteAtoms);
