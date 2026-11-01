@@ -1,6 +1,7 @@
 import { SxProps, Theme } from '@mui/material';
 import { Property } from 'csstype';
 import appBg from '../assets/app-bg.png';
+import { MainColor } from './colors';
 
 export const ellipsisWrapper: SxProps = {
   textOverflow: 'ellipsis',
@@ -8,7 +9,7 @@ export const ellipsisWrapper: SxProps = {
   whiteSpace: 'nowrap',
 };
 
-export const dottedBorder: Property.Border = '1px dotted rgba(132,110,84,0.50)';
+export const dottedBorder: Property.Border = `1px dotted ${MainColor}80`;
 
 export const mergedPaperListSx = (): SxProps<Theme> => ({
   '& .paperItem': {

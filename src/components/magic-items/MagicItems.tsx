@@ -6,6 +6,13 @@ import { StyledPaper, StyledStandardTextField } from '../shared';
 import { featureCommonProps } from '../features/components/utils';
 import { MagicItemProps, MagicItemsProps } from './types';
 import { Notes } from '../notes';
+import {
+  magicItemAttunementContainerSx,
+  magicItemAttunementLabelSx,
+  magicItemHeaderSx,
+  magicItemNameContainerSx,
+  magicItemNameInputSx,
+} from './styles';
 
 const AttunedCheckbox = ({ magicItemAtom }: MagicItemProps) => {
   const attunedAtom = useMemo(() => selectAtom(magicItemAtom, (item) => item.attuned), [magicItemAtom]);
@@ -14,7 +21,7 @@ const AttunedCheckbox = ({ magicItemAtom }: MagicItemProps) => {
 
   return (
     <FormControlLabel
-      sx={{ pr: 2 }}
+      sx={magicItemAttunementLabelSx}
       control={
         <Checkbox
           checked={attuned}
@@ -40,13 +47,7 @@ const ItemName = ({ magicItemAtom }: MagicItemProps) => {
       placeholder="Item name"
       {...featureCommonProps}
       fullWidth
-      sx={{
-        '& input, .MuiSelect-select': {
-          textAlign: 'left',
-          fontWeight: 200,
-          fontSize: '1rem',
-        },
-      }}
+      sx={magicItemNameInputSx}
     />
   );
 };
@@ -77,11 +78,11 @@ const ItemDescription = ({ magicItemAtom }: MagicItemProps) => {
 
 export const MagicItem = ({ magicItemAtom }: MagicItemProps) => (
   <Grid size={12} component={StyledPaper}>
-    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-      <Box sx={{ flex: 1, minWidth: 0 }}>
+    <Box sx={magicItemHeaderSx}>
+      <Box sx={magicItemNameContainerSx}>
         <ItemName magicItemAtom={magicItemAtom} />
       </Box>
-      <Box sx={{ flex: '0 0 auto' }}>
+      <Box sx={magicItemAttunementContainerSx}>
         <AttunedCheckbox magicItemAtom={magicItemAtom} />
       </Box>
     </Box>
@@ -91,4 +92,4 @@ export const MagicItem = ({ magicItemAtom }: MagicItemProps) => (
 );
 
 export const MagicItems = ({ magicItems }: MagicItemsProps) =>
-  magicItems.map((item, idx) => <MagicItem key={idx} magicItemAtom={item} />);
+  magicItems.map((magicItemAtom, idx) => <MagicItem key={idx} magicItemAtom={magicItemAtom} />);

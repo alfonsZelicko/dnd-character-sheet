@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 import { useAtom } from 'jotai';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
 import { Placeholder } from '@tiptap/extensions';
 import { StyledPaper } from '../shared';
 import { NoteProps } from './types';
@@ -41,7 +40,7 @@ export function Notes({
   const [value, setValue] = useAtom(atom);
   const rowCount = Number(rows);
   const extensions = useMemo(
-    () => [StarterKit, Underline, Placeholder.configure({ placeholder: String(placeholder) })],
+    () => [StarterKit, Placeholder.configure({ placeholder: String(placeholder) })],
     [placeholder]
   );
   const editor = useEditor({

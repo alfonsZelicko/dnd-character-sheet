@@ -6,20 +6,6 @@ export type InventoryItemType = {
   quantity: number;
 };
 
-export type MagicItemType = {
-  name: string;
-  description: string;
-  attuned: boolean;
-};
-
-export type MagicItemsProps = {
-  magicItems: PrimitiveAtom<MagicItemType>[];
-};
-
-export type MagicItemProps = {
-  magicItemAtom: PrimitiveAtom<MagicItemType>;
-};
-
 export type InventoryListProps = {
   inventoryItems: PrimitiveAtom<InventoryItemType>[];
 };

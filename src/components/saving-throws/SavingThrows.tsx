@@ -5,7 +5,7 @@ import { Abilities } from '../abilities/types';
 import { ComponentLabel, StyledPaper } from '../shared';
 
 export const SavingThrows = () => (
-  <Grid container component={StyledPaper} direction={'row'} justifyContent={'space-between'} size={12}>
+  <Grid container component={StyledPaper} direction={'row'} justifyContent={'space-between'} size={12} height={'100%'}>
     <Grid size={6}>
       <SavingThrowItem ability={Abilities.Strength} />
       <SavingThrowItem ability={Abilities.Dexterity} />
