@@ -1,16 +1,16 @@
 import { createTheme } from '@mui/material';
 import { dottedBorder } from './css-styles';
-import { InputColor, MainColor, MainContentColor } from './colors';
+import { DefaultThemeColors, InputColor, MainColor, MainContentColor } from './colors';
 
 export { InputColor, MainColor, MainContentColor } from './colors';
 
 /* redesign of the Material-UI components */
 
-export const theme = createTheme({
+export const createAppTheme = (mainColor = DefaultThemeColors.main) => createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: MainColor,
+      main: mainColor,
     },
   },
   typography: {
@@ -162,6 +162,8 @@ export const theme = createTheme({
     },
   },
 });
+
+export const theme = createAppTheme();
 
 /*styleOverrides: {
   '*': {

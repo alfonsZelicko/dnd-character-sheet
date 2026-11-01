@@ -11,7 +11,9 @@ const a11yProps = (index: number) => {
 };
 
 const generateTabSx = (isAtime: boolean): SxProps<Theme> => ({
-  background: isAtime ? '#816e5b99' : '#816e5b29',
+  background: isAtime
+    ? 'color-mix(in srgb, var(--app-main-color, #816e5b) 60%, transparent)'
+    : 'color-mix(in srgb, var(--app-main-color, #816e5b) 16%, transparent)',
   '&.Mui-selected': { color: 'white' },
 });
 

@@ -9,7 +9,7 @@ export const ellipsisWrapper: SxProps = {
   whiteSpace: 'nowrap',
 };
 
-export const dottedBorder: Property.Border = `1px dotted ${MainColor}80`;
+export const dottedBorder: Property.Border = `1px dotted color-mix(in srgb, ${MainColor} 50%, transparent)`;
 
 export const mergedPaperListSx = (): SxProps<Theme> => ({
   '& .paperItem': {

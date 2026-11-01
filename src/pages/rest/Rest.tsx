@@ -1,44 +1,134 @@
-import { Button, FormControlLabel, Grid2 as Grid } from '@mui/material';
-import { exportLocalStorageToJSON, importJSONToLocalStorage } from '../../features/utils';
-import React from 'react';
-import Checkbox from '@mui/material/Checkbox';
+import { Button, Checkbox, FormControlLabel, Paper, Stack, Typography } from '@mui/material';
+import React, { useRef } from 'react';
+import { exportLocalStorageToJSON, importJSONFileToLocalStorage } from '../../features/utils';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import { useAtom } from 'jotai';
 import { showIncDecButtonsAtom } from '../../components/shared/number-input/inc-dec-buttons/atoms';
 import { ApplyCharaPicMask } from '../../components/character-image/atoms';
+import { DefaultThemeColors, themeColorsAtom } from '../../utils/colors';
+
+const getColorPickerValue = (color: string): string => {
+  if (/^#[\da-f]{6}$/i.test(color)) return color;
+
+  const rgba = color.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+  if (!rgba) return '#000000';
+
+  return `#${rgba.slice(1, 4).map((channel) => Number(channel).toString(16).padStart(2, '0')).join('')}`;
+};
 
 export const Rest = () => {
   const [getShowHideBtns, setShowHideBtns] = useAtom(showIncDecButtonsAtom);
   const [getApplyMask, setApplyMask] = useAtom(ApplyCharaPicMask);
+  const [colors, setColors] = useAtom(themeColorsAtom);
+  const importInputRef = useRef<HTMLInputElement>(null);
 
   const handleChangeShowIncDecBtns = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowHideBtns(event.target.checked);
   };
 
-  const handleChangeAplyCharImgMask = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeApplyCharImgMask = (event: React.ChangeEvent<HTMLInputElement>) => {
     setApplyMask(event.target.checked);
   };
-  
-  return(
-    <Grid size={12}>
-      <Button
-        variant={'outlined'}
-        onClick={() => {
-          exportLocalStorageToJSON();
-        }}
-      >
-        Character Export
-      </Button>
-      <Button
-        variant={'outlined'}
-        onClick={() => {
-          importJSONToLocalStorage();
-        }}
-      >
-        Character Import
-      </Button>
-      <br/>
-      <FormControlLabel control={<Checkbox checked={!!getApplyMask} onChange={handleChangeAplyCharImgMask} />} label="Aply Character image mask" />
-      <FormControlLabel control={<Checkbox checked={getShowHideBtns} onChange={handleChangeShowIncDecBtns} />} label="Show inc/dec buttons" />
-    </Grid>
-  )
+
+  const handleImportFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) await importJSONFileToLocalStorage(file);
+    event.target.value = '';
+  };
+
+  return (
+    <Stack spacing={2.5} sx={{ width: '100%', maxWidth: 640, mx: 'auto', p: { xs: 2, sm: 3 } }}>
+      <Typography variant="h5" component="h1">What next?</Typography>
+
+      <Paper variant="outlined" sx={{ p: { xs: 2, sm: 2.5 } }}>
+        <Stack spacing={1.5}>
+          <Typography variant="h6" component="h2">Character data</Typography>
+          <Typography variant="body2" color="text.secondary">
+            Save a backup of your character or restore one from a JSON file.
+          </Typography>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ pt: 0.5 }}>
+            <Button variant="outlined" startIcon={<FileDownloadOutlinedIcon />} onClick={exportLocalStorageToJSON}>
+              Character Export
+            </Button>
+            <Button variant="outlined" startIcon={<FileUploadOutlinedIcon />} onClick={() => importInputRef.current?.click()}>
+              Character Import
+            </Button>
+            <input
+              ref={importInputRef}
+              type="file"
+              accept="application/json,.json"
+              onChange={handleImportFile}
+              hidden
+            />
+          </Stack>
+        </Stack>
+      </Paper>
+
+      <Paper variant="outlined" sx={{ p: { xs: 2, sm: 2.5 } }}>
+        <Stack spacing={0.5}>
+          <Typography variant="h6" component="h2">Display settings</Typography>
+          <FormControlLabel
+            control={<Checkbox checked={!!getApplyMask} onChange={handleChangeApplyCharImgMask} />}
+            label="Apply character image mask"
+          />
+          <FormControlLabel
+            control={<Checkbox checked={getShowHideBtns} onChange={handleChangeShowIncDecBtns} />}
+            label="Show increment/decrement buttons"
+          />
+        </Stack>
+      </Paper>
+
+      <Paper variant="outlined" sx={{ p: { xs: 2, sm: 2.5 } }}>
+        <Stack spacing={1.5}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+            <Typography variant="h6" component="h2">App colors</Typography>
+            <Button size="small" onClick={() => setColors(DefaultThemeColors)}>
+              Reset to defaults
+            </Button>
+          </Stack>
+          <Typography variant="body2" color="text.secondary">
+            Choose the accent, panel background, and text colors used throughout the app.
+          </Typography>
+          <Stack spacing={1}>
+            {([
+              ['main', 'Accent color'],
+              ['content', 'Panel background'],
+              ['input', 'Text color'],
+            ] as const).map(([key, label]) => (
+              <Stack
+                key={key}
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                spacing={2}
+                sx={{ minHeight: 42 }}
+              >
+                <Typography component="label" htmlFor={`theme-color-${key}`}>
+                  {label}
+                </Typography>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <input
+                    id={`theme-color-${key}`}
+                    type="color"
+                    value={getColorPickerValue(colors[key])}
+                    onChange={(event) => setColors((current) => ({ ...current, [key]: event.target.value }))}
+                    aria-label={label}
+                    style={{ width: 48, height: 36, padding: 2, cursor: 'pointer' }}
+                  />
+                  <Button
+                    size="small"
+                    onClick={() => setColors((current) => ({ ...current, [key]: DefaultThemeColors[key] }))}
+                    aria-label={`Reset ${label.toLowerCase()} to default`}
+                  >
+                    Default
+                  </Button>
+                </Stack>
+              </Stack>
+            ))}
+          </Stack>
+        </Stack>
+      </Paper>
+    </Stack>
+  );
 };

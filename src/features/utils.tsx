@@ -11,7 +11,6 @@ export const removeLeadingZeros = (value: string | number): string =>
 
 
 /*  ---- import/export helpers ---- */
-// Export all localStorage items as a JSON object
 export function exportLocalStorageToJSON(): void {
   const localStorageData: Record<string, string | null> = {};
 
@@ -22,30 +21,38 @@ export function exportLocalStorageToJSON(): void {
     }
   }
 
-  console.log(JSON.stringify(localStorageData, null, 2));
-  alert('Data exported to console as JSON!');
+  const json = JSON.stringify(localStorageData, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const date = new Date().toISOString().slice(0, 10);
+
+  link.href = url;
+  link.download = `dnd-character-sheet-${date}.json`;
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
-// Import JSON and store it into localStorage
-export function importJSONToLocalStorage(): void {
-  const jsonInput = prompt('Paste the JSON data to import:');
-
-  if (!jsonInput) {
-    alert('No JSON data provided!');
-    return;
-  }
-
+export async function importJSONFileToLocalStorage(file: File): Promise<void> {
   try {
-    const data: Record<string, string> = JSON.parse(jsonInput);
+    const data: unknown = JSON.parse(await file.text());
+    if (typeof data !== 'object' || data === null || Array.isArray(data)) {
+      throw new Error('The JSON file must contain an object of local storage values.');
+    }
 
-    Object.entries(data).forEach(([key, value]) => {
-      localStorage.setItem(key, value);
+    const entries = Object.entries(data);
+    if (!entries.every(([, value]) => typeof value === 'string' || value === null)) {
+      throw new Error('The JSON file contains values in an unsupported format.');
+    }
+
+    entries.forEach(([key, value]) => {
+      if (value !== null) localStorage.setItem(key, value);
     });
 
-    alert('Data imported into localStorage successfully!');
+    window.location.reload();
   } catch (error) {
-    console.error('Invalid JSON input:', error);
-    alert('Failed to import data. Please provide valid JSON!');
+    console.error('Could not import character data:', error);
+    alert(error instanceof Error ? `Import failed: ${error.message}` : 'Import failed. Please choose a valid JSON file.');
   }
 }
 
