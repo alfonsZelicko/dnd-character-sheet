@@ -1,10 +1,11 @@
 import { Box, Checkbox, FormControlLabel, Grid2 as Grid } from '@mui/material';
 import { selectAtom } from 'jotai/utils';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useMemo } from 'react';
-import { StyledPaper, StyledStandardTextField, StyledTextFieldArea } from '../shared';
+import { StyledPaper, StyledStandardTextField } from '../shared';
 import { featureCommonProps } from '../features/components/utils';
 import { MagicItemProps, MagicItemsProps } from './types';
+import { Notes } from '../notes';
 
 const AttunedCheckbox = ({ magicItemAtom }: MagicItemProps) => {
   const attunedAtom = useMemo(() => selectAtom(magicItemAtom, (item) => item.attuned), [magicItemAtom]);
@@ -51,19 +52,25 @@ const ItemName = ({ magicItemAtom }: MagicItemProps) => {
 };
 
 const ItemDescription = ({ magicItemAtom }: MagicItemProps) => {
-  const descriptionAtom = useMemo(() => selectAtom(magicItemAtom, (item) => item.description), [magicItemAtom]);
-  const description = useAtomValue(descriptionAtom);
-  const setMagicItem = useSetAtom(magicItemAtom);
+  const descriptionAtom = useMemo(
+    () =>
+      atom(
+        (get) => get(magicItemAtom).description,
+        (get, set, update: React.SetStateAction<string>) => {
+          const currentDescription = get(magicItemAtom).description;
+          const description = typeof update === 'function' ? update(currentDescription) : update;
+          set(magicItemAtom, (item) => ({ ...item, description }));
+        }
+      ),
+    [magicItemAtom]
+  );
 
   return (
-    <StyledTextFieldArea
-      value={description}
-      onChange={(event) => setMagicItem((item) => ({ ...item, description: event.target.value }))}
-      variant="outlined"
-      fullWidth
+    <Notes
+      atom={descriptionAtom}
       rows={5}
       placeholder="Item Description"
-      multiline
+      WrapperProps={{ component: 'div' }}
     />
   );
 };
@@ -79,9 +86,7 @@ export const MagicItem = ({ magicItemAtom }: MagicItemProps) => (
       </Box>
     </Box>
 
-    <Box sx={{ display: 'flex', height: 'auto', width: '100%', minWidth: 0 }}>
-      <ItemDescription magicItemAtom={magicItemAtom} />
-    </Box>
+    <ItemDescription magicItemAtom={magicItemAtom} />
   </Grid>
 );
 

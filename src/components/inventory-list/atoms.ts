@@ -50,5 +50,10 @@ export const BackpackAtoms = atomWithStorage<InventoryItemType[]>('backpack-atom
 export const BackpackAtomsAtom = splitAtom(BackpackAtoms);
 export const QuickSlotAtoms = atomWithStorage<InventoryItemType[]>('quickSlot-atom', initQuickSlotInventoryAtomsValue);
 export const QuickSlotAtomsAtom = splitAtom(QuickSlotAtoms);
-export const MagicItemAtoms = atomWithStorage<MagicItemType[]>('magic-item-atoms', initMagicItemAtomsValue);
+export const MagicItemAtoms = atomWithStorage<MagicItemType[]>(
+  'magic-item-atoms',
+  initMagicItemAtomsValue,
+  undefined,
+  { getOnInit: true }
+);
 export const MagicItemAtomsAtom = splitAtom(MagicItemAtoms);
