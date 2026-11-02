@@ -61,6 +61,8 @@
     "build": "Generate an optimized production build of the app and output it to the 'dist' directory.",
     "lint": "Check the app's codebase for syntax and style errors based on defined linting rules.",
     "preview": "Serve the production build locally to test the app as it would appear in a deployed environment.",
+    "test": "Run the test suite in watch mode during development.",
+    "test:run": "Run the test suite once and exit, suitable for CI or a final check.",
     "generate-build-stats": "Generates report visualizing the bundle structure, showing the size of each library and module."
   },
   "packageManager": "pnpm@10.23.0"
