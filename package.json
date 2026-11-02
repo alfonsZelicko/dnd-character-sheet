@@ -7,6 +7,8 @@
     "dev": "vite --open --host",
     "build": "vite build",
     "lint": "eslint .",
+    "test": "vitest",
+    "test:run": "vitest run",
     "preview": "vite preview",
     "generate-build-stats": "node dev-utils/generate-stats.js",
     "generate-component": "plop --plopfile dev-utils/plopfile.js"
@@ -29,6 +31,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react-swc": "^3.7.2",
@@ -41,12 +46,14 @@
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^15.13.0",
+    "jsdom": "^26.1.0",
     "nx": "20.1.4",
     "plop": "^4.0.1",
     "prettier": "^3.4.2",
     "rollup-plugin-visualizer": "^5.12.0",
     "vite": "6.0.2",
-    "vite-plugin-compression": "^0.5.1"
+    "vite-plugin-compression": "^0.5.1",
+    "vitest": "^3.2.7"
   },
   "nx": {},
   "scriptsComments": {

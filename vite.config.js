@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react-swc';
 import { join } from 'path';
 import { copyFileSync, existsSync, mkdirSync } from 'fs';
@@ -15,6 +15,12 @@ const backgroundScriptPath = join(buildUtilsDir, 'background.js');
 const basePath = process.env.VITE_BASE_PATH ?? '/';
 
 export default defineConfig({
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./tests/setup.ts'],
+    clearMocks: true,
+    restoreMocks: true,
+  },
   base: basePath,
   build: {
     outDir: 'dist',
