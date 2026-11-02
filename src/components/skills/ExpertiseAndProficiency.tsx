@@ -1,5 +1,5 @@
 import { skillAtom } from './atoms';
-import { useAtom } from 'jotai/index';
+import { useAtom } from 'jotai';
 import React, { ChangeEvent, memo, useCallback } from 'react';
 import { Checkbox, Tooltip } from '@mui/material';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
@@ -11,25 +11,31 @@ import { ProfAndExpType, SkillsType } from './types';
 export const ExpertiseAndProficiency = memo(({ skillName }: { skillName: SkillsType }) => {
   const [{ proficiencyAndExpertise }, setSkill] = useAtom(skillAtom(skillName));
 
-  const calcNextState = useCallback((prevProfAndExp: ProfAndExpType, { name, checked }: EventTarget & HTMLInputElement): ProfAndExpType => {
-    let newProficiencyAndExpertise = prevProfAndExp;
+  const calcNextState = useCallback(
+    (prevProfAndExp: ProfAndExpType, { name, checked }: EventTarget & HTMLInputElement): ProfAndExpType => {
+      let newProficiencyAndExpertise = prevProfAndExp;
 
-    if (name === 'expertise') {
-      newProficiencyAndExpertise = checked ? 2 : 1;
-    } else {
-      //name === 'proficiency'
-      if (newProficiencyAndExpertise === 2) {
-        newProficiencyAndExpertise = 1;
+      if (name === 'expertise') {
+        newProficiencyAndExpertise = checked ? 2 : 1;
       } else {
-        newProficiencyAndExpertise = checked ? 1 : 0;
+        //name === 'proficiency'
+        if (newProficiencyAndExpertise === 2) {
+          newProficiencyAndExpertise = 1;
+        } else {
+          newProficiencyAndExpertise = checked ? 1 : 0;
+        }
       }
-    }
 
-    return newProficiencyAndExpertise;
-  }, []);
+      return newProficiencyAndExpertise;
+    },
+    []
+  );
 
   const handleChangeExpOrProf = (event: ChangeEvent<HTMLInputElement>) => {
-    setSkill((prev) => ({ ...prev, proficiencyAndExpertise: calcNextState(prev.proficiencyAndExpertise, event.target) }));
+    setSkill((prev) => ({
+      ...prev,
+      proficiencyAndExpertise: calcNextState(prev.proficiencyAndExpertise, event.target),
+    }));
   };
 
   return (

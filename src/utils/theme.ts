@@ -26,6 +26,10 @@ export const createAppTheme = (mainColor = DefaultThemeColors.main) => createThe
         root: {
           padding: 1,
           marginTop: 4,
+          color: MainColor,
+          '&.Mui-checked, &.MuiCheckbox-indeterminate': {
+            color: MainColor,
+          },
         },
       },
     },

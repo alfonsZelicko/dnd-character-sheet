@@ -11,6 +11,7 @@ export type AttackType = {
 
 export type AttackItemProps = {
   attackAtom: PrimitiveAtom<AttackType>;
+  onRemove?: () => void;
 };
 
 /* for feature use */

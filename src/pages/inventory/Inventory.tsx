@@ -11,6 +11,7 @@ import {
   SilverCoins,
   StyledLabel,
   StyledPaper,
+  WeaponInventory,
 } from '../../components';
 import { useAtomValue } from 'jotai';
 
@@ -21,7 +22,7 @@ export const Inventory = () => {
 
   return (
     <Grid container size={12} spacing={1} alignItems="stretch">
-      <Grid container size={4} direction={'column'}>
+      <Grid container size={{ xs: 12, md: 4 }} direction={'column'}>
         <Grid container flexDirection={'row'} component={StyledPaper}>
           <Grid size={4}>
             <GoldCoins />
@@ -39,8 +40,11 @@ export const Inventory = () => {
         <InventoryList inventoryItems={backpackItems} nameDescription={'Backpack Inventory'} />
         <InventoryList inventoryItems={quickSlotItems} nameDescription={'Quick slots'} />
       </Grid>
-      <Grid container size={3} direction="column" sx={{ alignSelf: 'stretch', justifyContent: 'space-between' }}>
+      <Grid container size={{ xs: 12, md: 3 }} direction="column" sx={{ alignSelf: 'stretch', justifyContent: 'space-between' }}>
         <MagicItems magicItems={magicItems} />
+      </Grid>
+      <Grid container size={{ xs: 12, md: 5 }} direction="column">
+        <WeaponInventory />
       </Grid>
     </Grid>
   );

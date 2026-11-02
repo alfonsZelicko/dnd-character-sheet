@@ -1,9 +1,10 @@
 import { styled, TextField, Typography } from '@mui/material';
+import { MainColor } from '../../../utils';
 
 export const StyledTextField = styled(TextField)({
   width: '50px',
   height: '50px',
-  border: '1.5px solid #846e5485',
+  border: `1.5px solid color-mix(in srgb, ${MainColor} 50%, transparent)`,
   borderRadius: '0',
   boxShadow: '0 0 2px rgba(0,0,0,0.1)',
   '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {

@@ -1,9 +1,10 @@
-import { Grid2 as Grid, styled } from '@mui/material';
+import { Grid2 as Grid, IconButton, styled } from '@mui/material';
 import React from 'react';
 import { StyledPaper, StyledStandardTextField } from '../shared';
 import { AttackItemProps } from './types';
 import { useAtom } from 'jotai';
 import { attackNameSx, commonPropsSx, noteSx } from './styles';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const commonProps = {
   variant: 'standard' as 'standard',
@@ -15,7 +16,7 @@ const StyledGrid = styled(Grid)({
   marginTop: '-5px',
 });
 
-export const AttackItem = ({ attackAtom }: AttackItemProps) => {
+export const AttackItem = ({ attackAtom, onRemove }: AttackItemProps) => {
   const [{ attackName, attackBonus, damage, damageType, range, note }, setAttack] = useAtom(attackAtom);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +39,7 @@ export const AttackItem = ({ attackAtom }: AttackItemProps) => {
         </StyledGrid>
         <StyledGrid sx={{ width: '30px' }}>
           <StyledStandardTextField
-            placeholder={'B.'}
+            placeholder={'⚂'}
             value={attackBonus}
             name={'attackBonus'}
             onChange={handleChange}
@@ -72,6 +73,13 @@ export const AttackItem = ({ attackAtom }: AttackItemProps) => {
             {...commonProps}
           />
         </StyledGrid>
+        {onRemove && (
+          <Grid size="auto">
+            <IconButton size="small" aria-label={`Remove ${attackName || 'weapon'}`} onClick={onRemove}>
+              <DeleteOutlineIcon fontSize="small" />
+            </IconButton>
+          </Grid>
+        )}
       </Grid>
       <StyledGrid size={12}>
         <StyledStandardTextField

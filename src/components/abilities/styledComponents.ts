@@ -12,7 +12,7 @@ export const StyledAbilityInput = styled(NumberInput)({
     fontSize: '1.7rem',
     color: MainColor,
     fontWeight: 400,
-    paddingTop: '13px !important',
+    paddingTop: '12px !important',
   },
 });
 

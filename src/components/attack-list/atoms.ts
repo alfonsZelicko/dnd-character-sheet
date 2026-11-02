@@ -22,3 +22,6 @@ const initAttackAtomsValue: AttackType[] = [
 
 export const AttackAtoms = atomWithStorage<AttackType[]>('attacks-list', initAttackAtomsValue);
 export const AttackAtomsAtom = splitAtom(AttackAtoms);
+
+// Included in character backups through the localStorage export.
+export const optionsWeaponsOnPreviewAtom = atomWithStorage<number>('options_weapons-on-preview', 2);
