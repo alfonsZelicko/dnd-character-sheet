@@ -22,28 +22,48 @@ The [demo](https://alfonsZelicko.github.io/dnd-character-sheet) is conjured and 
 
 In recent days I have added tabs upon the upper edge of the interface, for I foresee further expansions upon the horizon. Yet know this: in its earliest design the journal was meant to be but a single, simple page. If any traveler desires to use it in that original spirit, I shall gladly forge a version more faithful to the first vision.
 
+## Features
+
+- **Character Preview** presents character statistics, abilities, skills, saving throws, and notes. Notes support rich-text formatting such as bold and italics.
+- **Inventory** keeps backpack items, quick-slot items, coins, and a separate list of weapons. Weapons can be added to or removed from the list.
+- **Options** lets you export and import character data as JSON, choose or reset the app colors, set display preferences, and choose how many weapons appear on Character Preview (two by default).
+- Character data and preferences are stored locally in the browser. JSON backups include the app's local storage values.
+
 ## Project Setup
 
 - **Node Version**: 20.17
+- **Package Manager**: pnpm 10.23.0
 - **Build Tool**: Vite
 
 ### Getting Started
 
 1. Install dependencies:
    ```bash
-   npm install
-   # or
-   yarn install
+   pnpm install
+   ```
 
 2. Run the development server:
     ```bash
-    vite
+    pnpm dev
+    ```
 
 3. Build a Chrome extension:
     ```bash
-   vite build
+   pnpm build
+   ```
 
 ... the Extension will be built into the {root}/dist folder -> this needs to be added into the Chrome as usually
+
+### Tests
+
+Run tests in watch mode while developing, or run them once for a CI-style check:
+
+```bash
+pnpm test
+pnpm test:run
+```
+
+Component tests live next to their components. Broader tests that cover shared app behavior live in `tests/`.
 
 # TODO / Roadmap
 

@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest';
 
-describe('Rest', () => {
+describe('Options', () => {
   it.todo('renders and handles its expected behavior');
 });

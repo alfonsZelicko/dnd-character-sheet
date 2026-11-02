@@ -7,7 +7,7 @@ import TabPanel, { TabPanelProps } from '@mui/lab/TabPanel';
 import { TabContext } from '@mui/lab';
 import { mergeSx, scrollBackgroundSx, usePageNavigation } from '../../utils';
 import { Box } from '@mui/material';
-import { Rest } from '../rest';
+import { Options } from '../options';
 
 /* merging tabPanelProps with some default SX, ...*/
 const commonTabPanelProps = (props?: Omit<TabPanelProps, 'value'>): Omit<TabPanelProps, 'value'> => ({
@@ -38,7 +38,7 @@ export const MainContainer = () => {
             <Inventory />
           </TabPanel>
           <TabPanel value={'2'} {...commonTabPanelProps()}>
-            <Rest />
+            <Options />
           </TabPanel>
         </PageContainer>
       </TabContext>

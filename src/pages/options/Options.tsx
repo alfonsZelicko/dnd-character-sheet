@@ -22,7 +22,7 @@ const getColorPickerValue = (color: string): string => {
     .join('')}`;
 };
 
-export const Rest = () => {
+export const Options = () => {
   const [getShowHideBtns, setShowHideBtns] = useAtom(showIncDecButtonsAtom);
   const [getApplyMask, setApplyMask] = useAtom(ApplyCharaPicMask);
   const [colors, setColors] = useAtom(themeColorsAtom);
@@ -46,7 +46,7 @@ export const Rest = () => {
   return (
     <Stack spacing={2.5} sx={{ width: '100%', maxWidth: 640, mx: 'auto', p: { xs: 2, sm: 3 } }}>
       <Typography variant="h5" component="h1">
-        What next?
+        Options
       </Typography>
 
       <Grid container size={12} component={StyledPaper} direction="column">
