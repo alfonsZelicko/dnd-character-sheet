@@ -34,7 +34,7 @@ export default [
       '@typescript-eslint/no-unused-vars': 'off', // or "@typescript-eslint/no-unused-vars": "off",
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'react/jsx-no-target-blank': 'off',
-      'sort-keys-fix/sort-keys-fix': ['error', 'asc', { caseSensitive: true, minKeys: 2, natural: false }],
+      'sort-keys-fix/sort-keys-fix': ['error', 'asc', { caseSensitive: true, natural: false }],
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [
         'warn',
