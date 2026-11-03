@@ -1,8 +1,27 @@
-import { Button, Checkbox, FormControlLabel, Grid2 as Grid, Stack, Typography } from '@mui/material';
-import React, { useRef } from 'react';
+import {
+  Button,
+  ButtonGroup,
+  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  FormControlLabel,
+  Grid2 as Grid,
+  Menu,
+  MenuItem,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import React, { useRef, useState } from 'react';
 import { exportLocalStorageToJSON, importJSONFileToLocalStorage } from '../../features/utils';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useAtom } from 'jotai';
 import { showIncDecButtonsAtom } from '../../components/shared/number-input/inc-dec-buttons/atoms';
 import { ApplyCharaPicMask } from '../../components/character-image/atoms';
@@ -10,6 +29,7 @@ import { DefaultThemeColors, themeColorsAtom } from '../../utils/colors';
 import { optionsWeaponsOnPreviewAtom } from '../../components/attack-list/atoms';
 import { StandardNumberInput, StyledPaper } from '../../components';
 import { APP_VERSION } from '../../features/version';
+import { resetCharacterData } from '../../features/characterData';
 
 const getColorPickerValue = (color: string): string => {
   if (/^#[\da-f]{6}$/i.test(color)) return color;
@@ -29,6 +49,8 @@ export const Options = () => {
   const [colors, setColors] = useAtom(themeColorsAtom);
   const [previewWeaponCount, setPreviewWeaponCount] = useAtom(optionsWeaponsOnPreviewAtom);
   const importInputRef = useRef<HTMLInputElement>(null);
+  const [exportMenuAnchor, setExportMenuAnchor] = useState<null | HTMLElement>(null);
+  const [confirmResetOpen, setConfirmResetOpen] = useState(false);
 
   const handleChangeShowIncDecBtns = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowHideBtns(event.target.checked);
@@ -42,6 +64,11 @@ export const Options = () => {
     const file = event.target.files?.[0];
     if (file) await importJSONFileToLocalStorage(file);
     event.target.value = '';
+  };
+
+  const handleResetCharacter = () => {
+    resetCharacterData();
+    window.location.reload();
   };
 
   return (
@@ -59,30 +86,53 @@ export const Options = () => {
             Character data
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Export character data on its own or include app settings in a full backup. A character-only import keeps your current app settings.
+            Export your character or a full backup. Importing a character-only file keeps your current app settings.
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ pt: 0.5 }}>
-            <Button
-              variant="outlined"
-              startIcon={<FileDownloadOutlinedIcon />}
-              onClick={() => exportLocalStorageToJSON(false)}
+            <ButtonGroup variant="outlined" aria-label="Character export options">
+              <Tooltip title="Download this character as a JSON file without app settings." arrow>
+                <Button startIcon={<FileDownloadOutlinedIcon />} onClick={() => exportLocalStorageToJSON(false)}>
+                  Export character
+                </Button>
+              </Tooltip>
+              <Tooltip title="Choose a full backup that also includes app settings." arrow>
+                <Button
+                  aria-label="Choose export type"
+                  aria-haspopup="menu"
+                  aria-expanded={Boolean(exportMenuAnchor)}
+                  onClick={(event) => setExportMenuAnchor(event.currentTarget)}
+                  sx={{ minWidth: 40, px: 0.5 }}
+                >
+                  <ArrowDropDownIcon />
+                </Button>
+              </Tooltip>
+            </ButtonGroup>
+            <Menu
+              anchorEl={exportMenuAnchor}
+              open={Boolean(exportMenuAnchor)}
+              onClose={() => setExportMenuAnchor(null)}
             >
-              Character Export
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<FileDownloadOutlinedIcon />}
-              onClick={() => exportLocalStorageToJSON(true)}
-            >
-              Full Backup
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<FileUploadOutlinedIcon />}
-              onClick={() => importInputRef.current?.click()}
-            >
-              Character Import
-            </Button>
+              <Tooltip title="Includes character data and app settings such as colors and display preferences." arrow>
+                <MenuItem
+                  onClick={() => {
+                    setExportMenuAnchor(null);
+                    exportLocalStorageToJSON(true);
+                  }}
+                >
+                  <FileDownloadOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
+                  Full backup
+                </MenuItem>
+              </Tooltip>
+            </Menu>
+            <Tooltip title="Load character data from a JSON file. A full backup also restores its app settings." arrow>
+              <Button
+                variant="outlined"
+                startIcon={<FileUploadOutlinedIcon />}
+                onClick={() => importInputRef.current?.click()}
+              >
+                Import character
+              </Button>
+            </Tooltip>
             <input
               ref={importInputRef}
               type="file"
@@ -91,8 +141,40 @@ export const Options = () => {
               hidden
             />
           </Stack>
+          <Divider sx={{ my: 1 }} />
+          <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ sm: 'center' }} justifyContent="space-between" spacing={1}>
+            <Typography variant="body2" color="text.secondary">
+              Remove this character's saved data. App settings will stay as they are.
+            </Typography>
+            <Tooltip title="Permanently clear the current character from this browser." arrow>
+              <Button
+                color="error"
+                variant="outlined"
+                startIcon={<DeleteOutlineIcon />}
+                onClick={() => setConfirmResetOpen(true)}
+                sx={{ alignSelf: { xs: 'flex-start', sm: 'auto' }, flexShrink: 0 }}
+              >
+                Reset character
+              </Button>
+            </Tooltip>
+          </Stack>
         </Stack>
       </Grid>
+
+      <Dialog open={confirmResetOpen} onClose={() => setConfirmResetOpen(false)}>
+        <DialogTitle>Reset this character?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            This will permanently remove this character's saved data from this browser. App settings will not be changed.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmResetOpen(false)}>Cancel</Button>
+          <Button color="error" variant="contained" onClick={handleResetCharacter}>
+            Reset character
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Grid container size={12} component={StyledPaper} direction="column">
         <Stack spacing={0.5}>

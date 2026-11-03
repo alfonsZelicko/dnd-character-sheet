@@ -20,6 +20,7 @@ This journal has been carefully attuned for full-screen use upon a tablet, where
 - **Inventory** keeps backpack items, quick-slot items, coins, and a separate list of weapons. Weapons can be added to or removed from the list.
 - **Options** lets you export character data or a full backup, import JSON files, choose or reset app colors, set display preferences, and choose how many weapons appear on Character Preview (two by default).
 - Character data and app preferences are stored locally in the browser. A full backup contains separate `character` and `options` sections; a character-only export omits `options`, and importing one leaves current app preferences in place.
+- On first launch, visitors without saved character data can choose to load a sample character from `public/demo-character.json` or start with a blank sheet. Existing character data and app options are never replaced by the sample.
 
 ## Project Setup
 
@@ -53,7 +54,10 @@ Run tests in watch mode while developing, or run them once for a CI-style check:
 ```bash
 pnpm test
 pnpm test:run
+pnpm test:changed
 ```
+
+`pnpm test` watches for edits and reruns related tests while the process stays open. `pnpm test:changed` uses Vitest's dependency cache to run tests affected since its previous run; its first run executes the full suite and records dependencies. This mode requires Node.js 22.15 or newer and does not require Git. Keep `pnpm test:run` for a complete run, such as before a release or in CI.
 
 Component tests live next to their components. Broader tests that cover shared app behavior live in `tests/`.
 

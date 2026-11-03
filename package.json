@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:changed": "vitest run --since-last-run",
     "preview": "vite preview",
     "generate-build-stats": "node dev-utils/generate-stats.js",
     "generate-component": "plop --plopfile dev-utils/plopfile.js"
@@ -63,6 +64,7 @@
     "preview": "Serve the production build locally to test the app as it would appear in a deployed environment.",
     "test": "Run the test suite in watch mode during development.",
     "test:run": "Run the test suite once and exit, suitable for CI or a final check.",
+    "test:changed": "Run tests affected by files changed since the previous test:changed run. The first run executes the full suite; use Node.js 22.15 or newer.",
     "generate-build-stats": "Generates report visualizing the bundle structure, showing the size of each library and module."
   },
   "packageManager": "pnpm@10.23.0"

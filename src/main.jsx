@@ -3,19 +3,22 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import { Provider } from 'jotai';
 import { migrateLocalStorage } from './features/characterData.ts';
+import { FirstRunDialog } from './features/FirstRunDialog.tsx';
 
 const root = createRoot(document.getElementById('root'));
 
-try {
-  migrateLocalStorage(localStorage);
+const renderApp = () =>
   root.render(
     <StrictMode>
       <Provider>
-        <App />
+        <FirstRunDialog>
+          <App />
+        </FirstRunDialog>
       </Provider>
     </StrictMode>
   );
-} catch (error) {
+
+const renderCompatibilityError = (error) => {
   const message = error instanceof Error ? error.message : 'The saved character data could not be upgraded.';
   root.render(
     <main style={{ maxWidth: 640, margin: '15vh auto', padding: 24, fontFamily: 'sans-serif' }}>
@@ -24,5 +27,16 @@ try {
       <p>Your saved data has not been changed. Update the app or restore a compatible character backup.</p>
     </main>
   );
-}
+};
+
+const initializeApp = () => {
+  try {
+    migrateLocalStorage(localStorage);
+    renderApp();
+  } catch (error) {
+    renderCompatibilityError(error);
+  }
+};
+
+initializeApp();
 ``;

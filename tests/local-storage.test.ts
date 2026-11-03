@@ -30,10 +30,15 @@ describe('localStorage persistence', () => {
   });
 
   it('imports string values into localStorage', async () => {
-    await importJSONFileToLocalStorage(makeImportFile(JSON.stringify({ name: 'Aria', notes: '<p>Ready</p>' })));
+    const reloadMock = vi.fn();
+    await importJSONFileToLocalStorage(
+      makeImportFile(JSON.stringify({ name: 'Aria', notes: '<p>Ready</p>' })),
+      reloadMock
+    );
 
     expect(localStorage.getItem('name')).toBe('Aria');
     expect(localStorage.getItem('notes')).toBe('<p>Ready</p>');
+    expect(reloadMock).toHaveBeenCalledOnce();
   });
 
   it('rejects unsupported import values and reports the error', async () => {

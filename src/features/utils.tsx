@@ -25,12 +25,15 @@ export function exportLocalStorageToJSON(includeOptions = true): void {
   URL.revokeObjectURL(url);
 }
 
-export async function importJSONFileToLocalStorage(file: File): Promise<void> {
+export async function importJSONFileToLocalStorage(
+  file: File,
+  reloadPage: () => void = () => window.location.reload()
+): Promise<void> {
   try {
     const data = parseCharacterBackup(await file.text());
     writeCharacterData(localStorage, data);
 
-    window.location.reload();
+    reloadPage();
   } catch (error) {
     console.error('Could not import character data:', error);
     alert(error instanceof Error ? `Import failed: ${error.message}` : 'Import failed. Please choose a valid JSON file.');
