@@ -1,26 +1,36 @@
 import { APP_VERSION } from './version';
 
-export const CHARACTER_DATA_SCHEMA_VERSION = 1;
+export const CHARACTER_DATA_SCHEMA_VERSION = 2;
 const schemaVersionStorageKey = 'character-data-schema-version';
 const backupFormat = 'dnd-character-sheet';
 
 export type CharacterData = Record<string, string>;
+type MigratedCharacterData = Record<string, string | null>;
+export type BackupData = {
+  character: MigratedCharacterData;
+  options: MigratedCharacterData;
+};
 
 export type CharacterBackup = {
   format: typeof backupFormat;
   appVersion: string;
   schemaVersion: number;
-  data: CharacterData;
+  character: CharacterData;
+  options?: CharacterData;
 };
 
-type MigratedCharacterData = Record<string, string | null>;
 type Migration = (data: MigratedCharacterData) => MigratedCharacterData;
 
-// Keep one migration per source version. When schema v2 is introduced, add a
-// 1 -> 2 migration here; backups and local data then upgrade one step at a time.
+// Keep one migration per source version. Increment the schema and add the
+// matching migration whenever stored character or option keys change.
 const migrations: Record<number, Migration> = {
   0: (data) => data,
+  1: (data) => data,
 };
+
+const optionKeys = new Set(['theme-colors', 'showIncDecButtons', 'character-picture-mask']);
+
+const isOptionKey = (key: string): boolean => key.startsWith('options_') || optionKeys.has(key);
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -62,6 +72,17 @@ export function migrateCharacterData(data: CharacterData, fromVersion: number): 
   return migratedData;
 }
 
+const splitData = (data: MigratedCharacterData): BackupData => {
+  const character: MigratedCharacterData = {};
+  const options: MigratedCharacterData = {};
+
+  for (const [key, value] of Object.entries(data)) {
+    (isOptionKey(key) ? options : character)[key] = value;
+  }
+
+  return { character, options };
+};
+
 export function migrateLocalStorage(storage: Storage): void {
   const savedVersion = storage.getItem(schemaVersionStorageKey);
   const sourceVersion = savedVersion === null ? 0 : Number(savedVersion);
@@ -79,40 +100,51 @@ export function migrateLocalStorage(storage: Storage): void {
   storage.setItem(schemaVersionStorageKey, String(CHARACTER_DATA_SCHEMA_VERSION));
 }
 
-export function createCharacterBackup(storage: Storage = localStorage): CharacterBackup {
+export function createCharacterBackup(storage: Storage = localStorage, includeOptions = true): CharacterBackup {
   const data = Object.fromEntries(
     Array.from({ length: storage.length }, (_, index) => storage.key(index))
       .filter((key): key is string => key !== null && key !== schemaVersionStorageKey)
       .map((key) => [key, storage.getItem(key) ?? ''])
   );
+  const { character, options } = splitData(data);
 
   return {
     format: backupFormat,
     appVersion: APP_VERSION,
     schemaVersion: CHARACTER_DATA_SCHEMA_VERSION,
-    data,
+    character: Object.fromEntries(Object.entries(character).filter(([, value]) => value !== null)) as CharacterData,
+    ...(includeOptions
+      ? { options: Object.fromEntries(Object.entries(options).filter(([, value]) => value !== null)) as CharacterData }
+      : {}),
   };
 }
 
-export function parseCharacterBackup(json: string): MigratedCharacterData {
+export function parseCharacterBackup(json: string): BackupData {
   const parsed: unknown = JSON.parse(json);
   if (!isRecord(parsed)) throw new Error('The JSON file must contain a character backup object.');
 
   // Backups made before the versioned envelope were flat localStorage maps.
   if (parsed.format !== backupFormat) {
-    return migrateCharacterData(validateCharacterData(parsed), 0);
+    return splitData(migrateCharacterData(validateCharacterData(parsed), 0));
   }
 
   if (typeof parsed.appVersion !== 'string' || !Number.isInteger(parsed.schemaVersion)) {
     throw new Error('The character backup is missing valid version information.');
   }
 
-  const data = validateCharacterData(parsed.data);
-  return migrateCharacterData(data, parsed.schemaVersion as number);
+  // Schema v1 stored all localStorage values together under `data`.
+  const data =
+    parsed.schemaVersion === 1
+      ? validateCharacterData(parsed.data)
+      : {
+          ...validateCharacterData(parsed.character),
+          ...validateCharacterData(parsed.options ?? {}),
+        };
+  return splitData(migrateCharacterData(data, parsed.schemaVersion as number));
 }
 
-export function writeCharacterData(storage: Storage, data: MigratedCharacterData): void {
-  for (const [key, value] of Object.entries(data)) {
+export function writeCharacterData(storage: Storage, data: BackupData): void {
+  for (const [key, value] of Object.entries({ ...data.character, ...data.options })) {
     if (value === null) storage.removeItem(key);
     else storage.setItem(key, value);
   }

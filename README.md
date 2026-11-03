@@ -1,33 +1,25 @@
 # DnD Character Sheet
 
-Behold, traveler, and lend thine ear. This humble work is my personal endeavor, wherein I tinker with curious libraries of the React realm, most notably [Jotai](https://github.com/pmndrs/jotai) and [MUI](https://mui.com/) - Yet this library hath been altered in its appearance, reshaped greatly to match the vision I held in mind. At present, the creation takes the shape of a modest character scroll for the great game of DnD. Its features are simple still, yet many more lie waiting upon the road ahead. All memories are kept within the browser’s own hidden vault, localStorage, that the demo may remain ever light and wholly static.
-
-This journal has been carefully attuned for full-screen use upon a tablet, where it feels most at home. Should any soul desire it shaped for a different resolution or device, I would gladly reforge it—no such request is unwelcome.
-
-And know this as well: should any brave soul wish to join the crafting of this tool, or desire to wield it for their own adventures, I shall gladly offer guidance to set it running. The project stands almost ready to serve as a Chrome extension, and I can swiftly forge the magic needed to synchronize one’s character across many devices, so long as the wanderer is signed into the browser. New ideas for improvements are most welcome. For now, the tool is shaped to fit the peculiar dimensions of my own tablet, yet I am willing to reshape it for others—my motivation merely slumbers.
-
-Thus do I invite thee to step forth, explore, and, if thou wilt, lend a hand in shaping what may yet become a finer artifact.
-
 ## Live Demo
 
-Shouldst thou wish to try the tool without commitment and glimpse how it behaves, behold the demo below.
+[Open the DnD Character Sheet demo](https://alfonsZelicko.github.io/dnd-character-sheet)
 
-<a href="https://alfonsZelicko.github.io/dnd-character-sheet" target="_blank" rel="noopener noreferrer">DEMO</a>
+The demo is published automatically from `main` when `.github/workflows/deploy-demo.yml` completes successfully.
 
 <div align="center">
   <img src="dev-utils/screen.jpg" alt="Screenshot" width="50%">
 </div>
 
-The [demo](https://alfonsZelicko.github.io/dnd-character-sheet) is conjured and published automatically from `main` whenever the workflow in `.github/workflows/deploy-demo.yml` completes its task in triumph.
+Behold, traveler, and lend thine ear. This humble work is my personal endeavor, wherein I tinker with curious libraries of the React realm, most notably [Jotai](https://github.com/pmndrs/jotai) and [MUI](https://mui.com/). The creation takes the shape of a character scroll for the great game of DnD. All memories are kept within the browser’s own hidden vault, `localStorage`, so the demo may remain ever light and wholly static.
 
-In recent days I have added tabs upon the upper edge of the interface, for I foresee further expansions upon the horizon. Yet know this: in its earliest design the journal was meant to be but a single, simple page. If any traveler desires to use it in that original spirit, I shall gladly forge a version more faithful to the first vision.
+This journal has been carefully attuned for full-screen use upon a tablet, where it feels most at home. Should any soul desire it shaped for a different resolution or device, I would gladly reforge it.
 
 ## Features
 
 - **Character Preview** presents character statistics, abilities, skills, saving throws, and notes. Notes support rich-text formatting such as bold and italics.
 - **Inventory** keeps backpack items, quick-slot items, coins, and a separate list of weapons. Weapons can be added to or removed from the list.
-- **Options** lets you export and import character data as JSON, choose or reset the app colors, set display preferences, and choose how many weapons appear on Character Preview (two by default).
-- Character data and preferences are stored locally in the browser. JSON backups include the app's local storage values.
+- **Options** lets you export character data or a full backup, import JSON files, choose or reset app colors, set display preferences, and choose how many weapons appear on Character Preview (two by default).
+- Character data and app preferences are stored locally in the browser. A full backup contains separate `character` and `options` sections; a character-only export omits `options`, and importing one leaves current app preferences in place.
 
 ## Project Setup
 
@@ -43,16 +35,16 @@ In recent days I have added tabs upon the upper edge of the interface, for I for
    ```
 
 2. Run the development server:
-    ```bash
-    pnpm dev
-    ```
+   ```bash
+   pnpm dev
+   ```
 
-3. Build a Chrome extension:
-    ```bash
+3. Build the app:
+   ```bash
    pnpm build
    ```
 
-... the Extension will be built into the {root}/dist folder -> this needs to be added into the Chrome as usually
+The production build is written to `dist/`. For a Chrome extension, load that folder into Chrome as an unpacked extension.
 
 ### Tests
 
@@ -65,19 +57,31 @@ pnpm test:run
 
 Component tests live next to their components. Broader tests that cover shared app behavior live in `tests/`.
 
-# TODO / Roadmap
+## Development Rules: Persistent Data and Backups
 
-## Immediate Enhancements
+Components persist their state in `localStorage` through Jotai `atomWithStorage`. The storage key is the durable identity of each value, so changing a key can otherwise make existing data appear to vanish.
+
+- Keep character keys for data belonging to a character (for example `name`, `features`, or `backpack-atom`).
+- Prefix new app preference keys with `options_` (for example `options_weapons-on-preview`). Existing preference keys are also recognized: `theme-colors`, `showIncDecButtons`, and `character-picture-mask`.
+- If a persisted key is renamed, removed, or its stored value shape changes, update `src/features/characterData.ts`: increment `CHARACTER_DATA_SCHEMA_VERSION` and add a migration from the previous schema version in `migrations`. Migrations run one version at a time and are used for both local data and imported backups. Do not edit or delete old migrations; add the next step.
+- If a new option key is introduced, add it to the `options_` namespace so exports keep it in the `options` section. If an existing option key does not use that prefix, add it to `optionKeys` in `characterData.ts`.
+- Keep `appVersion` sourced from `package.json` through Vite's `__APP_VERSION__` define. Bump the package version for a release; compatibility migrations are driven by `CHARACTER_DATA_SCHEMA_VERSION`, not by the app version.
+- Preserve import compatibility when changing the backup shape. `parseCharacterBackup` must continue to recognize old flat exports and schema v1 backups, and tests should cover each supported format plus the current character-only and full-backup formats.
+
+## TODO / Roadmap
+
+### Immediate Enhancements
+
 - Implement **custom XML layout configuration** for greater flexibility in character sheet presentation.
 - Expand core features:
   - Companion list management
   - Enhanced inventory handling
   - Detailed character traits and abilities, etc.
 
-## Future Development Plans
+### Future Development Plans
+
 - Explore **Electron port** to enable a desktop application experience.
 - Develop a **Chrome extension** to synchronize character data across devices.
 - Early experiments with **MCP server integration**: this may include connecting to 5e Tools or other rule servers for automated rule extraction.
 
 If you’re interested in contributing to any of these efforts or testing features, I’d be glad to collaborate and help you get set up.
-

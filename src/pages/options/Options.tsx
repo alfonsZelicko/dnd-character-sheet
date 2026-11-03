@@ -59,11 +59,22 @@ export const Options = () => {
             Character data
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Save a backup of your character or restore one from a JSON file.
+            Export character data on its own or include app settings in a full backup. A character-only import keeps your current app settings.
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ pt: 0.5 }}>
-            <Button variant="outlined" startIcon={<FileDownloadOutlinedIcon />} onClick={exportLocalStorageToJSON}>
+            <Button
+              variant="outlined"
+              startIcon={<FileDownloadOutlinedIcon />}
+              onClick={() => exportLocalStorageToJSON(false)}
+            >
               Character Export
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<FileDownloadOutlinedIcon />}
+              onClick={() => exportLocalStorageToJSON(true)}
+            >
+              Full Backup
             </Button>
             <Button
               variant="outlined"

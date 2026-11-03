@@ -12,15 +12,15 @@ export const removeLeadingZeros = (value: string | number): string =>
 
 
 /*  ---- import/export helpers ---- */
-export function exportLocalStorageToJSON(): void {
-  const json = JSON.stringify(createCharacterBackup(), null, 2);
+export function exportLocalStorageToJSON(includeOptions = true): void {
+  const json = JSON.stringify(createCharacterBackup(localStorage, includeOptions), null, 2);
   const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   const date = new Date().toISOString().slice(0, 10);
 
   link.href = url;
-  link.download = `dnd-character-sheet-${date}.json`;
+  link.download = `dnd-character-sheet-${includeOptions ? 'backup' : 'character'}-${date}.json`;
   link.click();
   URL.revokeObjectURL(url);
 }
