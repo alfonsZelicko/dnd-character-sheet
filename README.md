@@ -31,7 +31,7 @@ In recent days I have added tabs upon the upper edge of the interface, for I for
 
 ## Project Setup
 
-- **Node Version**: 20.17
+- **Node Version**: 20.19+ or 22.12+
 - **Package Manager**: pnpm 10.23.0
 - **Build Tool**: Vite
 
