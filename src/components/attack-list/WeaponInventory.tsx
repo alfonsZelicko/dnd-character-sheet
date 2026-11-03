@@ -4,7 +4,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import React from 'react';
 import { mergedPaperListSx } from '../../utils';
 import { StyledPaper } from '../shared';
-import { AttackItem } from './AttackItem';
+import { WeaponItem } from './WeaponItem';
 import { AttackAtoms, AttackAtomsAtom } from './atoms';
 import { AttackType } from './types';
 
@@ -22,19 +22,22 @@ export const WeaponInventory = () => {
   const [, setWeapons] = useAtom(AttackAtoms);
 
   const addWeapon = () => setWeapons((current) => [...current, createEmptyWeapon()]);
-  const removeWeapon = (index: number) => setWeapons((current) => current.filter((_, itemIndex) => itemIndex !== index));
+  const removeWeapon = (index: number) =>
+    setWeapons((current) => current.filter((_, itemIndex) => itemIndex !== index));
 
   return (
     <Grid container size={12} component={StyledPaper} direction="column">
       <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1} sx={{ p: 1 }}>
-        <Typography variant="h6" component="h2">Weapons</Typography>
+        <Typography variant="h6" component="h2">
+          Weapons
+        </Typography>
         <Button size="small" startIcon={<AddIcon />} onClick={addWeapon}>
           Add weapon
         </Button>
       </Stack>
       <Grid container size={12} spacing={0} sx={mergedPaperListSx()}>
         {weaponAtoms.map((attackAtom, index) => (
-          <AttackItem key={index} attackAtom={attackAtom} onRemove={() => removeWeapon(index)} />
+          <WeaponItem key={index} attackAtom={attackAtom} onRemove={() => removeWeapon(index)} />
         ))}
       </Grid>
     </Grid>

@@ -16,7 +16,9 @@ const StyledGrid = styled(Grid)({
   marginTop: '-5px',
 });
 
-export const AttackItem = ({ attackAtom, onRemove }: AttackItemProps) => {
+// TODO: optimize rendering to rerender only changed components
+
+export const WeaponItem = ({ attackAtom, onRemove }: AttackItemProps) => {
   const [{ attackName, attackBonus, damage, damageType, range, note }, setAttack] = useAtom(attackAtom);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -69,9 +69,11 @@ const ItemDescription = ({ magicItemAtom }: MagicItemProps) => {
   return (
     <Notes
       atom={descriptionAtom}
-      rows={5}
       placeholder="Item Description"
-      WrapperProps={{ component: 'div' }}
+      rows={5}
+      WrapperProps={{
+        component: 'div',
+      }}
     />
   );
 };

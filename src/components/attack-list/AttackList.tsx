@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
-import { AttackAtomsAtom } from './atoms';
-import { AttackItem } from './AttackItem';
+import { AttackAtomsAtom, optionsWeaponsOnPreviewAtom } from './atoms';
+import { WeaponItem } from './WeaponItem';
 import { Grid2 as Grid } from '@mui/material';
 import { mergedPaperListSx } from '../../utils';
 import { useAtomValue } from 'jotai/index';
-import { optionsWeaponsOnPreviewAtom } from './atoms';
 
 export const AttackList = () => {
   const attacks = useAtomValue(AttackAtomsAtom);
@@ -13,7 +12,7 @@ export const AttackList = () => {
     <Grid container spacing={0} sx={mergedPaperListSx()}>
       {attacks.slice(0, Math.max(0, previewWeaponCount)).map((attackAtom, index) => (
         <Fragment key={index}>
-          <AttackItem attackAtom={attackAtom} />
+          <WeaponItem attackAtom={attackAtom} />
         </Fragment>
       ))}
     </Grid>

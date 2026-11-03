@@ -1,6 +1,7 @@
 import { SxProps, Theme } from '@mui/material';
 
 const NOTE_LINE_HEIGHT_REM = 1.5;
+const PADDING = '4px';
 const NOTE_LINE_HEIGHT = `${NOTE_LINE_HEIGHT_REM}rem`;
 const NOTE_LINE_BACKGROUND = `repeating-linear-gradient(
   to bottom,
@@ -12,19 +13,25 @@ const NOTE_LINE_BACKGROUND = `repeating-linear-gradient(
 
 export const getNotesSx = (rowCount: number, fullWidth: boolean): SxProps<Theme> => ({
   display: 'flex',
-  height: '100%',
+  flexDirection: 'column',
   boxSizing: 'border-box',
-  minHeight: Number.isFinite(rowCount) && rowCount > 0 ? `${rowCount * NOTE_LINE_HEIGHT_REM}rem` : undefined,
+  // set minHeight precisely to the product of lines + fixed paddings (2 * 4px = 8px / 0.5rem).
+  minHeight:
+    Number.isFinite(rowCount) && rowCount > 0
+      ? `calc(${rowCount * NOTE_LINE_HEIGHT_REM}rem + ${PADDING} + ${PADDING})`
+      : undefined,
   position: 'relative',
   width: fullWidth ? '100%' : undefined,
-
+  overflow: 'hidden',
   '& .notes-editor-frame': {
     display: 'flex',
+    flexDirection: 'column',
     flex: 1,
     minWidth: 0,
     overflow: 'auto',
     '& > div': {
       display: 'flex',
+      flexDirection: 'column',
       flex: 1,
       minWidth: 0,
     },
@@ -32,10 +39,9 @@ export const getNotesSx = (rowCount: number, fullWidth: boolean): SxProps<Theme>
   '& .notes-editor-content': {
     boxSizing: 'border-box',
     flex: 1,
-    minHeight: '100%',
     width: '100%',
     margin: 0,
-    padding: '4px',
+    padding: PADDING,
     outline: 0,
     overflowWrap: 'anywhere',
     whiteSpace: 'pre-wrap',
@@ -47,11 +53,16 @@ export const getNotesSx = (rowCount: number, fullWidth: boolean): SxProps<Theme>
     '&::before': {
       position: 'absolute',
       zIndex: 0,
-      inset: '4px',
+      // background based on padding value
+      top: PADDING,
+      bottom: PADDING,
+      left: PADDING,
+      right: PADDING,
       content: '""',
       pointerEvents: 'none',
       backgroundImage: NOTE_LINE_BACKGROUND,
       backgroundSize: `100% ${NOTE_LINE_HEIGHT}`,
+      backgroundPosition: 'top left',
       backgroundPositionY: '-0.3rem',
     },
     '& p': {
