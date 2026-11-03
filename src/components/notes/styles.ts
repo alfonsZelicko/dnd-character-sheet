@@ -44,7 +44,6 @@ export const getNotesSx = (rowCount: number, fullWidth: boolean): SxProps<Theme>
     fontSize: '1rem',
     fontWeight: 200,
     lineHeight: NOTE_LINE_HEIGHT,
-
     '&::before': {
       position: 'absolute',
       zIndex: 0,

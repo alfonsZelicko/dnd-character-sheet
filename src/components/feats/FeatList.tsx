@@ -10,16 +10,16 @@ export const FeatList = ({ GridProps, WrapperProps }: FeatListProps) => {
   const [feats] = useAtom(FeatAtomsAtom);
 
   return feats.map((feat, index) => (
-    <Grid
-      key={index}
-      size={12}
-      sx={{ py: 0 }}
-      {...GridProps}
-    >
+    <Grid key={index} size={12} sx={{ py: 0 }} {...GridProps}>
       <Notes
         atom={feat}
         rows={2}
-        WrapperProps={{ component: 'div', borderTop: index ? '1px solid ' + InputColor : 'unset', ...WrapperProps }}
+        WrapperProps={{
+          sx: { height: '3.5rem' },
+          component: 'div',
+          borderTop: index ? '1px solid ' + InputColor : 'unset',
+          ...WrapperProps,
+        }}
         placeholder={'Feat + description'}
       />
     </Grid>
