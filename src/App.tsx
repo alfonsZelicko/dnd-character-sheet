@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import { themeColorsAtom } from './utils/colors';
 import { createAppTheme } from './utils/theme';
+import { FirstRunDialog } from './features/FirstRunDialog';
 
 export const App = () => {
   const colors = useAtomValue(themeColorsAtom);
@@ -30,9 +31,11 @@ export const App = () => {
           },
         }}
       />
-      <BrowserRouter>
-        <MainContainer />
-      </BrowserRouter>
+      <FirstRunDialog>
+        <BrowserRouter>
+          <MainContainer />
+        </BrowserRouter>
+      </FirstRunDialog>
     </ThemeProvider>
   );
 };

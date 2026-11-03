@@ -53,6 +53,7 @@ export const getNotesSx = (rowCount: number, fullWidth: boolean): SxProps<Theme>
       pointerEvents: 'none',
       backgroundImage: NOTE_LINE_BACKGROUND,
       backgroundSize: `100% ${NOTE_LINE_HEIGHT}`,
+      backgroundPositionY: '-0.3rem',
     },
     '& p': {
       position: 'relative',

@@ -53,6 +53,7 @@ export function Notes({
         ...(id ? { id } : {}),
         'aria-label': typeof ariaLabel === 'string' ? ariaLabel : String(placeholder),
         class: 'notes-editor-content',
+        spellcheck: 'false',
       },
     },
     onBlur: ({ editor: blurredEditor }) => setValue(blurredEditor.getHTML()),

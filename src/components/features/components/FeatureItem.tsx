@@ -6,14 +6,14 @@ import { FeatureName, FeatureNumberInput, FeatureType } from './FIComponents';
 
 export const FeatureItem = memo(({ featureAtom }: { featureAtom: PrimitiveAtom<FeatureItemType> }) => {
   return (
-    <Grid container size={12} spacing={1} flexWrap={'nowrap'}>
+    <Grid container size={12} spacing={1} flexWrap={'nowrap'} alignItems="flex-end">
       <Grid size={'grow'}>
         <FeatureName featureAtom={featureAtom} />
       </Grid>
       <Grid sx={{ width: 20 }}>
         <FeatureNumberInput featureAtom={featureAtom} name="maxUsages" />
       </Grid>
-      <Grid sx={{ width: 45 }} alignContent={'flex-end'}>
+      <Grid sx={{ width: 45, display: 'flex', alignItems: 'flex-end' }}>
         <FeatureType featureAtom={featureAtom} />
       </Grid>
       <Grid sx={{ width: 20 }}>

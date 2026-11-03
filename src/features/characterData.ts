@@ -156,6 +156,9 @@ export function resetCharacterData(storage: Storage = localStorage): void {
         !isOptionKey(key)
     )
     .forEach((key) => storage.removeItem(key));
+  // Resetting the character starts the first-run flow again, where the user
+  // can choose a blank sheet or load the sample character.
+  storage.removeItem(demoSeedStorageKey);
 }
 
 export function parseCharacterBackup(json: string): BackupData {

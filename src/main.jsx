@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import { Provider } from 'jotai';
 import { migrateLocalStorage } from './features/characterData.ts';
-import { FirstRunDialog } from './features/FirstRunDialog.tsx';
+
+document.documentElement.setAttribute('spellcheck', 'false');
 
 const root = createRoot(document.getElementById('root'));
 
@@ -11,9 +12,7 @@ const renderApp = () =>
   root.render(
     <StrictMode>
       <Provider>
-        <FirstRunDialog>
-          <App />
-        </FirstRunDialog>
+        <App />
       </Provider>
     </StrictMode>
   );

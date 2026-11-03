@@ -26,7 +26,13 @@ export const FirstRunDialog = ({ children }: { children: ReactNode }) => {
       if (!response.ok) throw new Error('The demo character file is not available yet.');
 
       const wasSeeded = seedDemoCharacterIfEmpty(await response.text());
-      if (!wasSeeded) throw new Error('The demo character file does not contain character data.');
+      if (!wasSeeded) {
+        throw new Error(
+          needsDemoCharacterSeed()
+            ? 'The demo character file does not contain character data.'
+            : 'A character is already saved in this browser, so the sample was not loaded.'
+        );
+      }
 
       window.location.reload();
     } catch (loadError) {
@@ -37,7 +43,7 @@ export const FirstRunDialog = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      {children}
+      {!open && children}
       <Dialog open={open} aria-labelledby="first-run-dialog-title" disableEscapeKeyDown>
         <DialogTitle id="first-run-dialog-title">Welcome to the DnD Character Sheet</DialogTitle>
         <DialogContent>

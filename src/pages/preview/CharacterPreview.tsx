@@ -119,7 +119,7 @@ export const CharacterPreview = () => (
       >
         <FeatList GridProps={{ size: { xs: 4, lg: 12 } }} />
       </Grid>
-      <Grid container size={12} height={415} component={StyledPaper}>
+      <Grid container size={12} component={StyledPaper}>
         <SmallInventory />
       </Grid>
     </Grid>
