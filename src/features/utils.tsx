@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tooltip } from '@mui/material';
+import { createCharacterBackup, parseCharacterBackup, writeCharacterData } from './characterData';
 
 export const formatWithPlusSign = (abilityModifier: number) =>
   (abilityModifier ? (abilityModifier < 0 ? '' : '+') : '') + `${abilityModifier}`;
@@ -12,16 +13,7 @@ export const removeLeadingZeros = (value: string | number): string =>
 
 /*  ---- import/export helpers ---- */
 export function exportLocalStorageToJSON(): void {
-  const localStorageData: Record<string, string | null> = {};
-
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key) {
-      localStorageData[key] = localStorage.getItem(key);
-    }
-  }
-
-  const json = JSON.stringify(localStorageData, null, 2);
+  const json = JSON.stringify(createCharacterBackup(), null, 2);
   const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -35,19 +27,8 @@ export function exportLocalStorageToJSON(): void {
 
 export async function importJSONFileToLocalStorage(file: File): Promise<void> {
   try {
-    const data: unknown = JSON.parse(await file.text());
-    if (typeof data !== 'object' || data === null || Array.isArray(data)) {
-      throw new Error('The JSON file must contain an object of local storage values.');
-    }
-
-    const entries = Object.entries(data);
-    if (!entries.every(([, value]) => typeof value === 'string' || value === null)) {
-      throw new Error('The JSON file contains values in an unsupported format.');
-    }
-
-    entries.forEach(([key, value]) => {
-      if (value !== null) localStorage.setItem(key, value);
-    });
+    const data = parseCharacterBackup(await file.text());
+    writeCharacterData(localStorage, data);
 
     window.location.reload();
   } catch (error) {

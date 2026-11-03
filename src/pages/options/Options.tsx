@@ -9,6 +9,7 @@ import { ApplyCharaPicMask } from '../../components/character-image/atoms';
 import { DefaultThemeColors, themeColorsAtom } from '../../utils/colors';
 import { optionsWeaponsOnPreviewAtom } from '../../components/attack-list/atoms';
 import { StandardNumberInput, StyledPaper } from '../../components';
+import { APP_VERSION } from '../../features/version';
 
 const getColorPickerValue = (color: string): string => {
   if (/^#[\da-f]{6}$/i.test(color)) return color;
@@ -47,6 +48,9 @@ export const Options = () => {
     <Stack spacing={2.5} sx={{ width: '100%', maxWidth: 640, mx: 'auto', p: { xs: 2, sm: 3 } }}>
       <Typography variant="h5" component="h1">
         Options
+      </Typography>
+      <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'right', mt: -2 }}>
+        Version {APP_VERSION}
       </Typography>
 
       <Grid container size={12} component={StyledPaper} direction="column">

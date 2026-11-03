@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react-swc';
 import { join } from 'path';
-import { copyFileSync, existsSync, mkdirSync } from 'fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync } from 'fs';
 
 const buildUtilsFolderName = 'dev-utils';
 // Paths to critical files
@@ -10,11 +10,15 @@ const distDir = join(__dirname, 'dist');
 const appIconPath = join(buildUtilsDir, 'app-icon.png');
 const manifestPath = join(buildUtilsDir, 'manifest.json');
 const backgroundScriptPath = join(buildUtilsDir, 'background.js');
+const appVersion = JSON.parse(readFileSync(join(__dirname, 'package.json'), 'utf8')).version;
 
 // https://vitejs.dev/config/
 const basePath = process.env.VITE_BASE_PATH ?? '/';
 
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(appVersion),
+  },
   test: {
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
