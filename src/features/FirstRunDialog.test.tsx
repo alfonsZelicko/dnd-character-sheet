@@ -13,7 +13,11 @@ describe('FirstRunDialog', () => {
     );
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
-    expect(screen.getByText('Character sheet')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: 'Welcome to the DnD Character Sheet',
+      })
+    ).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Start with a blank sheet' }));
 

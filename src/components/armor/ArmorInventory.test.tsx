@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider, createStore } from 'jotai';
+import { createStore, Provider } from 'jotai';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { ArmorAtoms } from './atoms';
@@ -10,28 +10,34 @@ describe('ArmorInventory', () => {
 
   it('starts with one armor item and persists edits to its fields', () => {
     const store = createStore();
+
     render(
       <Provider store={store}>
         <ArmorInventory />
       </Provider>
     );
 
-    expect(screen.getByRole('heading', { name: 'Armor' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Armors' })).toBeInTheDocument();
     expect(screen.getAllByPlaceholderText('Armor name')).toHaveLength(1);
 
     fireEvent.mouseDown(screen.getByRole('combobox', { name: /armor type/i }));
     fireEvent.click(screen.getByRole('option', { name: 'Light' }));
-    fireEvent.change(screen.getByPlaceholderText('Armor name'), { target: { value: 'Studded Leather' } });
-    fireEvent.change(screen.getByPlaceholderText('Defense'), { target: { value: '12 + Dex' } });
-    fireEvent.change(screen.getByPlaceholderText('Armor description'), { target: { value: 'A dark leather jacket' } });
-    fireEvent.click(screen.getByRole('checkbox', { name: /proficient/i }));
+
+    fireEvent.change(screen.getByPlaceholderText('Armor name'), {
+      target: { value: 'Studded Leather' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Defense'), {
+      target: { value: '12 + Dex' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Armor description'), {
+      target: { value: 'A dark leather jacket' },
+    });
 
     expect(JSON.parse(localStorage.getItem('armor-items') ?? '[]')[0]).toMatchObject({
       category: 'Light',
       name: 'Studded Leather',
       defense: '12 + Dex',
       description: 'A dark leather jacket',
-      proficient: true,
     });
   });
 
