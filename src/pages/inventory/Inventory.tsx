@@ -1,17 +1,13 @@
 import React from 'react';
 import { Grid2 as Grid } from '@mui/material';
 import {
-  BackpackAtomsAtom,
   ArmorInventory,
-  CopperCoins,
-  GoldCoins,
+  BackpackAtomsAtom,
+  Coins,
   InventoryList,
   MagicItemAtomsAtom,
   MagicItems,
   QuickSlotAtomsAtom,
-  SilverCoins,
-  StyledLabel,
-  StyledPaper,
   WeaponInventory,
 } from '../../components';
 import { useAtomValue } from 'jotai';
@@ -27,24 +23,18 @@ export const Inventory = () => {
 
   return (
     <Grid container size={12} spacing={1} alignItems="stretch">
-      <Grid container size={{ xs: 12, md: 4 }} direction={'column'}>
-        <Grid container flexDirection={'row'} component={StyledPaper}>
-          <Grid size={4}>
-            <GoldCoins />
-          </Grid>
-          <Grid size={4}>
-            <SilverCoins />
-          </Grid>
-          <Grid size={4}>
-            <CopperCoins />
-          </Grid>
-          <Grid size={12}>
-            <StyledLabel textAlign={'right'}>Moneyyy</StyledLabel>
-          </Grid>
-        </Grid>
+      {/* coins/inventory list section*/}
+      <Grid
+        container
+        size={{ xs: 12, md: 4 }}
+        direction="column"
+        sx={{ justifyContent: 'space-between', height: 'auto' }}
+      >
+        <Coins />
         <InventoryList inventoryItems={backpackItems} nameDescription={'Backpack Inventory'} />
         <InventoryList inventoryItems={quickSlotItems} nameDescription={'Quick slots'} />
       </Grid>
+      {/* magic items section */}
       <Grid
         container
         size={{ xs: 12, md: 3 }}
@@ -53,6 +43,7 @@ export const Inventory = () => {
       >
         <MagicItems magicItems={magicItems} />
       </Grid>
+      {/* weapons/armor/notes section*/}
       <Grid
         container
         size={{ xs: 12, md: 5 }}

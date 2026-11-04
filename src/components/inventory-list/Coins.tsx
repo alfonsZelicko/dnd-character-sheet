@@ -1,8 +1,9 @@
-import { NumberLabelInput } from '../shared';
+import { NumberLabelInput, StyledLabel, StyledPaper } from '../shared';
 import React from 'react';
 import { CopperCoinsAtom, GoldCoinsAtom, SilverCoinsAtom } from './atoms';
 import { useAtom } from 'jotai';
 import { NumberInputProps } from '../shared/number-input/types';
+import { Grid2 as Grid } from '@mui/material';
 
 export const GoldCoins = (props: NumberInputProps) => {
   const [gold, setGold] = useAtom(GoldCoinsAtom);
@@ -47,6 +48,27 @@ export const CopperCoins = () => {
         onChange: (e) => setCopper(+e.target.value),
       }}
     />
+  );
+};
+
+export const Coins = () => {
+  return (
+    <Grid container flexDirection={'row'} component={StyledPaper}>
+      <Grid container size={12}>
+        <Grid size={4}>
+          <GoldCoins />
+        </Grid>
+        <Grid size={4}>
+          <SilverCoins />
+        </Grid>
+        <Grid size={4}>
+          <CopperCoins />
+        </Grid>
+      </Grid>
+      <Grid size={12}>
+        <StyledLabel textAlign={'right'}>Money</StyledLabel>
+      </Grid>
+    </Grid>
   );
 };
 

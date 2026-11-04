@@ -28,7 +28,7 @@ export const InventoryItem = ({ item }: InventoryItemProps) => {
       type={'number'}
       onChange={handleChange}
       {...commonProps}
-      sx={{ textAlign: 'center' }}
+      sx={{ textAlign: 'center', '& input': { fontWeight: '100' } }}
     />
   );
 

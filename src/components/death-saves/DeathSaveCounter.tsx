@@ -1,4 +1,4 @@
-import { useAtom } from 'jotai/index';
+import { useAtom } from 'jotai';
 import { Checkbox, Grid2 as Grid } from '@mui/material';
 import React, { ReactNode } from 'react';
 
@@ -15,9 +15,16 @@ export const DeathSavesCounter = ({ atom, checkedIcon, icon }: DeathSavesCounter
   };
 
   return (
-    <Grid size={'auto'}>
+    <Grid container size={'auto'} spacing={{ lg: 2, md: 1 }} direction={'row'}>
       {[1, 2, 3].map((value, index) => (
-        <Checkbox checkedIcon={checkedIcon} icon={icon} checked={value <= deathSave} onChange={() => handleDeathSaveCheck(value)} key={index} />
+        <Grid key={index}>
+          <Checkbox
+            checkedIcon={checkedIcon}
+            icon={icon}
+            checked={value <= deathSave}
+            onChange={() => handleDeathSaveCheck(value)}
+          />
+        </Grid>
       ))}
     </Grid>
   );

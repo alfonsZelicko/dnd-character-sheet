@@ -142,7 +142,12 @@ export const Options = () => {
             />
           </Stack>
           <Divider sx={{ my: 1 }} />
-          <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ sm: 'center' }} justifyContent="space-between" spacing={1}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            alignItems={{ sm: 'center' }}
+            justifyContent="space-between"
+            spacing={1}
+          >
             <Typography variant="body2" color="text.secondary">
               Remove this character's saved data. App settings will stay as they are.
             </Typography>
@@ -165,7 +170,8 @@ export const Options = () => {
         <DialogTitle>Reset this character?</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            This will permanently remove this character's saved data from this browser. App settings will not be changed.
+            This will permanently remove this character's saved data from this browser. App settings will not be
+            changed.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -199,7 +205,7 @@ export const Options = () => {
           </Typography>
           <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
             <Typography component="label" htmlFor="preview-weapon-count">
-              Weapons shown
+              Weapons shown on Character Preview
             </Typography>
             <StandardNumberInput
               name="preview-weapon-count"

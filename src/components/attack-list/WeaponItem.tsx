@@ -1,4 +1,4 @@
-import { Grid2 as Grid, IconButton, styled } from '@mui/material';
+import { Grid2 as Grid, IconButton, styled, Tooltip } from '@mui/material';
 import React from 'react';
 import { StyledPaper, StyledStandardTextField } from '../shared';
 import { AttackItemProps } from './types';
@@ -77,9 +77,11 @@ export const WeaponItem = ({ attackAtom, onRemove }: AttackItemProps) => {
         </StyledGrid>
         {onRemove && (
           <Grid size="auto">
-            <IconButton size="small" aria-label={`Remove ${attackName || 'weapon'}`} onClick={onRemove}>
-              <DeleteOutlineIcon fontSize="small" />
-            </IconButton>
+            <Tooltip title="Delete weapon">
+              <IconButton size="small" aria-label={`Remove ${attackName || 'weapon'}`} onClick={onRemove}>
+                <DeleteOutlineIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
           </Grid>
         )}
       </Grid>

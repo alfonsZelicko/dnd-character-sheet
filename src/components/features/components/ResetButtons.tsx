@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid2 as Grid } from '@mui/material';
+import { Button, Grid2 as Grid, Tooltip } from '@mui/material';
 import { FeatureAtoms } from '../atoms';
 import { RestType } from '../types';
 import { useSetAtom } from 'jotai';
@@ -22,15 +22,21 @@ export const ResetButtons = () => {
 
   return (
     <Grid container size={12} justifyContent={'right'} spacing={1} paddingTop={1}>
-      <Button size={'small'} onClick={() => handleResting(RestType.SR)}>
-        SR
-      </Button>
-      <Button size={'small'} onClick={() => handleResting(RestType.LR)}>
-        LR
-      </Button>
-      <Button size={'small'} onClick={() => handleResting(RestType.DW)}>
-        DW
-      </Button>
+      <Tooltip title={'Reset Short Rest'}>
+        <Button size={'small'} onClick={() => handleResting(RestType.SR)}>
+          SR
+        </Button>
+      </Tooltip>
+      <Tooltip title={'Reset Long Rest'}>
+        <Button size={'small'} onClick={() => handleResting(RestType.LR)}>
+          LR
+        </Button>
+      </Tooltip>
+      <Tooltip title={'Reset Dawn'}>
+        <Button size={'small'} onClick={() => handleResting(RestType.DW)}>
+          DW
+        </Button>
+      </Tooltip>
     </Grid>
   );
 };

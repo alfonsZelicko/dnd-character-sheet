@@ -94,7 +94,7 @@ export const CharacterPreview = () => (
           <Grid size={12}>
             <CharacterPicture />
           </Grid>
-          <Grid size={12}>
+          <Grid size={12} sx={{ mt: 'auto' }}>
             <SmallNotes rows={5} variant={'outlined'} placeholder={'Character description'} />
           </Grid>
         </Grid>
@@ -105,7 +105,7 @@ export const CharacterPreview = () => (
       <Grid size={{ xs: 8, lg: 12 }}>
         <AttackList />
       </Grid>
-      <Grid container size={{ xs: 4, lg: 8 }}>
+      <Grid container size={{ xs: 4, lg: 7 }}>
         <FeatureList />
       </Grid>
       <Grid
@@ -113,7 +113,7 @@ export const CharacterPreview = () => (
         // sx={mergedPaperListSx()}
         justifyContent={'space-between'}
         spacing={{ xs: 2, lg: 0 }}
-        size={{ xs: 12, lg: 4 }}
+        size={{ xs: 12, lg: 5 }}
         direction={{ xs: 'row', lg: 'column' }}
         component={StyledPaper}
       >
