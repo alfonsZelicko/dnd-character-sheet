@@ -1,11 +1,130 @@
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Grid2 as Grid, IconButton, MenuItem, Select, Stack, Tooltip, Typography } from '@mui/material';
-import { useAtom, useAtomValue } from 'jotai';
-import React from 'react';
+import { Button, Grid2 as Grid, IconButton, MenuItem, Select, SelectChangeEvent, Stack, Tooltip, Typography } from '@mui/material';
+import { PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { selectAtom } from 'jotai/utils';
+import React, { memo, useCallback, useMemo } from 'react';
 import { StyledPaper, StyledStandardTextField } from '../shared';
 import { ArmorAtoms, ArmorAtomsAtom } from './atoms';
-import { ArmorItemProps, ArmorType } from './types';
+import { ArmorCategory, ArmorFieldInputProps, ArmorItemProps, ArmorRemoveButtonProps, ArmorType } from './types';
+
+// ─── per-field text input ─────────────────────────────────────────────────────
+
+const ArmorFieldInput = memo(function ArmorFieldInput({ atom, field, placeholder, sx }: ArmorFieldInputProps) {
+  const fieldAtom = useMemo(() => selectAtom(atom, (s) => s[field]), [atom, field]);
+  const value = useAtomValue(fieldAtom);
+  const setArmor = useSetAtom(atom);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setArmor((prev) => ({ ...prev, [field]: e.target.value }));
+    },
+    [setArmor, field],
+  );
+
+  return (
+    <StyledStandardTextField
+      fullWidth
+      variant="standard"
+      placeholder={placeholder}
+      value={value}
+      onChange={handleChange}
+      sx={sx}
+    />
+  );
+});
+
+// ─── category select ──────────────────────────────────────────────────────────
+
+const ArmorCategorySelect = memo(function ArmorCategorySelect({ atom }: { atom: PrimitiveAtom<ArmorType> }) {
+  const categoryAtom = useMemo(() => selectAtom(atom, (s) => s.category), [atom]);
+  const category = useAtomValue(categoryAtom);
+  const setArmor = useSetAtom(atom);
+
+  const handleChange = useCallback(
+    (e: SelectChangeEvent) => {
+      setArmor((prev) => ({ ...prev, category: e.target.value as ArmorCategory }));
+    },
+    [setArmor],
+  );
+
+  return (
+    <Select
+      fullWidth
+      name="armor-type"
+      variant="standard"
+      value={category}
+      inputProps={{ 'aria-label': 'Armor type' }}
+      onChange={handleChange}
+    >
+      {(['Robe', 'Light', 'Medium', 'Heavy'] as ArmorCategory[]).map((cat) => (
+        <MenuItem key={cat} value={cat}>
+          {cat}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+});
+
+// ─── remove button ────────────────────────────────────────────────────────────
+
+const ArmorRemoveButton = memo(function ArmorRemoveButton({ atom, onRemove }: ArmorRemoveButtonProps) {
+  const nameAtom = useMemo(() => selectAtom(atom, (s) => s.name), [atom]);
+  const name = useAtomValue(nameAtom);
+
+  return (
+    <Tooltip title="Delete armor">
+      <IconButton size="small" aria-label={`Remove ${name || 'armor'}`} onClick={onRemove}>
+        <DeleteOutlineIcon fontSize="small" />
+      </IconButton>
+    </Tooltip>
+  );
+});
+
+// ─── ArmorItem ────────────────────────────────────────────────────────────────
+
+export const ArmorItem = ({ armorAtom, onRemove }: ArmorItemProps) => {
+  return (
+    <Grid container size={6} spacing={1} component={StyledPaper} className="paperItem">
+      <Grid container size={12} sx={{ alignItems: 'center', flexWrap: 'nowrap' }}>
+        <Grid size="grow">
+          <ArmorFieldInput
+            atom={armorAtom}
+            field="name"
+            placeholder="Armor name"
+            sx={{ '& input': { textAlign: 'left', fontSize: '1rem', fontWeight: 600 } }}
+          />
+        </Grid>
+        <Grid sx={{ width: 25, flexShrink: 0 }}>
+          <ArmorFieldInput
+            atom={armorAtom}
+            field="defense"
+            placeholder="Defense"
+            sx={{ '& input': { textAlign: 'center', fontSize: '1rem', fontWeight: 200 } }}
+          />
+        </Grid>
+        {onRemove && (
+          <Grid size="auto">
+            <ArmorRemoveButton atom={armorAtom} onRemove={onRemove} />
+          </Grid>
+        )}
+      </Grid>
+      <Grid size="grow">
+        <ArmorFieldInput
+          atom={armorAtom}
+          field="description"
+          placeholder="Armor description"
+          sx={{ '& input': { textAlign: 'left', fontSize: '1rem', fontWeight: 200 } }}
+        />
+      </Grid>
+      <Grid sx={{ width: 75, flexShrink: 0, display: 'flex', alignItems: 'flex-end', alignSelf: 'stretch' }}>
+        <ArmorCategorySelect atom={armorAtom} />
+      </Grid>
+    </Grid>
+  );
+};
+
+// ─── ArmorInventory ───────────────────────────────────────────────────────────
 
 const createEmptyArmor = (): ArmorType => ({
   category: 'Robe',
@@ -14,91 +133,6 @@ const createEmptyArmor = (): ArmorType => ({
   description: '',
   proficient: false,
 });
-
-// TODO: optimize rendering to rerender only changed components
-
-export const ArmorItem = ({ armorAtom, onRemove }: ArmorItemProps) => {
-  const [armor, setArmor] = useAtom(armorAtom);
-
-  return (
-    <Grid container size={6} spacing={1} component={StyledPaper} className="paperItem">
-      <Grid container size={12} sx={{ alignItems: 'center', flexWrap: 'nowrap' }}>
-        <Grid size="grow">
-          <StyledStandardTextField
-            fullWidth
-            variant="standard"
-            placeholder="Armor name"
-            value={armor.name}
-            onChange={(event) => setArmor((current) => ({ ...current, name: event.target.value }))}
-            sx={{ '& input': { textAlign: 'left', fontSize: '1rem', fontWeight: 600 } }}
-          />
-        </Grid>
-        <Grid sx={{ width: 25, flexShrink: 0 }}>
-          <StyledStandardTextField
-            fullWidth
-            variant="standard"
-            placeholder="Defense"
-            // inputProps={{ 'aria-label': 'Armor defense' }}
-            value={armor.defense ?? ''}
-            onChange={(event) => setArmor((current) => ({ ...current, defense: event.target.value }))}
-            sx={{ '& input': { textAlign: 'center', fontSize: '1rem', fontWeight: 200 } }}
-          />
-        </Grid>
-        {/*<Grid size="auto">
-          <FormControlLabel
-            control={
-              <Checkbox
-                size="small"
-                checked={armor.proficient}
-                onChange={(event) => setArmor((current) => ({ ...current, proficient: event.target.checked }))}
-              />
-            }
-            label="Prof."
-            labelPlacement="start"
-            sx={{ mr: 0, whiteSpace: 'nowrap' }}
-          />
-        </Grid>*/}
-        {onRemove && (
-          <Grid size="auto">
-            <Tooltip title="Delete armor">
-              <IconButton size="small" aria-label={`Remove ${armor.name || 'armor'}`} onClick={onRemove}>
-                <DeleteOutlineIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          </Grid>
-        )}
-      </Grid>
-      <Grid size={'grow'}>
-        <StyledStandardTextField
-          fullWidth
-          variant="standard"
-          placeholder="Armor description"
-          value={armor.description}
-          onChange={(event) => setArmor((current) => ({ ...current, description: event.target.value }))}
-          sx={{ '& input': { textAlign: 'left', fontSize: '1rem', fontWeight: 200 } }}
-        />
-      </Grid>
-      <Grid sx={{ width: 75, flexShrink: 0, display: 'flex', alignItems: 'flex-end', alignSelf: 'stretch' }}>
-        <Select
-          fullWidth
-          name={'armor-type'}
-          variant="standard"
-          value={armor.category}
-          inputProps={{ 'aria-label': 'Armor type' }}
-          onChange={(event) =>
-            setArmor((current) => ({ ...current, category: event.target.value as typeof current.category }))
-          }
-        >
-          {['Robe', 'Light', 'Medium', 'Heavy'].map((category) => (
-            <MenuItem key={category} value={category}>
-              {category}
-            </MenuItem>
-          ))}
-        </Select>
-      </Grid>
-    </Grid>
-  );
-};
 
 export const ArmorInventory = () => {
   const [, setArmorItems] = useAtom(ArmorAtoms);
@@ -118,12 +152,12 @@ export const ArmorInventory = () => {
           Add armor
         </Button>
       </Stack>
-      <Grid container size={12} spacing={1} direction={'row'}>
+      <Grid container size={12} spacing={1} direction="row">
         {armorAtoms.map((armorAtom, index) => (
           <ArmorItem
             key={index}
             armorAtom={armorAtom}
-            onRemove={() => setArmorItems((items) => items.filter((_, itemIndex) => itemIndex !== index))}
+            onRemove={() => setArmorItems((items) => items.filter((_, i) => i !== index))}
           />
         ))}
       </Grid>

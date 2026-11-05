@@ -14,7 +14,19 @@ export type AttackItemProps = {
   onRemove?: () => void;
 };
 
-/* for feature use */
+export type WeaponFieldInputProps = {
+  atom: PrimitiveAtom<AttackType>;
+  field: keyof AttackType;
+  placeholder: string;
+  sx?: object;
+  width?: number | string;
+  fullWidth?: boolean;
+};
+
+export type WeaponRemoveButtonProps = {
+  atom: PrimitiveAtom<AttackType>;
+  onRemove: () => void;
+};
 
 export enum DamageType {
   Acid = 'Acid',
