@@ -1,7 +1,6 @@
 import {
   Button,
   ButtonGroup,
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,6 +8,7 @@ import {
   DialogTitle,
   Divider,
   FormControlLabel,
+  Checkbox,
   Grid2 as Grid,
   Menu,
   MenuItem,
@@ -16,16 +16,17 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { exportLocalStorageToJSON, importJSONFileToLocalStorage } from '../../features/utils';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { selectAtom } from 'jotai/utils';
 import { showIncDecButtonsAtom } from '../../components/shared/number-input/inc-dec-buttons/atoms';
 import { ApplyCharaPicMask } from '../../components/character-image/atoms';
-import { DefaultThemeColors, themeColorsAtom } from '../../utils/colors';
+import { DefaultThemeColors, ThemeColors, themeColorsAtom } from '../../utils/colors';
 import { optionsWeaponsOnPreviewAtom } from '../../components/attack-list/atoms';
 import { StandardNumberInput, StyledPaper } from '../../components';
 import { APP_VERSION } from '../../features/version';
@@ -43,22 +44,13 @@ const getColorPickerValue = (color: string): string => {
     .join('')}`;
 };
 
-export const Options = () => {
-  const [getShowHideBtns, setShowHideBtns] = useAtom(showIncDecButtonsAtom);
-  const [getApplyMask, setApplyMask] = useAtom(ApplyCharaPicMask);
-  const [colors, setColors] = useAtom(themeColorsAtom);
-  const [previewWeaponCount, setPreviewWeaponCount] = useAtom(optionsWeaponsOnPreviewAtom);
+// ─── Character data section ───────────────────────────────────────────────────
+// No atoms — local state only, never causes atom-driven rerenders.
+
+const CharacterDataSection = memo(function CharacterDataSection() {
   const importInputRef = useRef<HTMLInputElement>(null);
   const [exportMenuAnchor, setExportMenuAnchor] = useState<null | HTMLElement>(null);
   const [confirmResetOpen, setConfirmResetOpen] = useState(false);
-
-  const handleChangeShowIncDecBtns = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setShowHideBtns(event.target.checked);
-  };
-
-  const handleChangeApplyCharImgMask = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setApplyMask(event.target.checked);
-  };
 
   const handleImportFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -72,14 +64,7 @@ export const Options = () => {
   };
 
   return (
-    <Stack spacing={2.5} sx={{ width: '100%', maxWidth: 640, mx: 'auto', p: { xs: 2, sm: 3 } }}>
-      <Typography variant="h5" component="h1">
-        Options
-      </Typography>
-      <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'right', mt: -2 }}>
-        Version {APP_VERSION}
-      </Typography>
-
+    <>
       <Grid container size={12} component={StyledPaper} direction="column">
         <Stack spacing={1.5}>
           <Typography variant="h6" component="h2">
@@ -181,99 +166,194 @@ export const Options = () => {
           </Button>
         </DialogActions>
       </Dialog>
+    </>
+  );
+});
 
-      <Grid container size={12} component={StyledPaper} direction="column">
-        <Stack spacing={0.5}>
+// ─── Display settings section ─────────────────────────────────────────────────
+// Two separate components — each subscribes to exactly one atom.
+
+const ApplyMaskCheckbox = memo(function ApplyMaskCheckbox() {
+  const [applyMask, setApplyMask] = useAtom(ApplyCharaPicMask);
+
+  return (
+    <FormControlLabel
+      control={
+        <Checkbox
+          checked={!!applyMask}
+          onChange={(e) => setApplyMask(e.target.checked)}
+        />
+      }
+      label="Apply character image mask"
+    />
+  );
+});
+
+const ShowIncDecCheckbox = memo(function ShowIncDecCheckbox() {
+  const [showBtns, setShowBtns] = useAtom(showIncDecButtonsAtom);
+
+  return (
+    <FormControlLabel
+      control={
+        <Checkbox
+          checked={showBtns}
+          onChange={(e) => setShowBtns(e.target.checked)}
+        />
+      }
+      label="Show increment/decrement buttons"
+    />
+  );
+});
+
+const DisplaySettingsSection = memo(function DisplaySettingsSection() {
+  return (
+    <Grid container size={12} component={StyledPaper} direction="column">
+      <Stack spacing={0.5}>
+        <Typography variant="h6" component="h2">
+          Display settings
+        </Typography>
+        <ApplyMaskCheckbox />
+        <ShowIncDecCheckbox />
+      </Stack>
+    </Grid>
+  );
+});
+
+// ─── Character preview section ────────────────────────────────────────────────
+
+const WeaponCountInput = memo(function WeaponCountInput() {
+  const [previewWeaponCount, setPreviewWeaponCount] = useAtom(optionsWeaponsOnPreviewAtom);
+
+  return (
+    <StandardNumberInput
+      name="preview-weapon-count"
+      value={previewWeaponCount}
+      onChange={(event) => setPreviewWeaponCount(Math.max(0, Math.floor(Number(event.target.value) || 0)))}
+      aria-label="Weapons shown on Character Preview"
+      fullWidth={false}
+      sx={{ width: 56, textAlign: 'center' }}
+      variant="standard"
+    />
+  );
+});
+
+const CharacterPreviewSection = memo(function CharacterPreviewSection() {
+  return (
+    <Grid container size={12} component={StyledPaper} direction="column">
+      <Stack spacing={1.5}>
+        <Typography variant="h6" component="h2">
+          Character Preview
+        </Typography>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+          <Typography component="label" htmlFor="preview-weapon-count">
+            Weapons shown on Character Preview
+          </Typography>
+          <WeaponCountInput />
+        </Stack>
+      </Stack>
+    </Grid>
+  );
+});
+
+// ─── App colors section ───────────────────────────────────────────────────────
+// One component per color key — each subscribes only to its own slice of themeColorsAtom.
+
+type ColorKey = keyof ThemeColors;
+
+const colorLabels: Record<ColorKey, string> = {
+  main: 'Accent color',
+  content: 'Panel background',
+  input: 'Text color',
+};
+
+const ThemeColorPicker = memo(function ThemeColorPicker({ colorKey }: { colorKey: ColorKey }) {
+  const colorAtom = useMemo(() => selectAtom(themeColorsAtom, (c) => c[colorKey]), [colorKey]);
+  const color = useAtomValue(colorAtom);
+  const setColors = useSetAtom(themeColorsAtom);
+  const label = colorLabels[colorKey];
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setColors((current) => ({ ...current, [colorKey]: e.target.value }));
+    },
+    [setColors, colorKey],
+  );
+
+  const handleReset = useCallback(() => {
+    setColors((current) => ({ ...current, [colorKey]: DefaultThemeColors[colorKey] }));
+  }, [setColors, colorKey]);
+
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
+      spacing={2}
+      sx={{ minHeight: 42 }}
+    >
+      <Typography component="label" htmlFor={`theme-color-${colorKey}`}>
+        {label}
+      </Typography>
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <input
+          id={`theme-color-${colorKey}`}
+          type="color"
+          value={getColorPickerValue(color)}
+          onChange={handleChange}
+          aria-label={label}
+          style={{ width: 48, height: 36, padding: 2, cursor: 'pointer' }}
+        />
+        <Button size="small" onClick={handleReset} aria-label={`Reset ${label.toLowerCase()} to default`}>
+          Default
+        </Button>
+      </Stack>
+    </Stack>
+  );
+});
+
+const AppColorsSection = memo(function AppColorsSection() {
+  const setColors = useSetAtom(themeColorsAtom);
+
+  return (
+    <Grid container size={12} component={StyledPaper} direction="column">
+      <Stack spacing={1.5}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
           <Typography variant="h6" component="h2">
-            Display settings
+            App colors
           </Typography>
-          <FormControlLabel
-            control={<Checkbox checked={!!getApplyMask} onChange={handleChangeApplyCharImgMask} />}
-            label="Apply character image mask"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={getShowHideBtns} onChange={handleChangeShowIncDecBtns} />}
-            label="Show increment/decrement buttons"
-          />
+          <Button size="small" onClick={() => setColors(DefaultThemeColors)}>
+            Reset to defaults
+          </Button>
         </Stack>
-      </Grid>
+        <Typography variant="body2" color="text.secondary">
+          Choose the accent, panel background, and text colors used throughout the app.
+        </Typography>
+        <Stack spacing={1}>
+          {(Object.keys(colorLabels) as ColorKey[]).map((key) => (
+            <ThemeColorPicker key={key} colorKey={key} />
+          ))}
+        </Stack>
+      </Stack>
+    </Grid>
+  );
+});
 
-      <Grid container size={12} component={StyledPaper} direction="column">
-        <Stack spacing={1.5}>
-          <Typography variant="h6" component="h2">
-            Character Preview
-          </Typography>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-            <Typography component="label" htmlFor="preview-weapon-count">
-              Weapons shown on Character Preview
-            </Typography>
-            <StandardNumberInput
-              name="preview-weapon-count"
-              value={previewWeaponCount}
-              onChange={(event) => setPreviewWeaponCount(Math.max(0, Math.floor(Number(event.target.value) || 0)))}
-              aria-label="Weapons shown on Character Preview"
-              fullWidth={false}
-              sx={{ width: 56, textAlign: 'center' }}
-              variant="standard"
-            />
-          </Stack>
-        </Stack>
-      </Grid>
+// ─── Options page ─────────────────────────────────────────────────────────────
 
-      <Grid container size={12} component={StyledPaper} direction="column">
-        <Stack spacing={1.5}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-            <Typography variant="h6" component="h2">
-              App colors
-            </Typography>
-            <Button size="small" onClick={() => setColors(DefaultThemeColors)}>
-              Reset to defaults
-            </Button>
-          </Stack>
-          <Typography variant="body2" color="text.secondary">
-            Choose the accent, panel background, and text colors used throughout the app.
-          </Typography>
-          <Stack spacing={1}>
-            {(
-              [
-                ['main', 'Accent color'],
-                ['content', 'Panel background'],
-                ['input', 'Text color'],
-              ] as const
-            ).map(([key, label]) => (
-              <Stack
-                key={key}
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                spacing={2}
-                sx={{ minHeight: 42 }}
-              >
-                <Typography component="label" htmlFor={`theme-color-${key}`}>
-                  {label}
-                </Typography>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <input
-                    id={`theme-color-${key}`}
-                    type="color"
-                    value={getColorPickerValue(colors[key])}
-                    onChange={(event) => setColors((current) => ({ ...current, [key]: event.target.value }))}
-                    aria-label={label}
-                    style={{ width: 48, height: 36, padding: 2, cursor: 'pointer' }}
-                  />
-                  <Button
-                    size="small"
-                    onClick={() => setColors((current) => ({ ...current, [key]: DefaultThemeColors[key] }))}
-                    aria-label={`Reset ${label.toLowerCase()} to default`}
-                  >
-                    Default
-                  </Button>
-                </Stack>
-              </Stack>
-            ))}
-          </Stack>
-        </Stack>
-      </Grid>
+export const Options = () => {
+  return (
+    <Stack spacing={2.5} sx={{ width: '100%', maxWidth: 640, mx: 'auto', p: { xs: 2, sm: 3 } }}>
+      <Typography variant="h5" component="h1">
+        Options
+      </Typography>
+      <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'right', mt: -2 }}>
+        Version {APP_VERSION}
+      </Typography>
+
+      <CharacterDataSection />
+      <DisplaySettingsSection />
+      <CharacterPreviewSection />
+      <AppColorsSection />
     </Stack>
   );
 };

@@ -3,7 +3,9 @@ import { AttackAtomsAtom, optionsWeaponsOnPreviewAtom } from './atoms';
 import { WeaponItem } from './WeaponItem';
 import { Grid2 as Grid } from '@mui/material';
 import { mergedPaperListSx } from '../../utils';
-import { useAtomValue } from 'jotai/index';
+import { useAtomValue } from 'jotai';
+
+// ─── Used in character preview ──────────────────────────────────────────────────────────
 
 export const AttackList = () => {
   const attacks = useAtomValue(AttackAtomsAtom);
