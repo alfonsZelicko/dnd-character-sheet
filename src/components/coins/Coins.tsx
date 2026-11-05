@@ -54,7 +54,7 @@ export const CopperCoins = () => {
 export const Coins = () => {
   return (
     <Grid container flexDirection={'row'} component={StyledPaper}>
-      <Grid container size={12}>
+      <Grid container size={12} spacing={1}>
         <Grid size={4}>
           <GoldCoins />
         </Grid>
@@ -71,18 +71,3 @@ export const Coins = () => {
     </Grid>
   );
 };
-
-/*
-export const TemporaryHitPoints = () => {
-  const [temporaryHitPoints, setTemporaryHitPoints] = useAtom(temporaryHitPointsAtom);
-
-  return (
-    <NumberLabelInput
-      NumberInputProps={{
-        value: removeLeadingZeros(temporaryHitPoints),
-        onChange: (e) => setTemporaryHitPoints(+e.target.value),
-      }}
-      label="Tmp. Hit points"
-    />
-  );
-};*/

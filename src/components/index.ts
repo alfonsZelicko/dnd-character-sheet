@@ -12,5 +12,6 @@ export * from './attack-list';
 export * from './hit-dices';
 export * from './features';
 export * from './inventory-list';
+export * from './coins';
 export * from './armor';
 export * from './magic-items';
