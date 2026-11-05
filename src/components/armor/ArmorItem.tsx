@@ -1,10 +1,10 @@
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Grid2 as Grid, IconButton, MenuItem, Select, SelectChangeEvent, Stack, Tooltip, Typography } from '@mui/material';
+import { Button, Grid2 as Grid, IconButton, MenuItem, Select, SelectChangeEvent, Stack, Tooltip } from '@mui/material';
 import { PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import React, { memo, useCallback, useMemo } from 'react';
-import { StyledPaper, StyledStandardTextField } from '../shared';
+import { StyledLabel, StyledPaper, StyledStandardTextField } from '../shared';
 import { ArmorAtoms, ArmorAtomsAtom } from './atoms';
 import { ArmorCategory, ArmorFieldInputProps, ArmorItemProps, ArmorRemoveButtonProps, ArmorType } from './types';
 
@@ -140,10 +140,8 @@ export const ArmorInventory = () => {
 
   return (
     <Grid container size={12} component={StyledPaper} direction="column">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1} sx={{ p: 1 }}>
-        <Typography variant="h6" component="h2">
-          Armors
-        </Typography>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+        <StyledLabel>Armors</StyledLabel>
         <Button
           size="small"
           startIcon={<AddIcon />}

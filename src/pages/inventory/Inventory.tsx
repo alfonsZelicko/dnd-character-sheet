@@ -1,14 +1,13 @@
 import React from 'react';
 import { Grid2 as Grid } from '@mui/material';
 import {
-  ArmorInventory,
   BackpackAtomsAtom,
   Coins,
   InventoryList,
-  MagicItemAtomsAtom,
   MagicItems,
   QuickSlotAtomsAtom,
   WeaponInventory,
+  ArmorInventory,
 } from '../../components';
 import { useAtomValue } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
@@ -19,7 +18,6 @@ const InventoryNotesAtom = atomWithStorage<string>('inventory-notes', '', undefi
 export const Inventory = () => {
   const backpackItems = useAtomValue(BackpackAtomsAtom);
   const quickSlotItems = useAtomValue(QuickSlotAtomsAtom);
-  const magicItems = useAtomValue(MagicItemAtomsAtom);
 
   return (
     <Grid container size={12} spacing={1} alignItems="stretch">
@@ -41,7 +39,7 @@ export const Inventory = () => {
         direction="column"
         sx={{ alignSelf: 'stretch', justifyContent: 'space-between' }}
       >
-        <MagicItems magicItems={magicItems} />
+        <MagicItems />
       </Grid>
       {/* weapons/armor/notes section*/}
       <Grid

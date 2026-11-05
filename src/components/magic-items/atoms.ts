@@ -4,7 +4,7 @@ import { MagicItemType } from './types';
 const initialMagicItems: MagicItemType[] = Array.from({ length: 5 }, () => ({
   name: '',
   description: '',
-  attuned: false,
+  attunement: 'not-attuned' as const,
 }));
 
 export const MagicItemAtoms = atomWithStorage<MagicItemType[]>(

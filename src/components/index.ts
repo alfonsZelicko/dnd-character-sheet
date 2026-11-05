@@ -14,4 +14,5 @@ export * from './features';
 export * from './inventory-list';
 export * from './coins';
 export * from './armor';
+export * from './creatures';
 export * from './magic-items';

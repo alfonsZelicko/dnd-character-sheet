@@ -1,6 +1,7 @@
 import React from 'react';
 import { CharacterPreview } from '../preview';
 import { Inventory } from '../inventory';
+import { CreaturesPage } from '../creatures';
 import { PageContainer } from './PageContainer';
 import { MainMenu } from '../../components/main-menu';
 import TabPanel, { TabPanelProps } from '@mui/lab/TabPanel';
@@ -39,6 +40,9 @@ export const MainContainer = () => {
           </TabPanel>
           <TabPanel value={'2'} {...commonTabPanelProps()}>
             <Options />
+          </TabPanel>
+          <TabPanel value={'3'} {...commonTabPanelProps({ sx: { width: '100%' } })}>
+            <CreaturesPage />
           </TabPanel>
         </PageContainer>
       </TabContext>

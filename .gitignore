@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+.vitest
 
 node_modules
 dist
@@ -29,3 +30,6 @@ dist-ssr
 
 .nx/cache
 .nx/workspace-data
+
+#Kiro IDE
+.agents

@@ -1,15 +1,18 @@
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 
+export type AttunementState = 'attuned' | 'not-attuned' | 'not-required';
+
 export type MagicItemType = {
   name: string;
   description: string;
-  attuned: boolean;
-};
-
-export type MagicItemsProps = {
-  magicItems: PrimitiveAtom<MagicItemType>[];
+  attunement: AttunementState;
 };
 
 export type MagicItemProps = {
   magicItemAtom: PrimitiveAtom<MagicItemType>;
+};
+
+export type MagicItemCardProps = {
+  magicItemAtom: PrimitiveAtom<MagicItemType>;
+  index: number;
 };
