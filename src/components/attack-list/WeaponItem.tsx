@@ -1,11 +1,10 @@
-import { Grid2 as Grid, IconButton, Tooltip } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import React, { memo, useCallback, useMemo } from 'react';
-import { StyledPaper, StyledStandardTextField } from '../shared';
+import { RemoveButton, StyledPaper, StyledStandardTextField } from '../shared';
 import { attackNameSx, commonPropsSx, noteSx } from './styles';
 import { AttackItemProps, WeaponFieldInputProps, WeaponRemoveButtonProps } from './types';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 // ─── per-field input ──────────────────────────────────────────────────────────
 
@@ -47,13 +46,7 @@ const WeaponRemoveButton = memo(function WeaponRemoveButton({ atom, onRemove }: 
   const nameAtom = useMemo(() => selectAtom(atom, (s) => s.attackName), [atom]);
   const attackName = useAtomValue(nameAtom);
 
-  return (
-    <Tooltip title="Delete weapon">
-      <IconButton size="small" aria-label={`Remove ${attackName || 'weapon'}`} onClick={onRemove}>
-        <DeleteOutlineIcon fontSize="small" />
-      </IconButton>
-    </Tooltip>
-  );
+  return <RemoveButton onClick={onRemove} tooltip="Delete weapon" ariaLabel={`Remove ${attackName || 'weapon'}`} />;
 });
 
 // ─── WeaponItem ───────────────────────────────────────────────────────────────

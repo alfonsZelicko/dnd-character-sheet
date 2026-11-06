@@ -1,19 +1,24 @@
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Grid2 as Grid, IconButton, Stack, Tooltip } from '@mui/material';
+import { Grid2 as Grid, Stack } from '@mui/material';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 import React, { memo, useCallback, useMemo } from 'react';
-import { Notes } from '../notes/Notes';
-import { StyledPaper, StyledStandardTextField } from '../shared';
+import { Notes } from '../notes';
+import { RemoveButton, StyledPaper, TextInput } from '../shared';
 import { CreatureAbilities } from './components/CreatureAbilities';
-import { CreatureActions } from './components/CreatureActions';
 import { CreatureCombatStats } from './components/CreatureCombatStats';
 import { CreatureFieldInputProps, CreatureItemProps, CreatureType } from './types';
+import { mergeSx } from '../../utils';
+import { CharacterImage } from '../character-image';
 
 // ─── CreatureFieldInput ───────────────────────────────────────────────────────
 
-const CreatureFieldInput = memo(function CreatureFieldInput({ atom: creatureAtom, field, placeholder, sx }: CreatureFieldInputProps) {
+const CreatureFieldInput = memo(function CreatureFieldInput({
+  atom: creatureAtom,
+  field,
+  placeholder,
+  sx,
+}: CreatureFieldInputProps) {
   const fieldAtom = useMemo(() => selectAtom(creatureAtom, (s) => s[field]), [creatureAtom, field]);
   const value = useAtomValue(fieldAtom);
   const setCreature = useSetAtom(creatureAtom);
@@ -22,17 +27,17 @@ const CreatureFieldInput = memo(function CreatureFieldInput({ atom: creatureAtom
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setCreature((prev) => ({ ...prev, [field]: e.target.value }));
     },
-    [setCreature, field],
+    [setCreature, field]
   );
 
   return (
-    <StyledStandardTextField
+    <TextInput
       fullWidth
-      variant="standard"
-      placeholder={placeholder}
+      variant="filled"
+      label={placeholder}
       value={value}
       onChange={handleChange}
-      sx={sx}
+      sx={mergeSx(sx, { '& input': { fontSize: '1.2rem', fontWeight: 400 } })}
     />
   );
 });
@@ -41,156 +46,112 @@ const CreatureFieldInput = memo(function CreatureFieldInput({ atom: creatureAtom
 
 const CreatureHeaderFields = memo(function CreatureHeaderFields({
   creatureAtom,
+  onRemove,
 }: {
   creatureAtom: PrimitiveAtom<CreatureType>;
+  onRemove?: () => void;
 }) {
   return (
-    <Grid container size={12} spacing={1} sx={{ alignItems: 'flex-end' }}>
+    <Grid container size={12} spacing={1} sx={{ alignItems: 'center' }}>
       <Grid size="grow">
         <CreatureFieldInput
           atom={creatureAtom}
           field="name"
           placeholder="Creature name"
-          sx={{ '& input': { textAlign: 'left', fontSize: '1rem', fontWeight: 600 } }}
+          sx={{ '& input': { textAlign: 'left' } }}
         />
       </Grid>
-      <Grid sx={{ width: '80px', flexShrink: 0 }}>
+      <Grid sx={{ width: '240px', flexShrink: 0 }}>
         <CreatureFieldInput
           atom={creatureAtom}
           field="type"
           placeholder="Type"
-          sx={{ '& input': { textAlign: 'center', fontSize: '1rem', fontWeight: 200 } }}
+          sx={{ '& input': { textAlign: 'left' } }}
         />
       </Grid>
       <Grid sx={{ width: '70px', flexShrink: 0 }}>
         <CreatureFieldInput
           atom={creatureAtom}
-          field="size"
-          placeholder="Size"
-          sx={{ '& input': { textAlign: 'center', fontSize: '1rem', fontWeight: 200 } }}
-        />
-      </Grid>
-      <Grid sx={{ width: '50px', flexShrink: 0 }}>
-        <CreatureFieldInput
-          atom={creatureAtom}
           field="challengeRating"
           placeholder="CR"
-          sx={{ '& input': { textAlign: 'center', fontSize: '1rem', fontWeight: 200 } }}
+          sx={{ '& input': { textAlign: 'center' } }}
         />
       </Grid>
+      {onRemove && <RemoveButton onClick={onRemove} tooltip="Delete creature" ariaLabel="Remove creature" />}
     </Grid>
-  );
-});
-
-// ─── CreatureSavingThrows ─────────────────────────────────────────────────────
-
-type SavingThrowKey = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha';
-
-const SavingThrowInput = memo(function SavingThrowInput({
-  creatureAtom,
-  field,
-  label,
-}: {
-  creatureAtom: PrimitiveAtom<CreatureType>;
-  field: SavingThrowKey;
-  label: string;
-}) {
-  const fieldAtom = useMemo(() => selectAtom(creatureAtom, (s) => s.savingThrows[field]), [creatureAtom, field]);
-  const value = useAtomValue(fieldAtom);
-  const setCreature = useSetAtom(creatureAtom);
-
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setCreature((prev) => ({ ...prev, savingThrows: { ...prev.savingThrows, [field]: e.target.value } }));
-    },
-    [setCreature, field],
-  );
-
-  return (
-    <Stack direction="row" alignItems="center" spacing={0.5}>
-      <StyledStandardTextField
-        variant="standard"
-        placeholder={label}
-        value={value}
-        onChange={handleChange}
-        sx={{ width: '100%', '& input': { textAlign: 'center', fontSize: '0.9rem', fontWeight: 200 } }}
-      />
-    </Stack>
-  );
-});
-
-const SAVING_THROW_KEYS: { field: SavingThrowKey; label: string }[] = [
-  { field: 'str', label: 'STR save' },
-  { field: 'dex', label: 'DEX save' },
-  { field: 'con', label: 'CON save' },
-  { field: 'int', label: 'INT save' },
-  { field: 'wis', label: 'WIS save' },
-  { field: 'cha', label: 'CHA save' },
-];
-
-const CreatureSavingThrows = memo(function CreatureSavingThrows({
-  creatureAtom,
-}: {
-  creatureAtom: PrimitiveAtom<CreatureType>;
-}) {
-  return (
-    <Stack spacing={0.5}>
-      {SAVING_THROW_KEYS.map(({ field, label }) => (
-        <SavingThrowInput key={field} creatureAtom={creatureAtom} field={field} label={label} />
-      ))}
-    </Stack>
   );
 });
 
 // ─── CreatureTraits ───────────────────────────────────────────────────────────
 
-const CreatureTraits = memo(function CreatureTraits({
-  creatureAtom,
-}: {
-  creatureAtom: PrimitiveAtom<CreatureType>;
-}) {
+const CreatureTraits = memo(function CreatureTraits({ creatureAtom }: { creatureAtom: PrimitiveAtom<CreatureType> }) {
   const traitsAtom = useMemo(
     () =>
       atom(
         (get) => get(creatureAtom).traits,
-        (get, set, v: string) => set(creatureAtom, { ...get(creatureAtom), traits: v }),
+        (get, set, v: string) => set(creatureAtom, { ...get(creatureAtom), traits: v })
       ),
-    [creatureAtom],
+    [creatureAtom]
   );
 
-  return <Notes atom={traitsAtom as PrimitiveAtom<string>} placeholder="Traits & features" rows={4} />;
+  return (
+    <Notes
+      atom={traitsAtom as PrimitiveAtom<string>}
+      placeholder="Traits & features"
+      WrapperProps={{ sx: { flex: 1, height: '100%' } }}
+    />
+  );
 });
 
+// ─── Creature portrait ────────────────────────────────────────────────────────
+
+const CreaturePortrait = ({ creatureAtom }: { creatureAtom: PrimitiveAtom<CreatureType> }) => {
+  const portraitAtom = useMemo(
+    () =>
+      atom(
+        (get) => get(creatureAtom).portrait,
+        (get, set, portrait: string | null) =>
+          set(creatureAtom, {
+            ...get(creatureAtom),
+            portrait,
+          })
+      ),
+    [creatureAtom]
+  );
+
+  return (
+    <CharacterImage
+      atom={portraitAtom}
+      maxSizeMB={0.5}
+      sx={{ flex: 1, height: '100%', backgroundSize: 'contain' }}
+      applyMaskOverride={false}
+    />
+  );
+};
 // ─── Creature ─────────────────────────────────────────────────────────────────
 
-export const Creature = ({ creatureAtom, onRemove }: CreatureItemProps) => {
+export const Creature = memo(function Creature({ creatureAtom, index, onRemove }: CreatureItemProps) {
   return (
-    <Grid container size={12} spacing={1} component={StyledPaper} className="paperItem">
-      {onRemove && (
-        <Grid size={12} sx={{ display: 'flex', justifyContent: 'flex-end', pb: 0 }}>
-          <Tooltip title="Delete creature">
-            <IconButton size="small" aria-label="Remove creature" onClick={onRemove}>
-              <DeleteOutlineIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        </Grid>
-      )}
-      {/* Left column: abilities + saving throws */}
-      <Grid size={{ xs: 12, md: 3 }}>
-        <Stack spacing={1}>
+    <Grid container size={6} spacing={1} component={StyledPaper} className="creature">
+      <Grid size={12}>
+        <CreatureHeaderFields creatureAtom={creatureAtom} onRemove={onRemove ? () => onRemove(index) : undefined} />
+      </Grid>
+      <Grid size={{ xs: 12, md: 2 }} sx={{ flex: 1, height: 'auto' }}>
+        <Stack spacing={1} sx={{ height: '100%' }}>
           <CreatureAbilities creatureAtom={creatureAtom} />
-          <CreatureSavingThrows creatureAtom={creatureAtom} />
         </Stack>
       </Grid>
-      {/* Right column: header, combat stats, traits, actions */}
-      <Grid size={{ xs: 12, md: 9 }}>
-        <Stack spacing={1}>
-          <CreatureHeaderFields creatureAtom={creatureAtom} />
-          <CreatureCombatStats creatureAtom={creatureAtom} />
-          <CreatureTraits creatureAtom={creatureAtom} />
-          <CreatureActions creatureAtom={creatureAtom} />
-        </Stack>
+      <Grid container size={{ xs: 12, md: 10 }} direction={'column'}>
+        <CreatureCombatStats creatureAtom={creatureAtom} />
+        <Grid container direction={'row'} sx={{ flex: 1, height: 'auto' }}>
+          <Grid size={9} sx={{ height: 'auto' }}>
+            <CreatureTraits creatureAtom={creatureAtom} />
+          </Grid>
+          <Grid size={3} sx={{ height: 'auto' }}>
+            <CreaturePortrait creatureAtom={creatureAtom} />
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
-};
+});

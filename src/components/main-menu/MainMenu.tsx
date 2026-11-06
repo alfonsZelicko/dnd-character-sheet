@@ -32,9 +32,9 @@ export const MainMenu = () => {
       sx={{ borderBottom: '1px solid ' + MainColor }}
     >
       <Tab label="Character Preview" value={'0'} {...a11yProps(0)} sx={generateTabSx(page === '0')} />
-      <Tab label="InventoryList (beta)" value={'1'} {...a11yProps(1)} sx={generateTabSx(page === '1')} />
-      <Tab label="Options" value={'2'} {...a11yProps(2)} sx={generateTabSx(page === '2')} />
-      <Tab label="Creatures" value={'3'} {...a11yProps(3)} sx={generateTabSx(page === '3')} />
+      <Tab label="InventoryList" value={'1'} {...a11yProps(1)} sx={generateTabSx(page === '1')} />
+      <Tab label="Creatures" value={'2'} {...a11yProps(2)} sx={generateTabSx(page === '2')} />
+      <Tab label="Options" value={'3'} {...a11yProps(3)} sx={generateTabSx(page === '3')} />
     </TabList>
   );
 };

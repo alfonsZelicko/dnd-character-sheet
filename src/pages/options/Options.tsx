@@ -1,6 +1,7 @@
 import {
   Button,
   ButtonGroup,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -8,7 +9,6 @@ import {
   DialogTitle,
   Divider,
   FormControlLabel,
-  Checkbox,
   Grid2 as Grid,
   Menu,
   MenuItem,
@@ -178,12 +178,7 @@ const ApplyMaskCheckbox = memo(function ApplyMaskCheckbox() {
 
   return (
     <FormControlLabel
-      control={
-        <Checkbox
-          checked={!!applyMask}
-          onChange={(e) => setApplyMask(e.target.checked)}
-        />
-      }
+      control={<Checkbox checked={!!applyMask} onChange={(e) => setApplyMask(e.target.checked)} />}
       label="Apply character image mask"
     />
   );
@@ -194,12 +189,7 @@ const ShowIncDecCheckbox = memo(function ShowIncDecCheckbox() {
 
   return (
     <FormControlLabel
-      control={
-        <Checkbox
-          checked={showBtns}
-          onChange={(e) => setShowBtns(e.target.checked)}
-        />
-      }
+      control={<Checkbox checked={showBtns} onChange={(e) => setShowBtns(e.target.checked)} />}
       label="Show increment/decrement buttons"
     />
   );
@@ -246,7 +236,7 @@ const CharacterPreviewSection = memo(function CharacterPreviewSection() {
         </Typography>
         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
           <Typography component="label" htmlFor="preview-weapon-count">
-            Weapons shown on Character Preview
+            Weapons shown on Character Preview (mostly for landscape view)
           </Typography>
           <WeaponCountInput />
         </Stack>
@@ -276,7 +266,7 @@ const ThemeColorPicker = memo(function ThemeColorPicker({ colorKey }: { colorKey
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setColors((current) => ({ ...current, [colorKey]: e.target.value }));
     },
-    [setColors, colorKey],
+    [setColors, colorKey]
   );
 
   const handleReset = useCallback(() => {
@@ -284,13 +274,7 @@ const ThemeColorPicker = memo(function ThemeColorPicker({ colorKey }: { colorKey
   }, [setColors, colorKey]);
 
   return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-      spacing={2}
-      sx={{ minHeight: 42 }}
-    >
+    <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} sx={{ minHeight: 42 }}>
       <Typography component="label" htmlFor={`theme-color-${colorKey}`}>
         {label}
       </Typography>

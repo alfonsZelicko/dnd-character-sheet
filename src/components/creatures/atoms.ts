@@ -1,12 +1,12 @@
 import { atomWithStorage, splitAtom } from 'jotai/utils';
-import { AttackEntry, CreatureType } from './types';
+import { CreatureType } from './types';
 
 export const emptyCreature = (): CreatureType => ({
   id: crypto.randomUUID(),
   name: '',
   type: '',
-  size: '',
   challengeRating: '',
+  portrait: '',
   str: 10,
   dex: 10,
   con: 10,
@@ -21,29 +21,11 @@ export const emptyCreature = (): CreatureType => ({
   proficiencyBonus: 2,
   speed: 30,
   passivePerception: 10,
-  savingThrows: {
-    str: '',
-    dex: '',
-    con: '',
-    int: '',
-    wis: '',
-    cha: '',
-  },
   traits: '',
-  attacks: [emptyAttackEntry(), emptyAttackEntry()],
 });
-
-function emptyAttackEntry(): AttackEntry {
-  return {
-    attackName: '',
-    range: '',
-    toHit: '',
-    damage: '',
-    damageType: '',
-  };
-}
 
 export const creaturesAtom = atomWithStorage<CreatureType[]>('creatures', [emptyCreature()], undefined, {
   getOnInit: true,
 });
+
 export const creatureAtomsAtom = splitAtom(creaturesAtom);

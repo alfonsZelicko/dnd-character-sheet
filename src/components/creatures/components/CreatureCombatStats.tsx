@@ -1,12 +1,11 @@
-import { Grid2 as Grid, Typography } from '@mui/material';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { selectAtom } from 'jotai/utils';
+import { Grid2 as Grid } from '@mui/material';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo } from 'react';
 import { NumberLabelInput } from '../../shared';
 import { CreatureType } from '../types';
+import { useCreatureNumberField } from './hooks';
 
-type NumericCombatField =
+type CombatField =
   | 'maxHp'
   | 'currentHp'
   | 'tempHp'
@@ -22,53 +21,37 @@ const CombatStatInput = memo(function CombatStatInput({
   label,
 }: {
   atom: PrimitiveAtom<CreatureType>;
-  field: NumericCombatField;
+  field: CombatField;
   label: string;
 }) {
-  const fieldAtom = useMemo(() => selectAtom(atom, (s) => s[field]), [atom, field]);
-  const value = useAtomValue(fieldAtom);
-  const set = useSetAtom(atom);
-
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      set((prev) => ({ ...prev, [field]: +e.target.value }));
-    },
-    [set, field],
-  );
+  const { value, handleChange } = useCreatureNumberField(atom, field);
 
   return <NumberLabelInput label={label} NumberInputProps={{ value, onChange: handleChange }} />;
 });
 
-export const CreatureCombatStats = ({ creatureAtom }: { creatureAtom: PrimitiveAtom<CreatureType> }) => (
-  <Grid container spacing={0.5}>
-    <Grid size={12}>
-      <Typography variant="caption" sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
-        HP
-      </Typography>
+const combatStats: { field: CombatField; label: string }[] = [
+  { field: 'currentHp', label: 'Current HP' },
+  { field: 'maxHp', label: 'Max HP' },
+  { field: 'tempHp', label: 'Temp HP' },
+  { field: 'armorClass', label: 'Armor Class' },
+  { field: 'initiative', label: 'Initiative' },
+  { field: 'proficiencyBonus', label: 'Prof. Bonus' },
+  { field: 'speed', label: 'Speed' },
+  { field: 'passivePerception', label: 'Passive Perc.' },
+];
+
+export const CreatureCombatStats = memo(function CreatureCombatStats({
+  creatureAtom,
+}: {
+  creatureAtom: PrimitiveAtom<CreatureType>;
+}) {
+  return (
+    <Grid container spacing={1}>
+      {combatStats.map(({ field, label }) => (
+        <Grid key={field} size={3}>
+          <CombatStatInput atom={creatureAtom} field={field} label={label} />
+        </Grid>
+      ))}
     </Grid>
-    <Grid size={12}>
-      <CombatStatInput atom={creatureAtom} field="currentHp" label="Current HP" />
-    </Grid>
-    <Grid size={12}>
-      <CombatStatInput atom={creatureAtom} field="maxHp" label="Max HP" />
-    </Grid>
-    <Grid size={12}>
-      <CombatStatInput atom={creatureAtom} field="tempHp" label="Temp HP" />
-    </Grid>
-    <Grid size={12}>
-      <CombatStatInput atom={creatureAtom} field="armorClass" label="Armor Class" />
-    </Grid>
-    <Grid size={12}>
-      <CombatStatInput atom={creatureAtom} field="initiative" label="Initiative" />
-    </Grid>
-    <Grid size={12}>
-      <CombatStatInput atom={creatureAtom} field="proficiencyBonus" label="Prof. Bonus" />
-    </Grid>
-    <Grid size={12}>
-      <CombatStatInput atom={creatureAtom} field="speed" label="Speed" />
-    </Grid>
-    <Grid size={12}>
-      <CombatStatInput atom={creatureAtom} field="passivePerception" label="Passive Perc." />
-    </Grid>
-  </Grid>
-);
+  );
+});

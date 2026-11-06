@@ -1,10 +1,9 @@
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Grid2 as Grid, IconButton, MenuItem, Select, SelectChangeEvent, Stack, Tooltip } from '@mui/material';
+import { Button, Grid2 as Grid, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
 import { PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import React, { memo, useCallback, useMemo } from 'react';
-import { StyledLabel, StyledPaper, StyledStandardTextField } from '../shared';
+import { RemoveButton, StyledLabel, StyledPaper, StyledStandardTextField } from '../shared';
 import { ArmorAtoms, ArmorAtomsAtom } from './atoms';
 import { ArmorCategory, ArmorFieldInputProps, ArmorItemProps, ArmorRemoveButtonProps, ArmorType } from './types';
 
@@ -19,7 +18,7 @@ const ArmorFieldInput = memo(function ArmorFieldInput({ atom, field, placeholder
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setArmor((prev) => ({ ...prev, [field]: e.target.value }));
     },
-    [setArmor, field],
+    [setArmor, field]
   );
 
   return (
@@ -45,7 +44,7 @@ const ArmorCategorySelect = memo(function ArmorCategorySelect({ atom }: { atom: 
     (e: SelectChangeEvent) => {
       setArmor((prev) => ({ ...prev, category: e.target.value as ArmorCategory }));
     },
-    [setArmor],
+    [setArmor]
   );
 
   return (
@@ -72,13 +71,7 @@ const ArmorRemoveButton = memo(function ArmorRemoveButton({ atom, onRemove }: Ar
   const nameAtom = useMemo(() => selectAtom(atom, (s) => s.name), [atom]);
   const name = useAtomValue(nameAtom);
 
-  return (
-    <Tooltip title="Delete armor">
-      <IconButton size="small" aria-label={`Remove ${name || 'armor'}`} onClick={onRemove}>
-        <DeleteOutlineIcon fontSize="small" />
-      </IconButton>
-    </Tooltip>
-  );
+  return <RemoveButton onClick={onRemove} tooltip="Delete armor" ariaLabel={`Remove ${name || 'armor'}`} />;
 });
 
 // ─── ArmorItem ────────────────────────────────────────────────────────────────

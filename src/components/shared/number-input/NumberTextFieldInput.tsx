@@ -6,6 +6,7 @@ import { NumberInputProps } from './types';
 
 const StyledTextFieldInput = styled(TextInput)({
   height: '3rem',
+  // backdropFilter: 'blur(5px)',
   '& .MuiInputBase-root': {
     borderLeft: 'none',
     borderBottomLeftRadius: '0',

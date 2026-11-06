@@ -27,6 +27,7 @@ import {
   TemporaryHitPoints,
 } from '../../components';
 import React from 'react';
+import { CharacterPictureAtom } from '../../components/character-image/atoms';
 
 export const CharacterPreview = () => (
   <Grid container size={12} spacing={1}>
@@ -92,7 +93,7 @@ export const CharacterPreview = () => (
             <DeathSaves />
           </Grid>
           <Grid size={12}>
-            <CharacterPicture />
+            <CharacterPicture atom={CharacterPictureAtom} />
           </Grid>
           <Grid size={12} sx={{ mt: 'auto' }}>
             <SmallNotes rows={5} variant={'outlined'} placeholder={'Character description'} />

@@ -38,11 +38,11 @@ export const MainContainer = () => {
           <TabPanel value={'1'} {...commonTabPanelProps({ sx: { width: '100%' } })}>
             <Inventory />
           </TabPanel>
-          <TabPanel value={'2'} {...commonTabPanelProps()}>
-            <Options />
+          <TabPanel value={'2'} {...commonTabPanelProps({ sx: { width: '100%' } })}>
+            <CreaturesPage />
           </TabPanel>
           <TabPanel value={'3'} {...commonTabPanelProps({ sx: { width: '100%' } })}>
-            <CreaturesPage />
+            <Options />
           </TabPanel>
         </PageContainer>
       </TabContext>

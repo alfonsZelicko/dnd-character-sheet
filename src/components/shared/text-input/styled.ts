@@ -6,6 +6,7 @@ export const StyledTextField = styled(TextField)({
   height: '50px',
   border: `1.5px solid color-mix(in srgb, ${MainColor} 50%, transparent)`,
   borderRadius: '0',
+  // backdropFilter: 'blur(5px)',
   boxShadow: '0 0 2px rgba(0,0,0,0.1)',
   '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
     display: 'none',
@@ -15,6 +16,7 @@ export const StyledTextField = styled(TextField)({
   },
   '& input': {
     textAlign: 'center',
+    // backdropFilter: 'blur(5px)',
     paddingLeft: '0',
     paddingRight: '0',
     paddingTop: '13px !important',

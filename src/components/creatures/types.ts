@@ -1,18 +1,10 @@
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 
-export type AttackEntry = {
-  attackName: string;
-  range: string;
-  toHit: string;
-  damage: string;
-  damageType: string;
-};
-
 export type CreatureType = {
   id: string;
   name: string;
   type: string;
-  size: string;
+  portrait: string | null;
   challengeRating: string;
   str: number;
   dex: number;
@@ -28,34 +20,18 @@ export type CreatureType = {
   proficiencyBonus: number;
   speed: number;
   passivePerception: number;
-  savingThrows: {
-    str: string;
-    dex: string;
-    con: string;
-    int: string;
-    wis: string;
-    cha: string;
-  };
   traits: string;
-  attacks: AttackEntry[];
 };
 
-export type CreatureItemProps = {
+export interface CreatureItemProps {
   creatureAtom: PrimitiveAtom<CreatureType>;
-  onRemove?: () => void;
-};
+  index: number;
+  onRemove?: (index: number) => void;
+}
 
 export type CreatureFieldInputProps = {
   atom: PrimitiveAtom<CreatureType>;
-  field: keyof Pick<CreatureType, 'name' | 'type' | 'size' | 'challengeRating'>;
-  placeholder: string;
-  sx?: object;
-};
-
-export type CreatureAttackFieldProps = {
-  atom: PrimitiveAtom<CreatureType>;
-  index: number;
-  field: keyof AttackEntry;
+  field: keyof Pick<CreatureType, 'name' | 'type' | 'challengeRating'>;
   placeholder: string;
   sx?: object;
 };

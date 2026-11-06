@@ -27,5 +27,3 @@ export type AbilityUIProps = {
   handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   NumberInputProps?: NumberInputProps;
 };
-
-export type AbilitiesItemType = { [key in Abilities]: AbilityItemType };

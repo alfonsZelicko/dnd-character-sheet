@@ -1,19 +1,16 @@
 import AddIcon from '@mui/icons-material/Add';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Box, Button, Checkbox, FormControlLabel, Grid2 as Grid, IconButton, Stack, Tooltip } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, Grid2 as Grid, Stack, Tooltip } from '@mui/material';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import React, { memo, useCallback, useMemo } from 'react';
 import { Notes } from '../notes';
-import { StyledLabel, StyledPaper, StyledStandardTextField } from '../shared';
-import { featureCommonProps } from '../features/components/utils';
+import { RemoveButton, StyledLabel, StyledPaper, StyledStandardTextField } from '../shared';
 import { MagicItemAtoms, MagicItemAtomsAtom } from './atoms';
 import {
   magicItemAttunementContainerSx,
   magicItemAttunementLabelSx,
   magicItemHeaderSx,
   magicItemNameContainerSx,
-  magicItemNameInputSx,
 } from './styles';
 import { AttunementState, MagicItemCardProps, MagicItemProps } from './types';
 
@@ -72,13 +69,12 @@ const ItemName = memo(function ItemName({ magicItemAtom }: MagicItemProps) {
 
   return (
     <StyledStandardTextField
-      name="featureName"
       value={name}
       onChange={handleChange}
       placeholder="Item name"
-      {...featureCommonProps}
+      variant="standard"
       fullWidth
-      sx={magicItemNameInputSx}
+      sx={{ '& input': { textAlign: 'left', fontSize: '1rem', fontWeight: 600 } }}
     />
   );
 });
@@ -116,11 +112,7 @@ export const MagicItem = memo(function MagicItem({ magicItemAtom, index }: Magic
         <Box sx={magicItemAttunementContainerSx}>
           <AttunedCheckbox magicItemAtom={magicItemAtom} />
         </Box>
-        <Tooltip title="Delete magic item">
-          <IconButton size="small" aria-label="Remove magic item" onClick={handleRemove}>
-            <DeleteOutlineIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
+        <RemoveButton onClick={handleRemove} tooltip="Delete magic item" ariaLabel="Remove magic item" />
       </Box>
       <ItemDescription magicItemAtom={magicItemAtom} />
     </Grid>
@@ -141,7 +133,7 @@ export const MagicItems = () => {
           Add item
         </Button>
       </Stack>
-      <Grid container size={12} direction="column" spacing={1}>
+      <Grid container size={12} direction="column" spacing={1} sx={{ justifyContent: 'space-between', flex: 1 }}>
         {magicItemAtoms.map((magicItemAtom, index) => (
           <MagicItem key={index} magicItemAtom={magicItemAtom} index={index} />
         ))}
