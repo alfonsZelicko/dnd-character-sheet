@@ -1,28 +1,25 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
-import { useCallback, useMemo } from 'react';
+import { ChangeEvent, useCallback, useMemo } from 'react';
 import { CreatureType } from '../types';
 
 export type NumericCreatureField = {
-  [K in keyof CreatureType]: CreatureType[K] extends number ? K : never;
+  [K in keyof CreatureType]: CreatureType[K] extends number | string ? K : never;
 }[keyof CreatureType];
 
-export const useCreatureNumberField = <K extends NumericCreatureField>(atom: PrimitiveAtom<CreatureType>, field: K) => {
+export const useCreatureField = <K extends NumericCreatureField>(atom: PrimitiveAtom<CreatureType>, field: K) => {
   const fieldAtom = useMemo(() => selectAtom(atom, (s) => s[field]), [atom, field]);
 
   const value = useAtomValue(fieldAtom);
   const set = useSetAtom(atom);
 
   const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      set(
-        (prev) =>
-          ({
-            ...prev,
-            [field]: Number(e.target.value),
-          }) as CreatureType
-      );
+    (e: ChangeEvent<HTMLInputElement>) => {
+      set((prev) => ({
+        ...prev,
+        [field]: typeof prev[field] === 'number' ? Number(e.target.value) : e.target.value,
+      }));
     },
     [set, field]
   );

@@ -19,7 +19,7 @@ export const emptyCreature = (): CreatureType => ({
   armorClass: 10,
   initiative: 0,
   proficiencyBonus: 2,
-  speed: 30,
+  speed: '30ft',
   passivePerception: 10,
   traits: '',
 });

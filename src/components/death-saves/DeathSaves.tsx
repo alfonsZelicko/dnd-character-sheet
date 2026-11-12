@@ -21,16 +21,18 @@ const SavingThrowsConfig = {
   },
 };
 
+const PADDING_SIZE = { xs: 2, md: 0, lg: 5 };
+
 export const DeathSaves = () => (
-  <Grid container component={StyledPaper}>
-    <Grid size={12} container>
+  <Grid container component={StyledPaper} sx={{ py: 0 }}>
+    <Grid size={12} container justifyContent={'space-between'}>
       <DeathSavesCounter {...SavingThrowsConfig.success} />
-      <Grid size={'grow'} component={Typography} textAlign={'right'} lineHeight={2}>
+      <Grid component={Typography} textAlign={'right'} lineHeight={2} sx={{ pl: PADDING_SIZE }}>
         Success
       </Grid>
     </Grid>
-    <Grid size={12} container>
-      <Grid size={'grow'} component={Typography} textAlign={'left'} lineHeight={1.8}>
+    <Grid size={12} container justifyContent={'space-between'}>
+      <Grid component={Typography} textAlign={'left'} lineHeight={1.8} sx={{ pr: PADDING_SIZE }}>
         Failure
       </Grid>
       <DeathSavesCounter {...SavingThrowsConfig.failure} />

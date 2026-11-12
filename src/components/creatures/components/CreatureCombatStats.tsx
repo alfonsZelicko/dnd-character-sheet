@@ -1,9 +1,9 @@
 import { Grid2 as Grid } from '@mui/material';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 import React, { memo } from 'react';
-import { NumberLabelInput } from '../../shared';
+import { NumberLabelInput, TextInput } from '../../shared';
 import { CreatureType } from '../types';
-import { useCreatureNumberField } from './hooks';
+import { useCreatureField } from './hooks';
 
 type CombatField =
   | 'maxHp'
@@ -24,9 +24,21 @@ const CombatStatInput = memo(function CombatStatInput({
   field: CombatField;
   label: string;
 }) {
-  const { value, handleChange } = useCreatureNumberField(atom, field);
+  const { value, handleChange } = useCreatureField(atom, field);
 
-  return <NumberLabelInput label={label} NumberInputProps={{ value, onChange: handleChange }} />;
+  if (typeof value === 'number')
+    return <NumberLabelInput label={label} NumberInputProps={{ value, onChange: handleChange }} />;
+
+  return (
+    <TextInput
+      fullWidth
+      variant="filled"
+      label={label}
+      value={value}
+      onChange={handleChange}
+      sx={{ '& input': { fontSize: '1.3rem', fontWeight: 600 } }}
+    />
+  );
 });
 
 const combatStats: { field: CombatField; label: string }[] = [
@@ -48,7 +60,7 @@ export const CreatureCombatStats = memo(function CreatureCombatStats({
   return (
     <Grid container spacing={1}>
       {combatStats.map(({ field, label }) => (
-        <Grid key={field} size={3}>
+        <Grid key={field} size={{ xs: 6, md: 3 }}>
           <CombatStatInput atom={creatureAtom} field={field} label={label} />
         </Grid>
       ))}

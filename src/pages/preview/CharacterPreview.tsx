@@ -28,29 +28,30 @@ import {
 } from '../../components';
 import React from 'react';
 import { CharacterPictureAtom } from '../../components/character-image/atoms';
+import { abilityPreviewContainerSx, hpPreviewContainerSx } from './styles';
 
 export const CharacterPreview = () => (
-  <Grid container size={12} spacing={1}>
+  <Grid container size={{ md: 12 }} spacing={1}>
     <Grid container size={{ xs: 12, lg: 7 }} direction={'column'}>
       <Grid container size={12}>
         {/*Name, etc...*/}
-        <Grid size={{ xs: 4 }}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Name />
         </Grid>
-        <Grid size={{ xs: 6 }}>
-          <Race />
-        </Grid>
-        <Grid size={{ xs: 2 }}>
-          <Speed />
+        <Grid size={{ xs: 12, md: 6 }}>
+          <LvlAndClass />
         </Grid>
       </Grid>
 
       <Grid container size={12} flexGrow={1}>
-        <Grid container size={7}>
+        <Grid container size={{ xs: 12, md: 7 }}>
           {/*Left - Armor, etc...*/}
           <Grid container size={12}>
-            <Grid size={12}>
-              <LvlAndClass />
+            <Grid size={8}>
+              <Race />
+            </Grid>
+            <Grid size={4}>
+              <Speed />
             </Grid>
             <Grid size={4}>
               <Initiative />
@@ -64,10 +65,11 @@ export const CharacterPreview = () => (
           </Grid>
           {/*left - abilities, skills, etc...*/}
           <Grid container size={12} alignContent={'space-between'}>
-            <Grid justifyContent={'space-between'} display={'flex'} flexDirection={'column'} maxWidth={100}>
+            <Grid container size={{ xs: 12, md: 'auto' }} sx={abilityPreviewContainerSx}>
               <AbilityListView />
             </Grid>
-            <Grid id={'skills'} component={StyledPaper} minWidth={320} size={'grow'}>
+
+            <Grid id="skills" component={StyledPaper} minWidth={320} size={{ xs: 12, md: 'grow' }}>
               <SkillList />
             </Grid>
             <Grid size={8}>
@@ -80,17 +82,31 @@ export const CharacterPreview = () => (
           </Grid>
         </Grid>
         {/*left - hp, character preview...*/}
-        <Grid container size={5}>
-          <Grid container size={5.5} justifyContent={'space-between'}>
-            <TemporaryHitPoints />
-            <CurrentHitPoints />
-            <MaxHitPoints />
+        <Grid container size={{ xs: 12, md: 5 }}>
+          <Grid container size={12} sx={hpPreviewContainerSx}>
+            <Grid sx={{ gridArea: 'temp' }}>
+              <TemporaryHitPoints />
+            </Grid>
 
-            <Exhaustion />
-          </Grid>
-          <Grid container size={6.5} justifyContent={'space-between'}>
-            <HitDices />
-            <DeathSaves />
+            <Grid sx={{ gridArea: 'current' }}>
+              <CurrentHitPoints />
+            </Grid>
+
+            <Grid sx={{ gridArea: 'max' }}>
+              <MaxHitPoints />
+            </Grid>
+
+            <Grid sx={{ gridArea: 'exhaustion' }}>
+              <Exhaustion />
+            </Grid>
+
+            <Grid sx={{ gridArea: 'death', display: 'flex' }}>
+              <DeathSaves />
+            </Grid>
+
+            <Grid sx={{ gridArea: 'hitdices', display: 'flex' }}>
+              <HitDices />
+            </Grid>
           </Grid>
           <Grid size={12}>
             <CharacterPicture atom={CharacterPictureAtom} />
@@ -103,22 +119,14 @@ export const CharacterPreview = () => (
     </Grid>
 
     <Grid container alignContent={'space-between'} size={{ xs: 12, lg: 5 }}>
-      <Grid size={{ xs: 8, lg: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <AttackList />
       </Grid>
-      <Grid container size={{ xs: 4, lg: 7 }}>
+      <Grid container size={{ xs: 12, md: 7 }}>
         <FeatureList />
       </Grid>
-      <Grid
-        container
-        // sx={mergedPaperListSx()}
-        justifyContent={'space-between'}
-        spacing={{ xs: 2, lg: 0 }}
-        size={{ xs: 12, lg: 5 }}
-        direction={{ xs: 'row', lg: 'column' }}
-        component={StyledPaper}
-      >
-        <FeatList GridProps={{ size: { xs: 4, lg: 12 } }} />
+      <Grid container size={{ xs: 12, md: 5 }}>
+        <FeatList />
       </Grid>
       <Grid container size={12} component={StyledPaper}>
         <SmallInventory />

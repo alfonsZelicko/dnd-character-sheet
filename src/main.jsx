@@ -37,18 +37,18 @@ const initializeApp = () => {
   }
 };
 
-const originalSetItem = Storage.prototype.setItem;
-
-Storage.prototype.setItem = function (key, value) {
-  console.time(`localStorage: ${key}`);
-
-  try {
-    console.log(`${key}: ${(value.length / 1024).toFixed(2)} KB`);
-    return originalSetItem.call(this, key, value);
-  } finally {
-    console.timeEnd(`localStorage: ${key}`);
-  }
-};
+// const originalSetItem = Storage.prototype.setItem;
+//
+// Storage.prototype.setItem = function (key, value) {
+//   console.time(`localStorage: ${key}`);
+//
+//   try {
+//     console.log(`${key}: ${(value.length / 1024).toFixed(2)} KB`);
+//     return originalSetItem.call(this, key, value);
+//   } finally {
+//     console.timeEnd(`localStorage: ${key}`);
+//   }
+// };
 
 initializeApp();
 ``;

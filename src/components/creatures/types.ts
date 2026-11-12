@@ -18,7 +18,7 @@ export type CreatureType = {
   armorClass: number;
   initiative: number;
   proficiencyBonus: number;
-  speed: number;
+  speed: string;
   passivePerception: number;
   traits: string;
 };

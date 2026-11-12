@@ -1,10 +1,11 @@
-import { Stack } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 import React, { memo } from 'react';
 import { NumberTextFieldInput } from '../../shared';
 import { calculateAbilityModifier, formatWithPlusSign, removeLeadingZeros } from '../../../features/utils';
 import { CreatureType } from '../types';
-import { useCreatureNumberField } from './hooks';
+import { useCreatureField } from './hooks';
+import { creatureAbilitiesSx } from './styles';
 
 type AbilityKey = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha';
 
@@ -17,7 +18,7 @@ const AbilityInput = memo(function AbilityInput({
   field: AbilityKey;
   label: string;
 }) {
-  const { value, handleChange } = useCreatureNumberField(atom, field);
+  const { value, handleChange } = useCreatureField(atom, field);
 
   return (
     <NumberTextFieldInput
@@ -45,10 +46,12 @@ export const CreatureAbilities = memo(function CreatureAbilities({
   creatureAtom: PrimitiveAtom<CreatureType>;
 }) {
   return (
-    <Stack spacing={0.5} sx={{ flex: 1, justifyContent: 'space-between' }}>
+    <Grid container spacing={0.5} flexDirection={'column'} sx={creatureAbilitiesSx}>
       {abilities.map(({ field, label }) => (
-        <AbilityInput key={field} atom={creatureAtom} field={field} label={label} />
+        <Grid key={field} size={12} sx={{ flex: 1, justifyContent: 'space-between' }}>
+          <AbilityInput atom={creatureAtom} field={field} label={label} />
+        </Grid>
       ))}
-    </Stack>
+    </Grid>
   );
 });

@@ -1,4 +1,4 @@
-import { useAtom } from 'jotai/index';
+import { useAtom } from 'jotai';
 import { NumberLabelInput } from '../shared';
 import React from 'react';
 import { currentHitPointsAtom, maxHitPointsAtom, temporaryHitPointsAtom } from './atoms';
@@ -27,7 +27,7 @@ export const CurrentHitPoints = () => {
         value: removeLeadingZeros(currentHitPoints),
         onChange: (e) => setCurrentHitPoints(+e.target.value),
       }}
-      label="Current Hit points"
+      label="Current HP"
     />
   );
 };

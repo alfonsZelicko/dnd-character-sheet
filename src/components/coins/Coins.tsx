@@ -55,13 +55,13 @@ export const Coins = () => {
   return (
     <Grid container flexDirection={'row'} component={StyledPaper}>
       <Grid container size={12} spacing={1}>
-        <Grid size={4}>
+        <Grid size={{ xs: 6, md: 4 }}>
           <GoldCoins />
         </Grid>
-        <Grid size={4}>
+        <Grid size={{ xs: 6, md: 4 }}>
           <SilverCoins />
         </Grid>
-        <Grid size={4}>
+        <Grid size={{ xs: 6, md: 4 }}>
           <CopperCoins />
         </Grid>
       </Grid>

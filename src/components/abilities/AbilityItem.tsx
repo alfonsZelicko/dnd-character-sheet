@@ -13,8 +13,7 @@ export const AbilityItemUi = ({ ability, handleChange, NumberInputProps }: Abili
   const modifier = calculateAbilityModifier(ability.score);
 
   return (
-    <Grid container sx={{ position: 'relative' }}> 
-
+    <Grid container sx={{ position: 'relative', pb: { xs: 2, md: 0 }, pr: { xs: 0, md: 0 } }}>
       <Grid sx={abilityInputContainer}>
         <StyledAbilityInput
           value={removeLeadingZeros(ability.score) || ''}
@@ -24,15 +23,13 @@ export const AbilityItemUi = ({ ability, handleChange, NumberInputProps }: Abili
       </Grid>
       <Grid size={12}>
         <StyledPaper sx={labelContainer}>
-          <Box width={40} position={'relative'} sx={{ flexDirection: 'column' }}> 
+          <Box width={40} position={'relative'} sx={{ flexDirection: 'column' }}>
             <AbilityName variant={'body1'} sx={ellipsisWrapper}>
               {ability.type}
             </AbilityName>
           </Box>
           <Box sx={abilityModifierBox}>
-            <AbilityModifierLabel variant={'h3'}>
-              {formatWithPlusSign(modifier)}
-            </AbilityModifierLabel>
+            <AbilityModifierLabel variant={'h3'}>{formatWithPlusSign(modifier)}</AbilityModifierLabel>
           </Box>
         </StyledPaper>
       </Grid>

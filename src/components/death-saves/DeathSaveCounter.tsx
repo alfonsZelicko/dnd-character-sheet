@@ -15,7 +15,14 @@ export const DeathSavesCounter = ({ atom, checkedIcon, icon }: DeathSavesCounter
   };
 
   return (
-    <Grid container size={'auto'} spacing={{ lg: 2, md: 1 }} direction={'row'}>
+    <Grid
+      container
+      size="auto"
+      spacing={{ lg: 2, md: 1 }}
+      direction="row"
+      justifyContent="space-between"
+      sx={{ flex: { xs: 1, md: 'auto' } }}
+    >
       {[1, 2, 3].map((value, index) => (
         <Grid key={index}>
           <Checkbox
