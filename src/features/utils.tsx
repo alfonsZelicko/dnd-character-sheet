@@ -2,6 +2,8 @@ import React from 'react';
 import { Tooltip } from '@mui/material';
 import { createCharacterBackup, parseCharacterBackup, writeCharacterData } from './characterData';
 
+export { storedOrDefault } from './storedDefaults';
+
 export const formatWithPlusSign = (abilityModifier: number) =>
   (abilityModifier ? (abilityModifier < 0 ? '' : '+') : '') + `${abilityModifier}`;
 

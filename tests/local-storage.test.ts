@@ -13,6 +13,13 @@ describe('localStorage persistence', () => {
     expect(localStorage.getItem('options_weapons-on-preview')).toBe('4');
   });
 
+  it('reads stored records that omit newer fields as undefined', () => {
+    localStorage.setItem('attacks-list', JSON.stringify([{ attackName: 'Old sword' }]));
+
+    expect(JSON.parse(localStorage.getItem('attacks-list') ?? 'null')).toEqual([{ attackName: 'Old sword' }]);
+    expect(JSON.parse(localStorage.getItem('attacks-list') ?? 'null')[0].damage).toBeUndefined();
+  });
+
   it('persists weapon records as JSON', () => {
     const store = createStore();
     const weapon = {

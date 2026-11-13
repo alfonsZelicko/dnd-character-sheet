@@ -22,8 +22,11 @@ export type CharacterBackup = {
 
 type Migration = (data: MigratedCharacterData) => MigratedCharacterData;
 
-// Keep one migration per source version. Increment the schema and add the
-// matching migration whenever stored character or option keys change.
+// Keep one migration per source version. Bump the schema only when a stored
+// key is renamed, removed, or its value shape becomes incompatible.
+// Additive keys and optional object fields do not need a migration: missing
+// storage keys stay unset, and missing properties stay undefined so atoms and
+// UI can treat that as the feature default (see storedOrDefault).
 const migrations: Record<number, Migration> = {
   0: (data) => data,
   1: (data) => data,

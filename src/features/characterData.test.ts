@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import {
   createCharacterBackup,
   markDemoCharacterChoice,
+  migrateCharacterData,
+  migrateLocalStorage,
   needsDemoCharacterSeed,
   parseCharacterBackup,
   resetCharacterData,
@@ -119,5 +121,27 @@ describe('character backup data', () => {
     localStorage.setItem('name', 'Visitor hero');
     expect(seedDemoCharacterIfEmpty(demoFile)).toBe(false);
     expect(localStorage.getItem('name')).toBe('Visitor hero');
+  });
+
+  it('leaves missing additive keys unset so feature defaults apply', () => {
+    expect(parseCharacterBackup(JSON.stringify(currentBackup({ name: 'Mira' })))).toEqual({
+      character: { name: 'Mira' },
+    });
+    expect(migrateCharacterData({ name: 'Mira' }, 2)).toEqual({ name: 'Mira' });
+    expect(migrateCharacterData({ name: 'Mira' }, 0)).toEqual({ name: 'Mira' });
+
+    writeCharacterData(localStorage, { character: { name: 'Mira' } });
+    expect(localStorage.getItem('name')).toBe('Mira');
+    expect(localStorage.getItem('spells')).toBeNull();
+  });
+
+  it('upgrades stored schema version without inventing missing character keys', () => {
+    localStorage.setItem('name', 'Mira');
+
+    migrateLocalStorage(localStorage);
+
+    expect(localStorage.getItem('name')).toBe('Mira');
+    expect(localStorage.getItem('character-data-schema-version')).toBe('2');
+    expect(localStorage.getItem('spells')).toBeNull();
   });
 });
