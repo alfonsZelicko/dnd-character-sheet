@@ -1,9 +1,9 @@
-import AddIcon from '@mui/icons-material/Add';
-import { Button, Grid2 as Grid, Stack, Typography } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useAtom, useAtomValue } from 'jotai';
 import React, { useCallback } from 'react';
 import { creatureAtomsAtom, creaturesAtom, emptyCreature } from './atoms';
 import { Creature } from './Creature';
+import { EditableListHeader } from '../shared/editable-list-header';
 
 const CreatureList = React.memo(() => {
   const creatureAtoms = useAtomValue(creatureAtomsAtom);
@@ -30,15 +30,7 @@ export const Creatures = () => {
 
   return (
     <Grid container size={12} direction="column">
-      <Stack direction="row" alignItems="start" justifyContent="space-between" spacing={1} sx={{ p: 1 }}>
-        <Typography variant="h6" component="h2">
-          Creatures
-        </Typography>
-        <Button size="small" startIcon={<AddIcon />} onClick={addCreature}>
-          Add creature
-        </Button>
-      </Stack>
-
+      <EditableListHeader label={'Creatures'} addItem={addCreature} addItemLabel={'Add Creature'} />
       <CreatureList />
     </Grid>
   );

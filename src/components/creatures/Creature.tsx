@@ -161,7 +161,7 @@ export const Creature = memo(function Creature({ creatureAtom, index, onRemove }
       <Grid size={12}>
         <CreatureHeaderFields creatureAtom={creatureAtom} onRemove={onRemove ? () => onRemove(index) : undefined} />
       </Grid>
-      <Grid size={{ xs: 12, md: 2 }} sx={{ flex: 1, height: 'auto', py: 1, maxWidth: { sx: 'inhered', md: '110px' } }}>
+      <Grid size={{ xs: 12, md: 2 }} sx={{ flex: 1, height: 'auto', py: 1, maxWidth: { sx: 'inherit', md: '110px' } }}>
         <CreatureAbilities creatureAtom={creatureAtom} />
       </Grid>
       <Grid container size={{ xs: 12, md: 'grow' }} direction={'column'}>

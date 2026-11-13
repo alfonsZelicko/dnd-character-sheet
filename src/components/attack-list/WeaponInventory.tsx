@@ -1,12 +1,12 @@
-import AddIcon from '@mui/icons-material/Add';
-import { Button, Grid2 as Grid, Stack } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useAtom, useAtomValue } from 'jotai';
 import React from 'react';
 import { mergedPaperListSx } from '../../utils';
-import { StyledLabel, StyledPaper } from '../shared';
+import { StyledPaper } from '../shared';
 import { WeaponItem } from './WeaponItem';
 import { AttackAtoms, AttackAtomsAtom } from './atoms';
 import { AttackType } from './types';
+import { EditableListHeader } from '../shared/editable-list-header';
 
 const createEmptyWeapon = (): AttackType => ({
   attackName: '',
@@ -27,12 +27,7 @@ export const WeaponInventory = () => {
 
   return (
     <Grid container size={12} component={StyledPaper} direction="column">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-        <StyledLabel>Weapons</StyledLabel>
-        <Button size="small" startIcon={<AddIcon />} onClick={addWeapon}>
-          Add weapon
-        </Button>
-      </Stack>
+      <EditableListHeader addItem={addWeapon} label={'Weapons'} addItemLabel={'Add Weapon'} />
       <Grid container size={12} spacing={0} sx={mergedPaperListSx()}>
         {weaponAtoms.map((attackAtom, index) => (
           <WeaponItem key={index} attackAtom={attackAtom} onRemove={() => removeWeapon(index)} />

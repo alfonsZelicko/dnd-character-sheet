@@ -1,11 +1,11 @@
 import { InventoryItemLayout } from './InventoryItemLayout';
-import { StyledLabel } from '../shared';
+import { ComponentLabel } from '../shared';
 import React from 'react';
 import { InventoryHeaderProps } from './types';
 
 export const InventoryHeader = ({ nameDescription = 'Item name' }: InventoryHeaderProps) => {
-  const ItemNameHeader = <StyledLabel>{nameDescription}</StyledLabel>;
-  const ItemCountHeader = <StyledLabel textAlign={'center'}>Σ</StyledLabel>;
+  const ItemNameHeader = <ComponentLabel textAlign={'left'}>{nameDescription}</ComponentLabel>;
+  const ItemCountHeader = <ComponentLabel sx={{ pr: 1 }}>Σ</ComponentLabel>;
 
   return <InventoryItemLayout itemInput={ItemNameHeader} countInput={ItemCountHeader} />;
 };

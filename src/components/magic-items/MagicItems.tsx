@@ -1,10 +1,9 @@
-import AddIcon from '@mui/icons-material/Add';
-import { Box, Button, Checkbox, FormControlLabel, Grid2 as Grid, Stack, Tooltip } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, Grid2 as Grid, Tooltip } from '@mui/material';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import React, { memo, useCallback, useMemo } from 'react';
 import { Notes } from '../notes';
-import { RemoveButton, StyledLabel, StyledPaper, StyledStandardTextField } from '../shared';
+import { RemoveButton, StyledPaper, StyledStandardTextField } from '../shared';
 import { MagicItemAtoms, MagicItemAtomsAtom } from './atoms';
 import {
   magicItemAttunementContainerSx,
@@ -13,6 +12,7 @@ import {
   magicItemNameContainerSx,
 } from './styles';
 import { AttunementState, MagicItemCardProps, MagicItemProps } from './types';
+import { EditableListHeader } from '../shared/editable-list-header';
 
 const emptyMagicItem = () => ({ name: '', description: '', attunement: 'not-attuned' as AttunementState });
 
@@ -134,12 +134,7 @@ export const MagicItems = () => {
 
   return (
     <Grid container size={12} component={StyledPaper} direction="column" sx={{ height: '100%' }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-        <StyledLabel>Magic Items</StyledLabel>
-        <Button size="small" startIcon={<AddIcon />} onClick={addItem}>
-          Add item
-        </Button>
-      </Stack>
+      <EditableListHeader addItem={addItem} label={'Magic Items'} />
       <Grid container size={12} direction="column" spacing={1} sx={{ justifyContent: 'space-between', flex: 1 }}>
         {magicItemAtoms.map((magicItemAtom, index) => (
           <MagicItem key={index} magicItemAtom={magicItemAtom} index={index} />

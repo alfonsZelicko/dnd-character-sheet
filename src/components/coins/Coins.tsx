@@ -1,4 +1,4 @@
-import { NumberLabelInput, StyledLabel, StyledPaper } from '../shared';
+import { ComponentLabel, NumberLabelInput, StyledPaper } from '../shared';
 import React from 'react';
 import { CopperCoinsAtom, GoldCoinsAtom, SilverCoinsAtom } from './atoms';
 import { useAtom } from 'jotai';
@@ -66,7 +66,7 @@ export const Coins = () => {
         </Grid>
       </Grid>
       <Grid size={12}>
-        <StyledLabel textAlign={'right'}>Money</StyledLabel>
+        <ComponentLabel>Money</ComponentLabel>
       </Grid>
     </Grid>
   );

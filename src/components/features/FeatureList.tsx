@@ -5,7 +5,7 @@ import { FeatureAtomsAtom } from './atoms';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 import { FeatureItemType } from './types';
 import { FeatureHeader, FeatureItem, ResetButtons } from './components';
-import { StyledPaper } from '../shared';
+import { ComponentLabel, StyledPaper } from '../shared';
 
 export const FeatureList = () => {
   const features = useAtomValue(FeatureAtomsAtom);
@@ -16,6 +16,7 @@ export const FeatureList = () => {
         <FeatureItem featureAtom={featureAtom} key={index} />
       ))}
       <ResetButtons />
+      <ComponentLabel>Features</ComponentLabel>
     </Grid>
   );
 };
