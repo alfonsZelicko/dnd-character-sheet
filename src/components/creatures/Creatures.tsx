@@ -5,13 +5,6 @@ import React, { useCallback } from 'react';
 import { creatureAtomsAtom, creaturesAtom, emptyCreature } from './atoms';
 import { Creature } from './Creature';
 
-// TODO: Performance investigation
-// - Measure DOM mutations when adding a creature (MutationObserver).
-// - Check how many DOM nodes are inserted during mount.
-// - Identify expensive MUI components or layout recalculations.
-// - Compare DOM insertion time with React Profiler measurements.
-// - Remove temporary performance instrumentation afterwards.
-
 const CreatureList = React.memo(() => {
   const creatureAtoms = useAtomValue(creatureAtomsAtom);
   const [, setCreatures] = useAtom(creaturesAtom);

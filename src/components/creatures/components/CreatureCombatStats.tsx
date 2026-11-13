@@ -36,7 +36,7 @@ const CombatStatInput = memo(function CombatStatInput({
       label={label}
       value={value}
       onChange={handleChange}
-      sx={{ '& input': { fontSize: '1.3rem', fontWeight: 600 } }}
+      sx={{ '& input': { fontSize: '1rem', fontWeight: 400 } }}
     />
   );
 });

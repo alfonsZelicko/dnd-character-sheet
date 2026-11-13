@@ -7,7 +7,16 @@ import { CreatureType } from '../types';
 import { useCreatureField } from './hooks';
 import { creatureAbilitiesSx } from './styles';
 
-type AbilityKey = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha';
+const abilities = [
+  { field: 'str', label: 'STR' },
+  { field: 'dex', label: 'DEX' },
+  { field: 'con', label: 'CON' },
+  { field: 'int', label: 'INT' },
+  { field: 'wis', label: 'WIS' },
+  { field: 'cha', label: 'CHA' },
+] as const;
+
+type AbilityKey = (typeof abilities)[number]['field'];
 
 const AbilityInput = memo(function AbilityInput({
   atom,
@@ -30,15 +39,6 @@ const AbilityInput = memo(function AbilityInput({
     />
   );
 });
-
-const abilities: { field: AbilityKey; label: string }[] = [
-  { field: 'str', label: 'STR' },
-  { field: 'dex', label: 'DEX' },
-  { field: 'con', label: 'CON' },
-  { field: 'int', label: 'INT' },
-  { field: 'wis', label: 'WIS' },
-  { field: 'cha', label: 'CHA' },
-];
 
 export const CreatureAbilities = memo(function CreatureAbilities({
   creatureAtom,

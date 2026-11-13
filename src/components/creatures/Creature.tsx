@@ -1,4 +1,4 @@
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid, useMediaQuery } from '@mui/material';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
@@ -50,6 +50,8 @@ const CreatureHeaderFields = memo(function CreatureHeaderFields({
   creatureAtom: PrimitiveAtom<CreatureType>;
   onRemove?: () => void;
 }) {
+  const isXs = useMediaQuery((theme) => theme.breakpoints.only('xs'));
+  const isMd = useMediaQuery((theme) => theme.breakpoints.up('md'));
   return (
     <Grid container size={12} spacing={1} sx={{ alignItems: 'center' }}>
       <Grid size={{ xs: 11, md: 'grow' }}>
@@ -60,7 +62,7 @@ const CreatureHeaderFields = memo(function CreatureHeaderFields({
           sx={{ '& input': { textAlign: 'left' } }}
         />
       </Grid>
-      {onRemove && (
+      {onRemove && isXs && (
         <Grid size={1} sx={{ display: { xs: 'flex', md: 'none' } }}>
           <RemoveButton onClick={onRemove} tooltip="Delete creature" ariaLabel="Remove creature" />
         </Grid>
@@ -93,7 +95,7 @@ const CreatureHeaderFields = memo(function CreatureHeaderFields({
           sx={{ '& input': { textAlign: 'center' } }}
         />
       </Grid>
-      {onRemove && (
+      {onRemove && isMd && (
         <RemoveButton
           onClick={onRemove}
           tooltip="Delete creature"
@@ -159,10 +161,10 @@ export const Creature = memo(function Creature({ creatureAtom, index, onRemove }
       <Grid size={12}>
         <CreatureHeaderFields creatureAtom={creatureAtom} onRemove={onRemove ? () => onRemove(index) : undefined} />
       </Grid>
-      <Grid size={{ xs: 12, md: 2 }} sx={{ flex: 1, height: 'auto', py: 1 }}>
+      <Grid size={{ xs: 12, md: 2 }} sx={{ flex: 1, height: 'auto', py: 1, maxWidth: { sx: 'inhered', md: '110px' } }}>
         <CreatureAbilities creatureAtom={creatureAtom} />
       </Grid>
-      <Grid container size={{ xs: 12, md: 10 }} direction={'column'}>
+      <Grid container size={{ xs: 12, md: 'grow' }} direction={'column'}>
         <CreatureCombatStats creatureAtom={creatureAtom} />
         <Grid container direction={{ xs: 'row', md: 'column' }} sx={{ flex: 1, height: 'auto' }}>
           <Grid size={{ xs: 12, md: 9 }} sx={{ height: '100%' }}>
