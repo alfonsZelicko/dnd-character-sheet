@@ -1,14 +1,19 @@
 import React from 'react';
-import { Provider, atom, createStore } from 'jotai';
+import { atom, createStore, Provider } from 'jotai';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { HitDice } from './HitDice';
+import { HitDiceType } from '../types';
 
 describe('HitDice', () => {
   it('lets the player manually edit the level and spent dice count', () => {
-    const hitDiceAtom = atom({ die: 'd8' as const, level: 2, usage: 1 });
+    const hitDiceAtom = atom<HitDiceType>({ die: 'd8' as const, level: 2, usage: 1 });
     const store = createStore();
-    render(<Provider store={store}><HitDice hitDiceAtom={hitDiceAtom} /></Provider>);
+    render(
+      <Provider store={store}>
+        <HitDice hitDiceAtom={hitDiceAtom} />
+      </Provider>
+    );
     const levelInput = screen.getByDisplayValue('2');
     const usageInput = screen.getByDisplayValue('1');
 
