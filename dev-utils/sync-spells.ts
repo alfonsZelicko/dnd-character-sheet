@@ -11,8 +11,13 @@ const CACHE_DIR = path.join(ROOT, '.cache', '5e-tools');
 const SOURCE_DIR = path.join(CACHE_DIR, 'data', 'spells');
 const TARGET_DIR = path.join(ROOT, 'src', 'data', 'spells');
 const STATE_FILE = path.join(ROOT, '.cache', 'spells-sync-state');
+const OUTPUT_STATE_FILE = path.join(ROOT, '.cache', 'spells-sync-output');
 
-const runGit = (args: string[], cwd = CACHE_DIR, options: { capture?: boolean } = {}): string | Buffer =>
+const MINIMAL_FIELDS = ['name', 'level', 'classes'] as const;
+
+type OutputMode = 'minimal' | 'full';
+
+const runGit = (args: string[], cwd = CACHE_DIR, options: { capture?: boolean } = {}) =>
   execFileSync('git', args, {
     cwd,
     stdio: options.capture ? 'pipe' : 'inherit',
@@ -30,6 +35,20 @@ const exists = async (file: PathLike) => {
 
 const getCurrentCommit = () => String(runGit(['rev-parse', 'HEAD'], CACHE_DIR, { capture: true })).trim();
 
+function getOutputMode(): OutputMode {
+  const args = process.argv.slice(2);
+
+  if (args.length === 0) return 'minimal';
+
+  if (args.length === 2 && args[0] === '--output') {
+    if (args[1] === 'minimal' || args[1] === 'full') {
+      return args[1];
+    }
+  }
+
+  throw new Error('Usage: sync-spells [--output minimal|full]');
+}
+
 async function cloneRepository() {
   await mkdir(path.dirname(CACHE_DIR), { recursive: true });
   runGit(['clone', '--filter=blob:none', '--sparse', REPOSITORY, CACHE_DIR], ROOT);
@@ -44,6 +63,7 @@ async function removeEmptyParents(directory: PathLike) {
       if (entries.length > 0) break;
 
       await rm(directory, { recursive: true });
+
       if (typeof directory === 'string') {
         directory = path.dirname(directory);
       }
@@ -94,9 +114,51 @@ async function fullSync() {
   await rm(TARGET_DIR, { recursive: true, force: true });
   await mkdir(path.dirname(TARGET_DIR), { recursive: true });
   await cp(SOURCE_DIR, TARGET_DIR, { recursive: true });
+
+  await Promise.all([
+    rm(path.join(TARGET_DIR, 'foundry.json'), { force: true }),
+    rm(path.join(TARGET_DIR, 'roll20.json'), { force: true }),
+  ]);
 }
 
-async function syncSpells() {
+async function getJsonFiles(directory: string): Promise<string[]> {
+  const excludedFiles = ['foundry.json', 'roll20.json'];
+  const entries = await readdir(directory, { withFileTypes: true });
+  const files: string[] = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      files.push(...(await getJsonFiles(fullPath)));
+    } else if (entry.isFile() && entry.name.endsWith('.json') && !excludedFiles.includes(entry.name)) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+async function minimizeSpells() {
+  const files = (await getJsonFiles(TARGET_DIR)).filter((file) => /^spells(?:-.+)?\.json$/i.test(path.basename(file)));
+
+  for (const file of files) {
+    const content = JSON.parse(await readFile(file, 'utf8'));
+
+    if (!Array.isArray(content.spell)) {
+      throw new Error(`Missing spell array in ${file}`);
+    }
+
+    content.spell = content.spell.map((spell: Record<string, unknown>) =>
+      Object.fromEntries(MINIMAL_FIELDS.filter((field) => field in spell).map((field) => [field, spell[field]]))
+    );
+
+    await writeFile(file, JSON.stringify(content));
+  }
+
+  console.log(`Minimized ${files.length} spell files.`);
+}
+
+async function syncSpells(output: OutputMode) {
   if (!(await exists(path.join(CACHE_DIR, '.git')))) {
     if (await exists(CACHE_DIR)) {
       throw new Error('Cache directory exists but is not a Git repository.');
@@ -105,26 +167,19 @@ async function syncSpells() {
     await cloneRepository();
   }
 
-  const previousCommit = (await exists(STATE_FILE)) ? (await readFile(STATE_FILE, 'utf8')).trim() : null;
-
   runGit(['pull', '--ff-only']);
 
-  const currentCommit = getCurrentCommit();
+  // Always rebuild generated spell data.
+  await fullSync();
 
-  if (!previousCommit) {
-    await fullSync();
-  } else if (previousCommit !== currentCommit) {
-    const synced = await copyChangedFiles(previousCommit, currentCommit);
-
-    if (!synced) {
-      await fullSync();
-    }
+  if (output === 'minimal') {
+    await minimizeSpells();
   }
-
-  await writeFile(STATE_FILE, currentCommit);
 }
 
-syncSpells().catch((error) => {
+const output = getOutputMode();
+
+syncSpells(output).catch((error) => {
   console.error('Spell synchronization failed:', error.message);
   process.exitCode = 1;
 });

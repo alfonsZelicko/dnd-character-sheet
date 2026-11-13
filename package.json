@@ -13,7 +13,8 @@
     "test:changed": "vitest run --since-last-run",
     "preview": "vite preview",
     "generate-build-stats": "node dev-utils/generate-bundle-stats.ts",
-    "sync:spells": "node dev-utils/sync-spells.ts"
+    "sync:spells": "node dev-utils/sync-spells.ts",
+    "sync:spells:full": "node dev-utils/sync-spells.ts --output full"
   },
   "dependencies": {
     "@emotion/react": "^11.13.5",
@@ -60,13 +61,16 @@
   "nx": {},
   "scriptsComments": {
     "dev": "Start the development server with live reload to preview and test the app during development.",
+    "prebuild": "Synchronizes minimal spell data from 5eTools before building.",
     "build": "Generate an optimized production build of the app and output it to the 'dist' directory.",
     "lint": "Check the app's codebase for syntax and style errors based on defined linting rules.",
     "preview": "Serve the production build locally to test the app as it would appear in a deployed environment.",
     "test": "Run the test suite in watch mode during development.",
     "test:run": "Run the test suite once and exit, suitable for CI or a final check.",
     "test:changed": "Run tests affected by files changed since the previous test:changed run. The first run executes the full suite; use Node.js 22.15 or newer.",
-    "generate-build-stats": "Generates report visualizing the bundle structure, showing the size of each library and module."
+    "generate-build-stats": "Generates report visualizing the bundle structure, showing the size of each library and module.",
+    "sync:spells": "Synchronizes spell data from 5eTools (minimal: name, level, classes).",
+    "sync:spells:full": "Synchronizes complete spell data from 5eTools."
   },
   "packageManager": "pnpm@10.23.0"
 }
