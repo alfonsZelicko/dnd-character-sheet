@@ -75,7 +75,7 @@ export function Notes({
     <Box
       component={StyledPaper}
       {...WrapperProps}
-      sx={mergeSx(getNotesSx(rowCount, fullWidth), WrapperProps?.sx, sx, { display: 'flex', flex: 1, height: '100%' })}
+      sx={mergeSx(getNotesSx(rowCount, fullWidth), { display: 'flex', flex: 1, height: '100%' }, WrapperProps?.sx)}
     >
       <Box className="notes-editor-frame">
         <EditorContent editor={editor} />

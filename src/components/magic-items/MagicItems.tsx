@@ -93,7 +93,14 @@ const ItemDescription = memo(function ItemDescription({ magicItemAtom }: MagicIt
     [magicItemAtom]
   );
 
-  return <Notes atom={descriptionAtom} placeholder="Item Description" rows={2} WrapperProps={{ component: 'div' }} />;
+  return (
+    <Notes
+      atom={descriptionAtom}
+      placeholder="Item Description"
+      rows={2}
+      WrapperProps={{ component: 'div', sx: { height: 'inherit' } }}
+    />
+  );
 });
 
 export const MagicItem = memo(function MagicItem({ magicItemAtom, index }: MagicItemCardProps) {

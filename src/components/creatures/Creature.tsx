@@ -1,4 +1,4 @@
-import { Grid2 as Grid, useMediaQuery } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
@@ -7,7 +7,7 @@ import { Notes } from '../notes';
 import { RemoveButton, StyledPaper, TextInput } from '../shared';
 import { CreatureAbilities, CreatureCombatStats } from './components';
 import { CreatureFieldInputProps, CreatureItemProps, CreatureType } from './types';
-import { mergeSx, theme } from '../../utils';
+import { mergeSx } from '../../utils';
 import { CharacterImage } from '../character-image';
 
 // ─── CreatureFieldInput ───────────────────────────────────────────────────────
@@ -50,9 +50,6 @@ const CreatureHeaderFields = memo(function CreatureHeaderFields({
   creatureAtom: PrimitiveAtom<CreatureType>;
   onRemove?: () => void;
 }) {
-  const isXs = useMediaQuery(theme.breakpoints.up('xs'));
-  const isMd = useMediaQuery(theme.breakpoints.up('md'));
-
   return (
     <Grid container size={12} spacing={1} sx={{ alignItems: 'center' }}>
       <Grid size={{ xs: 11, md: 'grow' }}>
@@ -63,8 +60,8 @@ const CreatureHeaderFields = memo(function CreatureHeaderFields({
           sx={{ '& input': { textAlign: 'left' } }}
         />
       </Grid>
-      {isXs && onRemove && (
-        <Grid size={1}>
+      {onRemove && (
+        <Grid size={1} sx={{ display: { xs: 'flex', md: 'none' } }}>
           <RemoveButton onClick={onRemove} tooltip="Delete creature" ariaLabel="Remove creature" />
         </Grid>
       )}
@@ -96,7 +93,14 @@ const CreatureHeaderFields = memo(function CreatureHeaderFields({
           sx={{ '& input': { textAlign: 'center' } }}
         />
       </Grid>
-      {onRemove && isMd && <RemoveButton onClick={onRemove} tooltip="Delete creature" ariaLabel="Remove creature" />}
+      {onRemove && (
+        <RemoveButton
+          onClick={onRemove}
+          tooltip="Delete creature"
+          ariaLabel="Remove creature"
+          wrapperSx={{ display: { xs: 'none', md: 'flex' } }}
+        />
+      )}
     </Grid>
   );
 });
