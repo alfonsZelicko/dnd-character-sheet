@@ -6,6 +6,7 @@ export type SkillType = {
   modifier: number;
   ability: Abilities;
   type?: 'basic' | 'tools';
+  advantage?: boolean | undefined;
   proficiencyAndExpertise: ProfAndExpType;
 };
 

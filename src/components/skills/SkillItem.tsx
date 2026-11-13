@@ -1,4 +1,4 @@
-import { Grid2 as Grid, Tooltip, Typography } from '@mui/material';
+import { Checkbox, Grid2 as Grid, Tooltip, Typography } from '@mui/material';
 import React, { ChangeEvent, useMemo } from 'react';
 import { ellipsisWrapper } from '../../utils';
 import { StandardNumberInput } from '../shared';
@@ -8,18 +8,25 @@ import { skillAtom } from './atoms';
 import { calculateAbilityModifier, formatWithPlusSign } from '../../features/utils';
 import { ExpertiseAndProficiency } from './ExpertiseAndProficiency';
 import { SkillItemProps } from './types';
+import CasinoIcon from '@mui/icons-material/Casino';
+import CasinoOutlinedIcon from '@mui/icons-material/CasinoOutlined';
+import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
 import { proficiencyBonusAtom } from '../simple-components';
 
 export const SkillItem = React.memo(({ skillName, type = 'basic' }: SkillItemProps) => {
-  const [{ ability, proficiencyAndExpertise, modifier }, setSkill] = useAtom(skillAtom(skillName));
+  const [{ ability, proficiencyAndExpertise, modifier, advantage }, setSkill] = useAtom(skillAtom(skillName));
   const [{ score }] = useAtom(getAbilityAtom(ability));
   const proficiencyBonus = useAtomValue(proficiencyBonusAtom);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+
     setSkill((prev) => ({
       ...prev,
-      modifier: +event.target.value,
+      [name]:
+        name === 'advantage' ? (prev.advantage === undefined ? true : prev.advantage ? false : undefined) : +value,
     }));
+  };
 
   const calculatedBonus = useMemo(() => {
     let result = calculateAbilityModifier(score);
@@ -61,15 +68,34 @@ export const SkillItem = React.memo(({ skillName, type = 'basic' }: SkillItemPro
         </Typography>
       </Grid>
       <Grid sx={{ width: 40 }}>
-        <StandardNumberInput
-          value={modifier ? formatWithPlusSign(modifier) : ''}
-          name={'modifier'}
-          onChange={handleChange}
-          placeholder={'+'}
-          fullWidth={false}
-          sx={{ pr: 2 }}
-          variant={'standard'}
-        />
+        <Tooltip title={advantage ? 'Advantage' : advantage === undefined ? 'No Advantage' : 'Disadvantage'}>
+          <Checkbox
+            sx={{ transition: '0.3s all', transform: `rotate(${advantage === undefined ? '0deg' : '35deg'})` }}
+            size={'small'}
+            name={'advantage'}
+            icon={<CasinoOutlinedIcon />}
+            checkedIcon={<CasinoIcon />}
+            indeterminateIcon={<IndeterminateCheckBoxOutlinedIcon />}
+            onChange={handleChange}
+            checked={advantage === true}
+            indeterminate={advantage === undefined}
+          />
+        </Tooltip>
+      </Grid>
+      <Grid sx={{ width: 40 }}>
+        <Tooltip title={'Bonuses from items/...'}>
+          <div>
+            <StandardNumberInput
+              value={modifier ? formatWithPlusSign(modifier) : ''}
+              name={'modifier'}
+              onChange={handleChange}
+              placeholder={'+'}
+              fullWidth={false}
+              sx={{ pr: 2 }}
+              variant={'standard'}
+            />
+          </div>
+        </Tooltip>
       </Grid>
     </Grid>
   );

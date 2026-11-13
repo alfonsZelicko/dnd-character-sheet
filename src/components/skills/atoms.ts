@@ -6,6 +6,7 @@ const createSkillAtom = (key: string, abilityType: Abilities) =>
   atomWithStorage<SkillType>(key, {
     ability: abilityType,
     modifier: 0,
+    advantage: undefined,
     proficiencyAndExpertise: 0,
   });
 

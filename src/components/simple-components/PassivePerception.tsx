@@ -1,4 +1,4 @@
-import { useAtomValue } from 'jotai/index';
+import { useAtomValue } from 'jotai';
 import { skillAtom } from '../skills';
 import { proficiencyBonusAtom } from './atoms';
 import { wisdomAtom } from '../abilities/atoms';
@@ -8,14 +8,21 @@ import { Tooltip } from '@mui/material';
 import { NumberLabelInput } from '../shared';
 
 export const PassivePerception = () => {
-  const { proficiencyAndExpertise, modifier } = useAtomValue(skillAtom('Perception'));
+  const { proficiencyAndExpertise, modifier, advantage } = useAtomValue(skillAtom('Perception'));
   const proficiencyBonus = useAtomValue(proficiencyBonusAtom);
   const { score: wisdomScore } = useAtomValue(wisdomAtom);
-  const tooltipTitle = `10+${proficiencyBonus}{proficiencyBonus}*${proficiencyAndExpertise}{prof/exp}+${modifier}{modifier}+${calculateAbilityModifier(wisdomScore)}{wis}`;
+  const tooltipTitle = `10+${proficiencyBonus}{proficiencyBonus}*${proficiencyAndExpertise}{prof/exp}+${modifier}{modifier}+${calculateAbilityModifier(wisdomScore)}{wis}${
+    advantage === undefined ? '' : advantage ? '+advantage(+5)' : '-disadvantage(-5)'
+  }`;
 
   const calculatedPassivePerception = useMemo(
-    () => 10 + proficiencyAndExpertise * proficiencyBonus + modifier + calculateAbilityModifier(wisdomScore),
-    [proficiencyAndExpertise, modifier, proficiencyBonus]
+    () =>
+      10 +
+      proficiencyAndExpertise * proficiencyBonus +
+      modifier +
+      calculateAbilityModifier(wisdomScore) +
+      (advantage ? 5 : advantage === undefined ? 0 : -5),
+    [proficiencyAndExpertise, modifier, proficiencyBonus, advantage]
   );
 
   return (
