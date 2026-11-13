@@ -1,17 +1,17 @@
 import { SxProps, Tab, Theme } from '@mui/material';
-import { MainColor, usePageNavigation } from '../../utils';
+import { APP_PAGE_TABS, MainColor, usePageNavigation } from '../../utils';
 import React from 'react';
 import { TabList } from '@mui/lab';
 
-const a11yProps = (index: number) => {
+const a11yProps = (page: string) => {
   return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    id: `simple-tab-${page}`,
+    'aria-controls': `simple-tabpanel-${page}`,
   };
 };
 
-const generateTabSx = (isAtime: boolean): SxProps<Theme> => ({
-  background: isAtime
+const generateTabSx = (isActive: boolean): SxProps<Theme> => ({
+  background: isActive
     ? 'color-mix(in srgb, var(--app-main-color, #816e5b) 60%, transparent)'
     : 'color-mix(in srgb, var(--app-main-color, #816e5b) 16%, transparent)',
   '&.Mui-selected': { color: 'white' },
@@ -28,14 +28,19 @@ export const MainMenu = () => {
     <TabList
       onChange={handleChangePage}
       aria-label="basic tabs example"
-      variant="fullWidth"
-      sx={{ borderBottom: '1px solid ' + MainColor }}
+      variant="scrollable"
+      scrollButtons="auto"
+      allowScrollButtonsMobile
+      sx={{
+        borderBottom: '1px solid ' + MainColor,
+        '& .MuiTab-root': {
+          flexGrow: 1,
+        },
+      }}
     >
-      <Tab label="Character Preview" value={'0'} {...a11yProps(0)} sx={generateTabSx(page === '0')} />
-      <Tab label="InventoryList" value={'1'} {...a11yProps(1)} sx={generateTabSx(page === '1')} />
-      <Tab label="Creatures" value={'2'} {...a11yProps(2)} sx={generateTabSx(page === '2')} />
-      <Tab label="Spells" value={'3'} {...a11yProps(3)} sx={generateTabSx(page === '3')} />
-      <Tab label="Options" value={'4'} {...a11yProps(4)} sx={generateTabSx(page === '4')} />
+      {APP_PAGE_TABS.map(({ id, label }) => (
+        <Tab key={id} label={label} value={id} {...a11yProps(label)} sx={generateTabSx(page === id)} />
+      ))}
     </TabList>
   );
 };

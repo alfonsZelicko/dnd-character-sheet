@@ -6,7 +6,7 @@ import { PageContainer } from './PageContainer';
 import { MainMenu } from '../../components/main-menu';
 import TabPanel, { TabPanelProps } from '@mui/lab/TabPanel';
 import { TabContext } from '@mui/lab';
-import { mergeSx, scrollBackgroundSx, usePageNavigation } from '../../utils';
+import { AppPages, mergeSx, scrollBackgroundSx, usePageNavigation } from '../../utils';
 import { Box } from '@mui/material';
 import { Options } from '../options';
 import { SpellsPage } from '../spells';
@@ -33,19 +33,19 @@ export const MainContainer = () => {
       <TabContext value={page}>
         <MainMenu />
         <PageContainer>
-          <TabPanel value={'0'} {...commonTabPanelProps()}>
+          <TabPanel value={AppPages.CharacterPreview.id} {...commonTabPanelProps()}>
             <CharacterPreview />
           </TabPanel>
-          <TabPanel value={'1'} {...commonTabPanelProps({ sx: { width: '100%' } })}>
+          <TabPanel value={AppPages.Inventory.id} {...commonTabPanelProps({ sx: { width: '100%' } })}>
             <Inventory />
           </TabPanel>
-          <TabPanel value={'2'} {...commonTabPanelProps({ sx: { width: '100%' } })}>
+          <TabPanel value={AppPages.Creatures.id} {...commonTabPanelProps({ sx: { width: '100%' } })}>
             <CreaturesPage />
           </TabPanel>
-          <TabPanel value={'3'} {...commonTabPanelProps({ sx: { width: '100%' } })}>
+          <TabPanel value={AppPages.Spells.id} {...commonTabPanelProps({ sx: { width: '100%' } })}>
             <SpellsPage />
           </TabPanel>
-          <TabPanel value={'4'} {...commonTabPanelProps({ sx: { width: '100%' } })}>
+          <TabPanel value={AppPages.Options.id} {...commonTabPanelProps({ sx: { width: '100%' } })}>
             <Options />
           </TabPanel>
         </PageContainer>

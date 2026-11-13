@@ -23,6 +23,7 @@ export const PageContainer = forwardRef<HTMLDivElement, PageContainerProps>(func
         padding: 2,
       })}
       ref={ref}
+      {...restProps}
     >
       {children}
     </Box>
