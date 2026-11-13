@@ -9,6 +9,7 @@ import { TabContext } from '@mui/lab';
 import { mergeSx, scrollBackgroundSx, usePageNavigation } from '../../utils';
 import { Box } from '@mui/material';
 import { Options } from '../options';
+import { SpellsPage } from '../spells';
 
 /* merging tabPanelProps with some default SX, ...*/
 const commonTabPanelProps = (props?: Omit<TabPanelProps, 'value'>): Omit<TabPanelProps, 'value'> => ({
@@ -42,6 +43,9 @@ export const MainContainer = () => {
             <CreaturesPage />
           </TabPanel>
           <TabPanel value={'3'} {...commonTabPanelProps({ sx: { width: '100%' } })}>
+            <SpellsPage />
+          </TabPanel>
+          <TabPanel value={'4'} {...commonTabPanelProps({ sx: { width: '100%' } })}>
             <Options />
           </TabPanel>
         </PageContainer>
