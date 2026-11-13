@@ -3,7 +3,7 @@ import { createStore, Provider } from 'jotai';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { ArmorAtoms } from './atoms';
-import { ArmorInventory } from './ArmorItem';
+import { ArmorInventory } from './ArmorInventory';
 
 describe('ArmorInventory', () => {
   beforeEach(() => localStorage.clear());
