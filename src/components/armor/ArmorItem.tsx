@@ -1,10 +1,8 @@
-import AddIcon from '@mui/icons-material/Add';
-import { Button, Grid2 as Grid, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
-import { PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { Grid2 as Grid, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { PrimitiveAtom, useAtomValue, useSetAtom } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import React, { memo, useCallback, useMemo } from 'react';
-import { RemoveButton, StyledLabel, StyledPaper, StyledStandardTextField } from '../shared';
-import { ArmorAtoms, ArmorAtomsAtom } from './atoms';
+import { RemoveButton, StyledPaper, StyledStandardTextField } from '../shared';
 import { ArmorCategory, ArmorFieldInputProps, ArmorItemProps, ArmorRemoveButtonProps, ArmorType } from './types';
 
 // ─── per-field text input ─────────────────────────────────────────────────────
@@ -112,45 +110,6 @@ export const ArmorItem = ({ armorAtom, onRemove }: ArmorItemProps) => {
       </Grid>
       <Grid sx={{ width: 75, flexShrink: 0, display: 'flex', alignItems: 'flex-end', alignSelf: 'stretch' }}>
         <ArmorCategorySelect atom={armorAtom} />
-      </Grid>
-    </Grid>
-  );
-};
-
-// ─── ArmorInventory ───────────────────────────────────────────────────────────
-
-const createEmptyArmor = (): ArmorType => ({
-  category: 'Robe',
-  name: '',
-  defense: '',
-  description: '',
-  proficient: false,
-});
-
-export const ArmorInventory = () => {
-  const [, setArmorItems] = useAtom(ArmorAtoms);
-  const armorAtoms = useAtomValue(ArmorAtomsAtom);
-
-  return (
-    <Grid container size={12} component={StyledPaper} direction="column">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-        <StyledLabel>Armors</StyledLabel>
-        <Button
-          size="small"
-          startIcon={<AddIcon />}
-          onClick={() => setArmorItems((items) => [...items, createEmptyArmor()])}
-        >
-          Add armor
-        </Button>
-      </Stack>
-      <Grid container size={12} spacing={1} direction="row">
-        {armorAtoms.map((armorAtom, index) => (
-          <ArmorItem
-            key={index}
-            armorAtom={armorAtom}
-            onRemove={() => setArmorItems((items) => items.filter((_, i) => i !== index))}
-          />
-        ))}
       </Grid>
     </Grid>
   );

@@ -2,7 +2,7 @@ import { Checkbox, FormControlLabel, Grid2 as Grid, styled } from '@mui/material
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import React from 'react';
-import { StyledPaper } from '../shared';
+import { ComponentLabel, StyledPaper } from '../shared';
 import { useAtom } from 'jotai';
 import { inspirationAtom } from './atoms';
 
@@ -29,7 +29,7 @@ export const Inspiration = () => {
     <Grid size={12} component={StyledPaper} sx={{ pt: 0.8, pl: 1.5, height: 50 }}>
       <StyledFormControlLabel
         control={<LocalCheckbox />}
-        label="Inspiration"
+        label={<ComponentLabel sx={{ fontSize: { xs: '1rem', md: '1.3rem' } }}>Inspiration</ComponentLabel>}
         slotProps={{
           typography: {
             sx: { paddingLeft: '8px' },

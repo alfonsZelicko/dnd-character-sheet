@@ -104,7 +104,7 @@ export const CharacterPreview = () => (
               <DeathSaves />
             </Grid>
 
-            <Grid sx={{ gridArea: 'hitdices', display: 'flex' }}>
+            <Grid sx={{ gridArea: 'hitdices', display: { sx: 'flex', md: 'block' } }}>
               <HitDices />
             </Grid>
           </Grid>

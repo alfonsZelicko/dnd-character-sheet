@@ -1,10 +1,9 @@
 import React from 'react';
-import { Provider, createStore } from 'jotai';
+import { createStore, Provider } from 'jotai';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
-import { creaturesAtom, creatureAtomsAtom, emptyCreature } from './atoms';
+import { describe, expect, it } from 'vitest';
+import { creaturesAtom, emptyCreature } from './atoms';
 import { Creatures } from './Creatures';
-import { Creature } from './Creature';
 import { CreatureType } from './types';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
@@ -21,7 +20,7 @@ const renderCreatures = (store = makeStore()) =>
   render(
     <Provider store={store}>
       <Creatures />
-    </Provider>,
+    </Provider>
   );
 
 // ─── atoms ────────────────────────────────────────────────────────────────────
@@ -110,7 +109,7 @@ describe('Creature ability scores', () => {
     render(
       <Provider store={store}>
         <Creatures />
-      </Provider>,
+      </Provider>
     );
 
     expect(screen.getByDisplayValue('18')).toBeInTheDocument();
@@ -124,7 +123,7 @@ describe('Creature ability scores', () => {
     render(
       <Provider store={store}>
         <Creatures />
-      </Provider>,
+      </Provider>
     );
 
     const strInput = screen.getByDisplayValue('13');
@@ -147,7 +146,7 @@ describe('Creature combat stats', () => {
     render(
       <Provider store={store}>
         <Creatures />
-      </Provider>,
+      </Provider>
     );
 
     expect(screen.getByDisplayValue('33')).toBeInTheDocument();
@@ -168,7 +167,7 @@ describe('Creature saving throws', () => {
     render(
       <Provider store={store}>
         <Creatures />
-      </Provider>,
+      </Provider>
     );
 
     expect(screen.getByDisplayValue('+3')).toBeInTheDocument();
@@ -179,7 +178,7 @@ describe('Creature saving throws', () => {
     render(
       <Provider store={store}>
         <Creatures />
-      </Provider>,
+      </Provider>
     );
 
     // Find the STR save placeholder input
