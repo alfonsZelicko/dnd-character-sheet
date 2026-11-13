@@ -4,7 +4,7 @@ import { proficiencyBonusAtom } from './atoms';
 import { wisdomAtom } from '../abilities/atoms';
 import { calculateAbilityModifier } from '../../features/utils';
 import React, { useMemo } from 'react';
-import { Tooltip } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
 import { NumberLabelInput } from '../shared';
 
 export const PassivePerception = () => {
@@ -27,7 +27,7 @@ export const PassivePerception = () => {
 
   return (
     <Tooltip title={tooltipTitle}>
-      <span>
+      <Box sx={{ width: '100%' }} component={'span'}>
         <NumberLabelInput
           NumberInputProps={{
             showIncButtons: false,
@@ -41,7 +41,7 @@ export const PassivePerception = () => {
           }}
           label="Passive Perception"
         />
-      </span>
+      </Box>
     </Tooltip>
   );
 };
