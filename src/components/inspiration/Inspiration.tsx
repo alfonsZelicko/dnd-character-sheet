@@ -26,10 +26,18 @@ const LocalCheckbox = () => {
 
 export const Inspiration = () => {
   return (
-    <Grid size={12} component={StyledPaper} sx={{ pt: 0.8, pl: 1.5, height: 50 }}>
+    <Grid
+      size={12}
+      component={StyledPaper}
+      sx={{ pt: 0.8, pl: 1.5, height: 50, display: 'flex', justifyContent: 'center' }}
+    >
       <StyledFormControlLabel
         control={<LocalCheckbox />}
-        label={<ComponentLabel sx={{ fontSize: { xs: '1rem', md: '1.3rem' } }}>Inspiration</ComponentLabel>}
+        label={
+          <ComponentLabel sx={{ fontSize: { xs: '1rem', md: '1.3rem' }, display: 'block !important' }}>
+            Inspiration
+          </ComponentLabel>
+        }
         slotProps={{
           typography: {
             sx: { paddingLeft: '8px' },

@@ -37,6 +37,6 @@ export const DeathSaves = () => (
       </Grid>
       <DeathSavesCounter {...SavingThrowsConfig.failure} WrapperProps={{ justifyContent: 'right' }} />
     </Grid>
-    <ComponentLabel sx={{ display: 'none' }}>Death Saves</ComponentLabel>
+    <ComponentLabel sx={{ display: 'none !important' }}>Death Saves</ComponentLabel>
   </Grid>
 );

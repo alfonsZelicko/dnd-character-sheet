@@ -4,8 +4,12 @@ import React from 'react';
 import { InventoryHeaderProps } from './types';
 
 export const InventoryHeader = ({ nameDescription = 'Item name' }: InventoryHeaderProps) => {
-  const ItemNameHeader = <ComponentLabel textAlign={'left'}>{nameDescription}</ComponentLabel>;
-  const ItemCountHeader = <ComponentLabel sx={{ pr: 1 }}>Σ</ComponentLabel>;
+  const ItemNameHeader = (
+    <ComponentLabel textAlign={'left'} sx={{ display: 'block !important' }}>
+      {nameDescription}
+    </ComponentLabel>
+  );
+  const ItemCountHeader = <ComponentLabel sx={{ pr: 1, display: 'block !important' }}>Σ</ComponentLabel>;
 
   return <InventoryItemLayout itemInput={ItemNameHeader} countInput={ItemCountHeader} />;
 };

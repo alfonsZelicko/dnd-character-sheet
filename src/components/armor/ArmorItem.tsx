@@ -76,7 +76,7 @@ const ArmorRemoveButton = memo(function ArmorRemoveButton({ atom, onRemove }: Ar
 
 export const ArmorItem = ({ armorAtom, onRemove }: ArmorItemProps) => {
   return (
-    <Grid container size={6} spacing={1} component={StyledPaper} className="paperItem">
+    <Grid container size={{ xs: 12, md: 6 }} spacing={1} component={StyledPaper} className="paperItem">
       <Grid container size={12} sx={{ alignItems: 'center', flexWrap: 'nowrap' }}>
         <Grid size="grow">
           <ArmorFieldInput

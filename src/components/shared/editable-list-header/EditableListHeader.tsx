@@ -13,7 +13,9 @@ export const EditableListHeader = ({ label, addItem, addItemLabel = 'Add Item' }
   return (
     <Grid container size={12} direction="row" alignItems="center" justifyContent="space-between">
       <Grid size={'grow'}>
-        <ComponentLabel textAlign={'left'}>{label}</ComponentLabel>
+        <ComponentLabel textAlign={'left'} sx={{ display: 'block !important' }}>
+          {label}
+        </ComponentLabel>
       </Grid>
       <Grid>
         <Button startIcon={<AddIcon />} onClick={addItem}>
