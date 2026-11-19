@@ -8,7 +8,7 @@ const spellFiles = import.meta.glob<SpellFile>('../../../data/spells/spells-*.js
 
 const allSpells: Spell[] = Object.values(spellFiles).flatMap((file) => file.spell ?? []);
 
-const MAX_RESULTS = 50;
+const MAX_RESULTS = 150;
 
 export const useSpellFilter = () => {
   const [inputValue, setInputValue] = useState('');

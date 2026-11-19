@@ -30,3 +30,9 @@ export const buttonSx: SxProps<Theme> = {
 };
 
 export const autocompleteOptionLabelNameSx: SxProps<Theme> = { fontSize: '1.3rem', textAlign: 'left', flex: 1, pl: 2 };
+
+export const counterInputSx = { '& input': { fontWeight: 200, fontFamily: 'monospace', fontSize: '0.9rem' } };
+export const infiniteInputSx = {
+  ...counterInputSx,
+  '& input::placeholder': { opacity: 1, color: 'text.primary', fontWeight: 600 },
+};

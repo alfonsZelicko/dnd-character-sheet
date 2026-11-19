@@ -1,12 +1,12 @@
 import { AutocompleteProps } from '@mui/material';
-import ShieldIcon from '@mui/icons-material/Shield';
-import TravelExploreIcon from '@mui/icons-material/TravelExplore';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import PsychologyIcon from '@mui/icons-material/Psychology';
-import WhatshotIcon from '@mui/icons-material/Whatshot';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import BloodtypeIcon from '@mui/icons-material/Bloodtype';
-import TransformIcon from '@mui/icons-material/Transform';
+import ShieldTwoToneIcon from '@mui/icons-material/ShieldTwoTone';
+import TravelExploreTwoToneIcon from '@mui/icons-material/TravelExploreTwoTone';
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
+import PsychologyTwoToneIcon from '@mui/icons-material/PsychologyTwoTone';
+import WhatshotTwoToneIcon from '@mui/icons-material/WhatshotTwoTone';
+import VisibilityOffTwoToneIcon from '@mui/icons-material/VisibilityOffTwoTone';
+import BloodtypeTwoToneIcon from '@mui/icons-material/BloodtypeTwoTone';
+import TransformTwoToneIcon from '@mui/icons-material/TransformTwoTone';
 import React from 'react';
 
 export type SpellPickerProps = Omit<
@@ -55,14 +55,14 @@ type SchoolConfig = {
 };
 
 export const schoolIconConfig: Record<School, SchoolConfig> = {
-  A: { Icon: ShieldIcon, color: '#4A90D9' },
-  C: { Icon: TravelExploreIcon, color: '#35B8A5' },
-  D: { Icon: VisibilityIcon, color: '#D6B44C' },
-  E: { Icon: PsychologyIcon, color: '#A477D4' },
-  V: { Icon: WhatshotIcon, color: '#E87535' },
-  I: { Icon: VisibilityOffIcon, color: '#A5A9C4' },
-  N: { Icon: BloodtypeIcon, color: '#A83D50' },
-  T: { Icon: TransformIcon, color: '#72A85A' },
+  A: { Icon: ShieldTwoToneIcon, color: '#4A90D9' },
+  C: { Icon: TravelExploreTwoToneIcon, color: '#35B8A5' },
+  D: { Icon: VisibilityTwoToneIcon, color: '#D6B44C' },
+  E: { Icon: PsychologyTwoToneIcon, color: '#A477D4' },
+  V: { Icon: WhatshotTwoToneIcon, color: '#E87535' },
+  I: { Icon: VisibilityOffTwoToneIcon, color: '#A5A9C4' },
+  N: { Icon: BloodtypeTwoToneIcon, color: '#A83D50' },
+  T: { Icon: TransformTwoToneIcon, color: '#72A85A' },
 };
 
 export type School = keyof typeof schoolList;

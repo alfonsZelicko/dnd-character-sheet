@@ -1,11 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useSpellFilter } from './hooks/useSpellFilter';
-import { Spell } from './types';
+import { useSpellFilter } from '../hooks/useSpellFilter';
+import { Spell } from '../types';
 import { SpellPicker } from './SpellPicker';
 import React from 'react';
 
-vi.mock('./hooks/useSpellFilter', () => ({
+vi.mock('../hooks/useSpellFilter', () => ({
   useSpellFilter: vi.fn(),
 }));
 

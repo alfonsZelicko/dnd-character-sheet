@@ -103,7 +103,7 @@ async function processSpellFiles(output: OutputMode) {
         throw new Error(`Missing or invalid spell name at index ${index} in ${file}`);
       }
 
-      const searchName = spellData.name.toLowerCase(); //for filter purpose only
+      const searchName = `${spellData.name.toLowerCase()} ${spellData.level}`; //for filter purpose only
 
       if (output === 'minimal') {
         const minimalSpell = Object.fromEntries(

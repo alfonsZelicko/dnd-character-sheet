@@ -1,5 +1,6 @@
 import { Autocomplete, Box, Button, TextField, Tooltip } from '@mui/material';
 import React, { memo } from 'react';
+import { useSetAtom } from 'jotai';
 import FilterIcon from '@mui/icons-material/Filter';
 import Filter1Icon from '@mui/icons-material/Filter1';
 import Filter2Icon from '@mui/icons-material/Filter2';
@@ -11,9 +12,10 @@ import Filter7Icon from '@mui/icons-material/Filter7';
 import Filter8Icon from '@mui/icons-material/Filter8';
 import Filter9Icon from '@mui/icons-material/Filter9';
 import Filter9PlusIcon from '@mui/icons-material/Filter9Plus';
-import { schoolIconConfig, SchoolName, Spell, SpellPickerProps } from './types';
-import { autocompleteOptionLabelNameSx, buttonSx, spellPickerSx, textFieldSx } from './styles';
-import { useSpellFilter } from './hooks/useSpellFilter';
+import { schoolIconConfig, SchoolName, Spell, SpellPickerProps } from '../types';
+import { autocompleteOptionLabelNameSx, buttonSx, spellPickerSx, textFieldSx } from '../styles';
+import { useSpellFilter } from '../hooks/useSpellFilter';
+import { knownSpellsAtom } from '../atoms';
 
 const getSpellLabel = (option: Spell) => `${option.name}`;
 
@@ -34,12 +36,33 @@ const levelIcons = [
 ];
 
 export const SpellPicker = memo(function SpellPicker({ ...restProps }: SpellPickerProps) {
-  const { options, inputValue, selectedSpell, handleInputChange, handleChange } = useSpellFilter();
+  const { options, inputValue, selectedSpell, handleInputChange, handleChange, reset } = useSpellFilter();
+  const setKnownSpells = useSetAtom(knownSpellsAtom);
+
+  const passThroughFilterOptions = <T,>(options: T[]) => options;
+
+  const addSelectedSpell = () => {
+    if (!selectedSpell) return;
+
+    const { level, name, school } = selectedSpell;
+    setKnownSpells((knownSpells) => {
+      const spellsAtLevel = knownSpells[level] ?? [];
+      if (spellsAtLevel.some((spell) => spell.name === name)) {
+        return knownSpells;
+      }
+
+      const updatedSpells = [...knownSpells];
+      updatedSpells[level] = [...spellsAtLevel, { name, school }];
+      return updatedSpells;
+    });
+    reset();
+  };
 
   return (
     <Box sx={spellPickerSx}>
       <Autocomplete<Spell, false, false, false>
         options={options}
+        filterOptions={passThroughFilterOptions}
         value={selectedSpell}
         inputValue={inputValue}
         onInputChange={handleInputChange}
@@ -73,7 +96,7 @@ export const SpellPicker = memo(function SpellPicker({ ...restProps }: SpellPick
         {...restProps}
       />
 
-      <Button variant="contained" onClick={() => {}} disabled={!selectedSpell} sx={buttonSx}>
+      <Button variant="contained" onClick={addSelectedSpell} disabled={!selectedSpell} sx={buttonSx}>
         Add
       </Button>
     </Box>
