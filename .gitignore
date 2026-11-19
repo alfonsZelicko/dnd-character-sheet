@@ -15,8 +15,9 @@ dist-ssr
 **/.pnpm-store/
 
 # Editor directories and files
-.vscode/*
+.vscode
 !.vscode/extensions.json
+.cursor
 .idea
 .DS_Store
 *.suo
@@ -33,3 +34,4 @@ dist-ssr
 
 # External sources
 .cache/
+src/data/spells/
