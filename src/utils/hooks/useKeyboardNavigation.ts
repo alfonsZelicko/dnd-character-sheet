@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 
 type UseKeyboardNavigationProps = { isInputFocused: boolean; setCurrentSlide: Dispatch<SetStateAction<number>> };
 
+/* It was made for keyboard navigation... it is obsolete - mby in the future I will implement it again */
 export const useKeyboardNavigation = ({ isInputFocused, setCurrentSlide }: UseKeyboardNavigationProps) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

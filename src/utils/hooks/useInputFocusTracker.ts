@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 
+/* At this point I am not using this hook...
+ * Later I should make it better (not working for select...)
+ * */
 export const useInputFocusTracker = (): boolean => {
   const [isInputFocused, setIsInputFocused] = useState(false);
 
