@@ -5,3 +5,4 @@ export * from './component-label';
 export * from './overflow-tooltip';
 export * from './number-input/inc-dec-buttons';
 export * from './remove-button';
+export * from './resource-counter';

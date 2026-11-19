@@ -1,5 +1,7 @@
 export type HitDiceType = {
-  level: number;
+  max: number;
+  /** Legacy saved value; converted to `max` when loading old character data. */
+  level?: number;
   die: DiceType;
   usage: number;
 };
