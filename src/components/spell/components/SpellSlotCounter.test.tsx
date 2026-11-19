@@ -8,18 +8,18 @@ import { spellSlotsAtom } from '../atoms';
 describe('SpellSlotCounter', () => {
   it('hides zero-maximum spell slots, keeps cantrips as disabled infinity placeholders, and excludes them from Add', () => {
     const store = createStore();
-    const slots = Array.from({ length: 11 }, () => null) as Array<{ max: number; usage: number } | null>;
+    const slots = Array.from({ length: 11 }, () => null) as Array<{ max: number; usage: number; pactLevel?: number } | null>;
     slots[0] = { max: 1, usage: 0 };
     slots[1] = { max: 0, usage: 0 };
     slots[2] = { max: 2, usage: 1 };
-    slots[10] = { max: 1, usage: 0 };
+    slots[10] = { max: 1, usage: 0, pactLevel: 3 };
     store.set(spellSlotsAtom, slots);
 
     render(<Provider store={store}><SpellSlotCounter /></Provider>);
 
     expect(screen.queryByDisplayValue('1st level spell slot')).not.toBeInTheDocument();
     const secondLevelSlot = screen.getByDisplayValue('2nd level spell slot');
-    const pactMagic = screen.getByDisplayValue('Pact Magic');
+    const pactMagic = screen.getByDisplayValue('Pact Magic 3rd lvl');
     expect(secondLevelSlot).toBeInTheDocument();
     expect(pactMagic).toBeInTheDocument();
     expect(secondLevelSlot.compareDocumentPosition(pactMagic) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
