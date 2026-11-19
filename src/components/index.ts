@@ -16,3 +16,4 @@ export * from './coins';
 export * from './armor';
 export * from './creatures';
 export * from './magic-items';
+export * from './rest-controls';

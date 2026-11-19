@@ -1,7 +1,10 @@
-import React from 'react';
-import { ResourceCounter } from '../shared';
+import React, { useCallback } from 'react';
+import { useSetAtom } from 'jotai';
+import { ResourceCounter, ResourceCounterComponentProps } from '../shared';
+import { RestType } from '../features/types';
 import { hitDicesAtom } from './atoms';
 import { DiceType, HitDiceType } from './types';
+import { RestControls, RestEvent, useRestSubscription } from '../rest-controls';
 
 const hitDiceOptions: { key: DiceType; label: string }[] = [
   { key: 'd6', label: 'd6' },
@@ -18,13 +21,37 @@ const createHitDice = (option: { key: string; label: string }): HitDiceType => (
   usage: 0,
 });
 
-export const HitDices = () => (
-  <ResourceCounter
-    title="Hit Dices"
-    itemsAtom={hitDicesAtom}
-    options={hitDiceOptions}
-    getKey={getKey}
-    getLabel={getLabel}
-    createItem={createHitDice}
-  />
-);
+export const HitDices = ({ restMode = 'global', showHeader = true }: ResourceCounterComponentProps) => {
+  const setHitDices = useSetAtom(hitDicesAtom);
+  const resetHitDices = useCallback(() => {
+    setHitDices((items) => items.map((item) => ({ ...item, usage: item.max })));
+  }, [setHitDices]);
+  const handleRest = useCallback(
+    (event: RestEvent) => {
+      if (event === 'long-rest') resetHitDices();
+    },
+    [resetHitDices]
+  );
+  useRestSubscription(restMode, handleRest);
+
+  return (
+    <>
+      <ResourceCounter
+        title="Hit Dices"
+        resourceLabel="Hit Dice"
+        itemsAtom={hitDicesAtom}
+        options={hitDiceOptions}
+        getKey={getKey}
+        getLabel={getLabel}
+        createItem={createHitDice}
+        showHeader={showHeader}
+      />
+      {(restMode === 'local-controls' || restMode === 'global-controls') && (
+        <RestControls
+          mode={restMode}
+          onRest={restMode === 'local-controls' ? (type) => type === RestType.LR && resetHitDices() : undefined}
+        />
+      )}
+    </>
+  );
+};

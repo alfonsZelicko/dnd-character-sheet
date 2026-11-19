@@ -4,7 +4,8 @@ export enum RestType {
   DW = 'Dawn',
 }
 
-export const getRestTypeAbbreviation = (restType: RestType): string => restType.match(/[A-Z]/g)?.join('') || '';
+export const getRestTypeAbbreviation = (restType: RestType): string =>
+  Object.keys(RestType).find((k) => RestType[k as keyof typeof RestType] === restType) || '';
 
 export type FeatureType = {
   featureName: string;
