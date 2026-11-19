@@ -13,7 +13,7 @@ export const AppPages = {
   },
   Spells: {
     id: 'spells',
-    label: 'Spells',
+    label: 'Spells (Beta)',
   },
   Options: {
     id: 'options',

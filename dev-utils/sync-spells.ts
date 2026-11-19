@@ -2,18 +2,16 @@ import { cp, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promi
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import type { PathLike } from 'node:fs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-const REPOSITORY = 'https://github.com/MSanteler/5e-Tools.git';
+const REPOSITORY = 'https://github.com/MSanteler/5e-Tools.git'; //hope they will not remove it :-)
 const CACHE_DIR = path.join(ROOT, '.cache', '5e-tools');
 const SOURCE_DIR = path.join(CACHE_DIR, 'data', 'spells');
 const TARGET_DIR = path.join(ROOT, 'src', 'data', 'spells');
-const STATE_FILE = path.join(ROOT, '.cache', 'spells-sync-state');
-const OUTPUT_STATE_FILE = path.join(ROOT, '.cache', 'spells-sync-output');
 
-const MINIMAL_FIELDS = ['name', 'level', 'classes'] as const;
+/* this is a list of properties I am copying into the minimal output version*/
+const MINIMAL_FIELDS = ['name', 'level', 'classes', 'school'] as const;
 
 type OutputMode = 'minimal' | 'full';
 
@@ -24,7 +22,7 @@ const runGit = (args: string[], cwd = CACHE_DIR, options: { capture?: boolean } 
     encoding: options.capture ? 'utf8' : undefined,
   });
 
-const exists = async (file: PathLike) => {
+const exists = async (file: string) => {
   try {
     await stat(file);
     return true;
@@ -33,13 +31,12 @@ const exists = async (file: PathLike) => {
   }
 };
 
-const getCurrentCommit = () => String(runGit(['rev-parse', 'HEAD'], CACHE_DIR, { capture: true })).trim();
-
 function getOutputMode(): OutputMode {
   const args = process.argv.slice(2);
 
   if (args.length === 0) return 'minimal';
 
+  // lazy solution, I know - but this script does nothing more :-)
   if (args.length === 2 && args[0] === '--output') {
     if (args[1] === 'minimal' || args[1] === 'full') {
       return args[1];
@@ -51,78 +48,24 @@ function getOutputMode(): OutputMode {
 
 async function cloneRepository() {
   await mkdir(path.dirname(CACHE_DIR), { recursive: true });
+
   runGit(['clone', '--filter=blob:none', '--sparse', REPOSITORY, CACHE_DIR], ROOT);
   runGit(['sparse-checkout', 'set', '--no-cone', '/data/spells/']);
-}
-
-async function removeEmptyParents(directory: PathLike) {
-  while (directory !== TARGET_DIR) {
-    try {
-      const entries = await readdir(directory);
-
-      if (entries.length > 0) break;
-
-      await rm(directory, { recursive: true });
-
-      if (typeof directory === 'string') {
-        directory = path.dirname(directory);
-      }
-    } catch {
-      break;
-    }
-  }
-}
-
-async function copyChangedFiles(previousCommit: string, currentCommit: string) {
-  let changedFiles;
-
-  try {
-    changedFiles = String(
-      runGit(['diff', '--name-only', '-z', previousCommit, currentCommit, '--', 'data/spells'], CACHE_DIR, {
-        capture: true,
-      })
-    )
-      .split('\0')
-      .filter(Boolean);
-  } catch {
-    return false;
-  }
-
-  for (const file of changedFiles) {
-    const relativePath = path.relative('data/spells', file);
-
-    if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
-      throw new Error(`Invalid source path: ${file}`);
-    }
-
-    const source = path.join(CACHE_DIR, file);
-    const target = path.join(TARGET_DIR, relativePath);
-
-    if (await exists(source)) {
-      await mkdir(path.dirname(target), { recursive: true });
-      await cp(source, target);
-    } else {
-      await rm(target, { force: true });
-      await removeEmptyParents(path.dirname(target));
-    }
-  }
-
-  return true;
 }
 
 async function fullSync() {
   await rm(TARGET_DIR, { recursive: true, force: true });
   await mkdir(path.dirname(TARGET_DIR), { recursive: true });
-  await cp(SOURCE_DIR, TARGET_DIR, { recursive: true });
-
-  await Promise.all([
-    rm(path.join(TARGET_DIR, 'foundry.json'), { force: true }),
-    rm(path.join(TARGET_DIR, 'roll20.json'), { force: true }),
-  ]);
+  await cp(SOURCE_DIR, TARGET_DIR, {
+    recursive: true,
+    filter: (source) => {
+      const filename = path.basename(source);
+      return !['foundry.json', 'roll20.json'].includes(filename);
+    },
+  });
 }
 
-async function getJsonFiles(directory: string): Promise<string[]> {
-  const excludedFiles = ['foundry.json', 'roll20.json'];
+async function getSpellFiles(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true });
   const files: string[] = [];
 
@@ -130,32 +73,59 @@ async function getJsonFiles(directory: string): Promise<string[]> {
     const fullPath = path.join(directory, entry.name);
 
     if (entry.isDirectory()) {
-      files.push(...(await getJsonFiles(fullPath)));
-    } else if (entry.isFile() && entry.name.endsWith('.json') && !excludedFiles.includes(entry.name)) {
+      files.push(...(await getSpellFiles(fullPath)));
+    } else if (entry.isFile() && entry.name.endsWith('.json') && /^spells(?:-.+)?\.json$/i.test(entry.name)) {
       files.push(fullPath);
     }
   }
 
   return files;
 }
-async function minimizeSpells() {
-  const files = (await getJsonFiles(TARGET_DIR)).filter((file) => /^spells(?:-.+)?\.json$/i.test(path.basename(file)));
+
+async function processSpellFiles(output: OutputMode) {
+  const files = await getSpellFiles(TARGET_DIR);
 
   for (const file of files) {
-    const content = JSON.parse(await readFile(file, 'utf8'));
+    const content: Record<string, unknown> = JSON.parse(await readFile(file, 'utf8'));
 
     if (!Array.isArray(content.spell)) {
       throw new Error(`Missing spell array in ${file}`);
     }
 
-    content.spell = content.spell.map((spell: Record<string, unknown>) =>
-      Object.fromEntries(MINIMAL_FIELDS.filter((field) => field in spell).map((field) => [field, spell[field]]))
-    );
+    content.spell = content.spell.map((spell: unknown, index: number) => {
+      if (!spell || typeof spell !== 'object' || Array.isArray(spell)) {
+        throw new Error(`Invalid spell object at index ${index} in ${file}`);
+      }
+
+      const spellData = spell as Record<string, unknown>;
+
+      if (typeof spellData.name !== 'string') {
+        throw new Error(`Missing or invalid spell name at index ${index} in ${file}`);
+      }
+
+      const searchName = spellData.name.toLowerCase(); //for filter purpose only
+
+      if (output === 'minimal') {
+        const minimalSpell = Object.fromEntries(
+          MINIMAL_FIELDS.filter((field) => field in spellData).map((field) => [field, spellData[field]])
+        );
+
+        return {
+          ...minimalSpell,
+          searchName,
+        };
+      }
+
+      return {
+        ...spellData,
+        searchName,
+      };
+    });
 
     await writeFile(file, JSON.stringify(content));
   }
 
-  console.log(`Minimized ${files.length} spell files.`);
+  console.log(`Processed ${files.length} spell files (${output} mode).`);
 }
 
 async function syncSpells(output: OutputMode) {
@@ -172,9 +142,7 @@ async function syncSpells(output: OutputMode) {
   // Always rebuild generated spell data.
   await fullSync();
 
-  if (output === 'minimal') {
-    await minimizeSpells();
-  }
+  await processSpellFiles(output);
 }
 
 const output = getOutputMode();
