@@ -29,6 +29,7 @@ import {
 import React from 'react';
 import { CharacterPictureAtom } from '../../components/character-image/atoms';
 import { abilityPreviewContainerSx, hpPreviewContainerSx } from './styles';
+import { SpellSlotCounter } from '../../components/spell';
 
 export const CharacterPreview = () => (
   <Grid container size={{ md: 12 }} spacing={1}>
@@ -104,8 +105,13 @@ export const CharacterPreview = () => (
               <DeathSaves />
             </Grid>
 
-            <Grid sx={{ gridArea: 'hitdices', display: { sx: 'flex', md: 'block' } }}>
-              <HitDices />
+            <Grid container sx={{ gridArea: 'hitdices', display: 'flex' }}>
+              <Grid size={12}>
+                <HitDices showHeader={false} />
+              </Grid>
+              <Grid size={12}>
+                <SpellSlotCounter showHeader={false} showCantrips={true} />
+              </Grid>
             </Grid>
           </Grid>
           <Grid size={12}>
