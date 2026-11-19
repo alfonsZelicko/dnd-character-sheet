@@ -5,7 +5,7 @@ import { Atom } from 'jotai/vanilla';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { EditableListHeader } from '../editable-list-header';
-import { ResourceCounterRow, resourceCounterGridTemplateColumns } from './ResourceCounterRow';
+import { resourceCounterGridTemplateColumns, ResourceCounterRow } from './ResourceCounterRow';
 import { CountedResource, ResourceCounterProps } from './types';
 import { StyledPaper } from '../PaperWrapper';
 
@@ -49,6 +49,7 @@ function ResourceCounterHeaderComponent<T extends CountedResource>({
   const store = useStore();
   const [pickerOpen, setPickerOpen] = useState(false);
   const [availableOptions, setAvailableOptions] = useState<typeof options>([]);
+  const [expandedOptionKey, setExpandedOptionKey] = useState<string | null>(null);
 
   const openPicker = useCallback(() => {
     const activeKeys = new Set(
@@ -58,32 +59,46 @@ function ResourceCounterHeaderComponent<T extends CountedResource>({
         .map(getKey)
     );
     setAvailableOptions(options.filter((option) => !activeKeys.has(option.key)));
+    setExpandedOptionKey(null);
     setPickerOpen(true);
   }, [getKey, itemsAtom, options, store]);
 
-  const addOption = (key: string) => {
-    const option = options.find((candidate) => candidate.key === key);
+  const addOption = (option: (typeof options)[number], selection?: (typeof options)[number]) => {
     if (!option) return;
     setItems((items) => {
       const existingItem = items.find((item) => getKey(item) === option.key);
+      const newItem = createItem(option, selection);
       return existingItem
-        ? items.map((item) => (getKey(item) === option.key ? { ...item, max: 1, usage: 0 } : item))
-        : [...items, createItem(option)];
+        ? items.map((item) => (getKey(item) === option.key ? { ...item, ...newItem, max: 1, usage: 0 } : item))
+        : [...items, newItem];
     });
+    setExpandedOptionKey(null);
     setPickerOpen(false);
   };
 
   return (
     <>
       <EditableListHeader label={title} addItem={openPicker} addItemLabel="Add" />
-      <Dialog open={pickerOpen} onClose={() => setPickerOpen(false)}>
+      <Dialog open={pickerOpen} onClose={() => { setPickerOpen(false); setExpandedOptionKey(null); }}>
         <DialogTitle>Add {title}</DialogTitle>
         <List>
           {availableOptions.length ? (
             availableOptions.map((option) => (
-              <ListItemButton key={option.key} onClick={() => addOption(option.key)}>
-                <ListItemText primary={option.label} />
-              </ListItemButton>
+              <React.Fragment key={option.key}>
+                <ListItemButton
+                  onClick={() => {
+                    if (option.children?.length) setExpandedOptionKey((key) => key === option.key ? null : option.key);
+                    else addOption(option);
+                  }}
+                >
+                  <ListItemText primary={option.label} />
+                </ListItemButton>
+                {expandedOptionKey === option.key && option.children?.map((selection) => (
+                  <ListItemButton key={selection.key} sx={{ pl: 5 }} onClick={() => addOption(option, selection)}>
+                    <ListItemText primary={selection.label} />
+                  </ListItemButton>
+                ))}
+              </React.Fragment>
             ))
           ) : (
             <ListItemText sx={{ px: 3, py: 1 }} primary="All resources are already added" />
@@ -96,7 +111,11 @@ function ResourceCounterHeaderComponent<T extends CountedResource>({
 
 const ResourceCounterHeader = memo(ResourceCounterHeaderComponent) as typeof ResourceCounterHeaderComponent;
 
-const ResourceCounterColumnHeaders = memo(function ResourceCounterColumnHeaders() {
+const ResourceCounterColumnHeaders = memo(function ResourceCounterColumnHeaders({
+  resourceLabel = 'Resource',
+}: {
+  resourceLabel?: string;
+}) {
   return (
     <Box
       display="grid"
@@ -108,7 +127,7 @@ const ResourceCounterColumnHeaders = memo(function ResourceCounterColumnHeaders(
         Max.
       </Typography>
       <Typography variant="caption" textAlign="center">
-        Resource
+        {resourceLabel}
       </Typography>
       <Typography variant="caption" textAlign="center">
         Usage
@@ -118,13 +137,13 @@ const ResourceCounterColumnHeaders = memo(function ResourceCounterColumnHeaders(
 });
 
 function ResourceCounterComponent<T extends CountedResource>(props: ResourceCounterProps<T>) {
-  const { itemsAtom, getKey, getLabel, renderRow } = props;
+  const { itemsAtom, getKey, getLabel, renderRow, showHeader = true } = props;
   const rowAtomsAtom = useMemo(() => splitAtom(itemsAtom, getKey), [itemsAtom, getKey]);
 
   return (
     <Box display={'grid'} component={StyledPaper} variant="outlined" sx={{ p: 1.25 }}>
-      <ResourceCounterHeader {...props} />
-      <ResourceCounterColumnHeaders />
+      {showHeader && <ResourceCounterHeader {...props} />}
+      <ResourceCounterColumnHeaders resourceLabel={props.resourceLabel} />
       <ResourceCounterRows rowsAtom={rowAtomsAtom} getKey={getKey} getLabel={getLabel} renderRow={renderRow} />
     </Box>
   );
