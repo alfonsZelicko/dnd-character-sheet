@@ -3,7 +3,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import React, { memo, useMemo } from 'react';
 import { NumberLabelInput, StyledPaper } from '../../shared';
-import { knownSpellsAtom, spellSlotsAtom, SpellSlotResource, SpellSlots } from '../atoms';
+import { knownSpellsAtom, SpellSlotResource, SpellSlots, spellSlotsAtom } from '../atoms';
 import { SpellListItem } from './SpellListItem';
 import { getSpellLevelLabel } from '../utils';
 
@@ -13,21 +13,24 @@ type SpellSlotUsageInputProps = { level: number };
 type SpellSlotSummary = { max: number; usage: number };
 
 const getSpellSlotSummary = (slots: SpellSlots, spellLevel: number): SpellSlotSummary => {
-  return slots.reduce<SpellSlotSummary>((summary, slot, slotLevel) => {
-    if (!slot || slotLevel === 0) return summary;
-    const eligible = slotLevel === 10
-      ? (slot.pactLevel ?? 1) >= spellLevel
-      : slotLevel >= spellLevel && slotLevel <= 9;
-    if (!eligible) return summary;
-    return { max: summary.max + slot.max, usage: summary.usage + Math.min(slot.max, slot.usage) };
-  }, { max: 0, usage: 0 });
+  return slots.reduce<SpellSlotSummary>(
+    (summary, slot, slotLevel) => {
+      if (!slot || slotLevel === 0) return summary;
+      const eligible =
+        slotLevel === 10 ? (slot.pactLevel ?? 1) >= spellLevel : slotLevel >= spellLevel && slotLevel <= 9;
+      if (!eligible) return summary;
+      return { max: summary.max + slot.max, usage: summary.usage + Math.min(slot.max, slot.usage) };
+    },
+    { max: 0, usage: 0 }
+  );
 };
 
 const setSpellLevelUsage = (slots: SpellSlots, spellLevel: number, usage: number) => {
   const eligible = slots
-    .map((slot, slotLevel) => ({ slot, slotLevel, castLevel: slotLevel === 10 ? slot?.pactLevel ?? 1 : slotLevel }))
-    .filter((item): item is { slot: SpellSlotResource; slotLevel: number; castLevel: number } =>
-      Boolean(item.slot) && item.slotLevel > 0 && item.slotLevel <= 10 && item.castLevel >= spellLevel
+    .map((slot, slotLevel) => ({ slot, slotLevel, castLevel: slotLevel === 10 ? (slot?.pactLevel ?? 1) : slotLevel }))
+    .filter(
+      (item): item is { slot: SpellSlotResource; slotLevel: number; castLevel: number } =>
+        Boolean(item.slot) && item.slotLevel > 0 && item.slotLevel <= 10 && item.castLevel >= spellLevel
     )
     .sort((a, b) => a.castLevel - b.castLevel || a.slotLevel - b.slotLevel);
   const totalMax = eligible.reduce((total, { slot }) => total + (slot?.max ?? 0), 0);
@@ -70,7 +73,7 @@ const SpellSlotUsageInput = memo(function SpellSlotUsageInput({ level }: SpellSl
         value: level === 0 ? '' : Math.min(usage, max),
         placeholder: level === 0 ? '∞' : undefined,
         sx: level === 0 ? infinitePlaceholderSx : undefined,
-        disabled: level === 0 || max < 1,
+        disabled: true, // level === 0 || max < 1,
         onChange: (event) => {
           const value = Number(event.target.value);
           setSpellSlots((slots) => setSpellLevelUsage(slots, level, Number.isFinite(value) ? value : 0));

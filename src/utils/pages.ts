@@ -7,13 +7,13 @@ export const AppPages = {
     id: 'inventory',
     label: 'Inventory',
   },
-  Creatures: {
-    id: 'creatures',
-    label: 'Creatures',
-  },
   Spells: {
     id: 'spells',
     label: 'Spells (Beta)',
+  },
+  Creatures: {
+    id: 'creatures',
+    label: 'Creatures',
   },
   Options: {
     id: 'options',

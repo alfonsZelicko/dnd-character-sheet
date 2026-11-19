@@ -59,10 +59,10 @@ export const schoolIconConfig: Record<School, SchoolConfig> = {
   C: { Icon: TravelExploreTwoToneIcon, color: '#35B8A5' },
   D: { Icon: VisibilityTwoToneIcon, color: '#D6B44C' },
   E: { Icon: PsychologyTwoToneIcon, color: '#A477D4' },
-  V: { Icon: WhatshotTwoToneIcon, color: '#E87535' },
   I: { Icon: VisibilityOffTwoToneIcon, color: '#A5A9C4' },
   N: { Icon: BloodtypeTwoToneIcon, color: '#A83D50' },
   T: { Icon: TransformTwoToneIcon, color: '#72A85A' },
+  V: { Icon: WhatshotTwoToneIcon, color: '#E87535' },
 };
 
 export type School = keyof typeof schoolList;

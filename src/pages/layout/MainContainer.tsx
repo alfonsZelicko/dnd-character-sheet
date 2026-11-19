@@ -39,11 +39,11 @@ export const MainContainer = () => {
           <TabPanel value={AppPages.Inventory.id} {...commonTabPanelProps({ sx: { width: '100%' } })}>
             <Inventory />
           </TabPanel>
-          <TabPanel value={AppPages.Creatures.id} {...commonTabPanelProps({ sx: { width: '100%' } })}>
-            <CreaturesPage />
-          </TabPanel>
           <TabPanel value={AppPages.Spells.id} {...commonTabPanelProps({ sx: { width: '100%' } })}>
             <SpellsPage />
+          </TabPanel>
+          <TabPanel value={AppPages.Creatures.id} {...commonTabPanelProps({ sx: { width: '100%' } })}>
+            <CreaturesPage />
           </TabPanel>
           <TabPanel value={AppPages.Options.id} {...commonTabPanelProps({ sx: { width: '100%' } })}>
             <Options />

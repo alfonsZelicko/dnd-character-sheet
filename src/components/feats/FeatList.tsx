@@ -23,7 +23,7 @@ export const FeatList = ({ GridProps, WrapperProps }: FeatListProps) => {
         <Grid key={index} size={{ xs: 6, md: 12 }} sx={{ py: 0 }} {...GridProps}>
           <Notes
             atom={feat}
-            rows={isMd ? 2 : 3}
+            rows={isMd ? 3 : 4}
             WrapperProps={{
               sx: { height: '3.5rem' },
               component: 'div',
