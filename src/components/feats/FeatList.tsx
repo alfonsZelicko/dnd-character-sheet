@@ -12,9 +12,15 @@ export const FeatList = ({ GridProps, WrapperProps }: FeatListProps) => {
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
 
   return (
-    <Grid container justifyContent={'space-between'} direction={{ xs: 'row', md: 'column' }} component={StyledPaper}>
+    <Grid
+      container
+      size={12}
+      justifyContent={'space-between'}
+      direction={{ xs: 'row', md: 'column' }}
+      component={StyledPaper}
+    >
       {feats.map((feat, index) => (
-        <Grid key={index} size={{ xs: 6, lg: 12 }} sx={{ py: 0 }} {...GridProps}>
+        <Grid key={index} size={{ xs: 6, md: 12 }} sx={{ py: 0 }} {...GridProps}>
           <Notes
             atom={feat}
             rows={isMd ? 2 : 3}

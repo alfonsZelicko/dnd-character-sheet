@@ -21,7 +21,7 @@ const SavingThrowsConfig = {
   },
 };
 
-const PADDING_SIZE = { xs: 2, md: 0, lg: 5 };
+const PADDING_SIZE = { xs: 2, md: 0, lg: 0 };
 
 export const DeathSaves = () => (
   <Grid container component={StyledPaper} sx={{ py: 0 }}>

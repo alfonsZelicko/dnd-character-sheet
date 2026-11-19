@@ -55,13 +55,37 @@ export const Coins = () => {
   return (
     <Grid container flexDirection={'row'} component={StyledPaper}>
       <Grid container size={12} spacing={1}>
-        <Grid size={{ xs: 6, md: 4 }}>
+        <Grid
+          size={{ xs: 6, md: 4 }}
+          sx={{
+            '@media (orientation: portrait) and (min-width: 900px)': {
+              flexBasis: '100%',
+              maxWidth: '100%',
+            },
+          }}
+        >
           <GoldCoins />
         </Grid>
-        <Grid size={{ xs: 6, md: 4 }}>
+        <Grid
+          size={{ xs: 6, md: 4 }}
+          sx={{
+            '@media (orientation: portrait) and (min-width: 900px)': {
+              flexBasis: '100%',
+              maxWidth: '100%',
+            },
+          }}
+        >
           <SilverCoins />
         </Grid>
-        <Grid size={{ xs: 6, md: 4 }}>
+        <Grid
+          size={{ xs: 6, md: 4 }}
+          sx={{
+            '@media (orientation: portrait) and (min-width: 900px)': {
+              flexBasis: '100%',
+              maxWidth: '100%',
+            },
+          }}
+        >
           <CopperCoins />
         </Grid>
       </Grid>

@@ -63,8 +63,8 @@ export const Exhaustion = () => {
           />
         ))}
       </Box>
-      <ComponentLabel sx={{ display: 'block', pr: 1 }}>
-        Exhaust. level <strong>[{exhaustion}]</strong>
+      <ComponentLabel sx={{ display: 'block !important', pr: 1 }}>
+        Exhaust. lvl <strong>[{exhaustion}]</strong>
       </ComponentLabel>
     </Box>
   );

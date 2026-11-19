@@ -12,7 +12,7 @@ export const PassivePerception = () => {
   const proficiencyBonus = useAtomValue(proficiencyBonusAtom);
   const { score: wisdomScore } = useAtomValue(wisdomAtom);
   const tooltipTitle = `10+${proficiencyBonus}{proficiencyBonus}*${proficiencyAndExpertise}{prof/exp}+${modifier}{modifier}+${calculateAbilityModifier(wisdomScore)}{wis}${
-    advantage === undefined ? '' : advantage ? '+advantage(+5)' : '-disadvantage(-5)'
+    advantage === undefined ? '' : advantage ? '+5{advantage}' : '-5{disadvantage}'
   }`;
 
   const calculatedPassivePerception = useMemo(

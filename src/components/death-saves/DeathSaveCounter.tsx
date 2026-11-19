@@ -19,7 +19,7 @@ export const DeathSavesCounter = ({ atom, checkedIcon, icon, WrapperProps = {} }
   return (
     <Grid
       container
-      size="auto"
+      size="grow"
       spacing={{ lg: 2, md: 1 }}
       direction="row"
       justifyContent="left"
