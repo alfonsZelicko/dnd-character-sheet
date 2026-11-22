@@ -65,7 +65,15 @@ export const schoolIconConfig: Record<School, SchoolConfig> = {
   V: { Icon: WhatshotTwoToneIcon, color: '#E87535' },
 };
 
+export type SpellListItemProps = { level: number; spell: SpellAtom };
+
 export type School = keyof typeof schoolList;
+
+export type SpellAtom = {
+  name: string;
+  school: School;
+  prepared: boolean;
+};
 
 export const SchoolName: Record<School, string> = Object.fromEntries(
   Object.entries(schoolList).map(([key, value]) => [key, value.label])

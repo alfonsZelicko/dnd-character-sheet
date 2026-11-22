@@ -52,7 +52,7 @@ export const SpellPicker = memo(function SpellPicker({ ...restProps }: SpellPick
       }
 
       const updatedSpells = [...knownSpells];
-      updatedSpells[level] = [...spellsAtLevel, { name, school }];
+      updatedSpells[level] = [...spellsAtLevel, { name, school, prepared: false }];
       return updatedSpells;
     });
     reset();

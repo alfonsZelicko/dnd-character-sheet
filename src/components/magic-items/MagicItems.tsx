@@ -13,6 +13,8 @@ import {
 } from './styles';
 import { AttunementState, MagicItemCardProps, MagicItemProps } from './types';
 import { EditableListHeader } from '../shared/editable-list-header';
+import CheckBoxTwoToneIcon from '@mui/icons-material/CheckBoxTwoTone';
+import IndeterminateCheckBoxTwoToneIcon from '@mui/icons-material/IndeterminateCheckBoxTwoTone';
 
 const emptyMagicItem = () => ({ name: '', description: '', attunement: 'not-attuned' as AttunementState });
 
@@ -44,6 +46,8 @@ const AttunedCheckbox = memo(function AttunedCheckbox({ magicItemAtom }: MagicIt
           <Checkbox
             checked={attunement === 'attuned'}
             indeterminate={attunement === 'not-required'}
+            checkedIcon={<CheckBoxTwoToneIcon />}
+            indeterminateIcon={<IndeterminateCheckBoxTwoToneIcon />}
             onClick={handleClick}
             onChange={() => {}}
           />

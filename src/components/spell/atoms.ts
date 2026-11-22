@@ -1,9 +1,7 @@
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { SetStateAction } from 'react';
-import { School } from './types';
-
-export type SpellAtom = Pick<{ name: string; school: School }, 'name' | 'school'>;
+import { SpellAtom } from './types';
 
 /** Known spells grouped by spell level (0 through 9). */
 // Read storage synchronously when a new Jotai store is created so the first
