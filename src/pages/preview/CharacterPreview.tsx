@@ -30,6 +30,7 @@ import React from 'react';
 import { CharacterPictureAtom } from '../../components/character-image/atoms';
 import { abilityPreviewContainerSx, hpPreviewContainerSx } from './styles';
 import { SpellSlotCounter } from '../../components/spell';
+import { SpellCastingStats } from '../../components/spell/components/SpellCastingStats';
 
 export const CharacterPreview = () => (
   <Grid container size={{ md: 12 }} spacing={1}>
@@ -110,11 +111,13 @@ export const CharacterPreview = () => (
                 <HitDices headerMode={'hide'} />
               </Grid>
               <Grid size={12}>
-                <SpellSlotCounter headerMode={'hide'} showCantrips={false} display="usage-icons" />
+                <SpellSlotCounter headerMode={'hide'} showCantrips={false} display="usage-icons">
+                  <SpellCastingStats />
+                </SpellSlotCounter>
               </Grid>
             </Grid>
           </Grid>
-          <Grid size={12}>
+          <Grid size={12} justifyContent={'center'} display={'flex'}>
             <CharacterPicture atom={CharacterPictureAtom} />
           </Grid>
           <Grid size={12} sx={{ mt: 'auto' }}>

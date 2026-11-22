@@ -10,7 +10,7 @@ import { mergeSx } from '../../utils';
 const DEFAULT_MAX_SIZE_MB = 1;
 
 const DEFAULT_PREVIEW_SX: SxProps<Theme> = {
-  width: '100%',
+  // width: 'auto',
   height: '380px',
 };
 
@@ -65,6 +65,7 @@ export const CharacterImage = ({
       sx={mergeSx(
         {
           ...DEFAULT_PREVIEW_SX,
+          aspectRatio: '336 / 380',
           backgroundImage: image ? `url(${image})` : 'none',
           backgroundSize: 'cover',
           backgroundPosition: 'center',

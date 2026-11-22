@@ -8,8 +8,6 @@ import { SpellSlotCounterItem, spellSlotCounterItemsAtom, spellSlotsAtom } from 
 import { CantripSlotRow } from './CantripSlotRow';
 import { RestControls, RestEvent, useRestSubscription } from '../../rest-controls';
 import { selectAtom } from 'jotai/utils';
-import { spellAttackAtom, spellSaveAtom } from '../../simple-components';
-import { Box, Typography } from '@mui/material';
 
 const options: ResourceOption[] = [
   {
@@ -63,10 +61,9 @@ export const SpellSlotCounter = ({
   headerMode = 'show',
   showCantrips = true,
   display = 'counter',
+  children,
 }: SpellSlotCounterProps) => {
   const setSpellSlots = useSetAtom(spellSlotsAtom);
-  const spellAttack = useAtomValue(spellAttackAtom);
-  const spellSaveDC = useAtomValue(spellSaveAtom);
   const resetSpellSlots = useCallback(
     (restType: RestType) => {
       setSpellSlots((slots) =>
@@ -113,16 +110,7 @@ export const SpellSlotCounter = ({
         showHeader={headerMode}
         display={display}
       >
-        <Box>
-          <Box display="flex" justifyContent="space-between">
-            <Typography>Spell Attack:</Typography>
-            <Typography>{spellAttack}</Typography>
-          </Box>
-          <Box display="flex" justifyContent="space-between">
-            <Typography>Spell save DC:</Typography>
-            <Typography>{spellSaveDC}</Typography>
-          </Box>
-        </Box>
+        {children}
       </ResourceCounter>
       {(restMode === 'local-controls' || restMode === 'global-controls') && (
         <RestControls mode={restMode} onRest={restMode === 'local-controls' ? resetSpellSlots : undefined} />
