@@ -2,6 +2,7 @@ import { useAtom } from 'jotai';
 import { Checkbox, Grid2 as Grid, Grid2Props } from '@mui/material';
 import React, { ReactNode } from 'react';
 import { mergeSx } from '../../utils';
+import { toggleCounterValue } from '../shared/resource-counter/counter-utils';
 
 type DeathSavesCounterProps = {
   checkedIcon: ReactNode;
@@ -13,7 +14,7 @@ type DeathSavesCounterProps = {
 export const DeathSavesCounter = ({ atom, checkedIcon, icon, WrapperProps = {} }: DeathSavesCounterProps) => {
   const [deathSave, setDeathSave] = useAtom<number>(atom);
   const handleDeathSaveCheck = (value: number) => {
-    setDeathSave((prev) => (prev === value ? value - 1 : value));
+    setDeathSave((prev) => toggleCounterValue(prev, value));
   };
 
   return (

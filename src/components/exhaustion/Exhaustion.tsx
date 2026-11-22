@@ -16,6 +16,7 @@ import { useAtom } from 'jotai';
 
 import { ComponentLabel, StyledPaper } from '../shared';
 import { exhaustionAtom } from './atoms';
+import { toggleCounterValue } from '../shared/resource-counter/counter-utils';
 
 type IconList = { icon: ReactNode; checkedIcon: ReactNode };
 
@@ -37,7 +38,7 @@ export const Exhaustion = () => {
   const [exhaustion, setExhaustionLevel] = useAtom(exhaustionAtom);
 
   const handleCheckboxChange = (value: number) => {
-    setExhaustionLevel((prev) => (prev === value ? value - 1 : value));
+    setExhaustionLevel((prev) => toggleCounterValue(prev, value));
   };
 
   return (
