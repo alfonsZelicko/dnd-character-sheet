@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { selectAtom } from 'jotai/utils';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 import { ResourceCounter, ResourceCounterComponentProps, ResourceCounterRow, ResourceOption } from '../../shared';
 import { RestType } from '../../features/types';
@@ -8,12 +7,9 @@ import { getSpellLevelLabel } from '../utils';
 import { SpellSlotCounterItem, spellSlotCounterItemsAtom, spellSlotsAtom } from '../atoms';
 import { CantripSlotRow } from './CantripSlotRow';
 import { RestControls, RestEvent, useRestSubscription } from '../../rest-controls';
+import { selectAtom } from 'jotai/utils';
 
 const options: ResourceOption[] = [
-  ...Array.from({ length: 9 }, (_, index) => index + 1).map((level) => ({
-    key: String(level),
-    label: getSpellLevelLabel(level, 'spell-slots'),
-  })),
   {
     key: '10',
     label: 'Pact Magic',
@@ -22,6 +18,10 @@ const options: ResourceOption[] = [
       label: `Slot Level ${level}`,
     })),
   },
+  ...Array.from({ length: 9 }, (_, index) => index + 1).map((level) => ({
+    key: String(level),
+    label: getSpellLevelLabel(level, 'spell-slots'),
+  })),
 ];
 
 const getKey = (slot: SpellSlotCounterItem) => String(slot.level);
@@ -58,8 +58,9 @@ type SpellSlotCounterProps = ResourceCounterComponentProps & { showCantrips?: bo
 
 export const SpellSlotCounter = ({
   restMode = 'global',
-  showHeader = true,
+  headerMode = 'show',
   showCantrips = true,
+  display = 'counter',
 }: SpellSlotCounterProps) => {
   const setSpellSlots = useSetAtom(spellSlotsAtom);
   const resetSpellSlots = useCallback(
@@ -84,9 +85,14 @@ export const SpellSlotCounter = ({
   );
   useRestSubscription(restMode, handleRest);
   const renderRow = useCallback(
-    (slot: SpellSlotCounterItem, itemAtom: Parameters<typeof ResourceCounterRow<SpellSlotCounterItem>>[0]['itemAtom']) =>
-      renderSlotRow(slot, itemAtom, showCantrips),
-    [showCantrips]
+    (
+      slot: SpellSlotCounterItem,
+      itemAtom: Parameters<typeof ResourceCounterRow<SpellSlotCounterItem>>[0]['itemAtom']
+    ) => {
+      if (display === 'usage-icons') return slot.level === 0 ? null : undefined;
+      return renderSlotRow(slot, itemAtom, showCantrips);
+    },
+    [display, showCantrips]
   );
 
   return (
@@ -100,7 +106,8 @@ export const SpellSlotCounter = ({
         getLabel={getLabel}
         createItem={createSlot}
         renderRow={renderRow}
-        showHeader={showHeader}
+        showHeader={headerMode}
+        display={display}
       />
       {(restMode === 'local-controls' || restMode === 'global-controls') && (
         <RestControls mode={restMode} onRest={restMode === 'local-controls' ? resetSpellSlots : undefined} />

@@ -1,115 +1,60 @@
-import { Box, Dialog, DialogTitle, List, ListItemButton, ListItemText, Typography } from '@mui/material';
-import { useAtomValue, useSetAtom, useStore } from 'jotai';
-import { splitAtom } from 'jotai/utils';
-import { Atom } from 'jotai/vanilla';
-import { PrimitiveAtom } from 'jotai/vanilla/atom';
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import { Box, Typography } from '@mui/material';
+import { useAtomValue, useStore } from 'jotai';
+import { selectAtom, splitAtom } from 'jotai/utils';
+import React, { Fragment, memo, useMemo } from 'react';
 import { EditableListHeader } from '../editable-list-header';
-import { resourceCounterGridTemplateColumns, ResourceCounterRow } from './ResourceCounterRow';
-import { CountedResource, ResourceCounterProps } from './types';
+import { ResourceCounterRow } from './ResourceCounterRow';
+import { CountedResource, ResourceCounterProps, ResourceCounterRowSlotProps, ResourceCounterRowsProps } from './types';
 import { StyledPaper } from '../PaperWrapper';
-
-type ResourceCounterRowsProps<T extends CountedResource> = {
-  rowsAtom: Atom<PrimitiveAtom<T>[]>;
-  getKey: (item: T) => string;
-  getLabel: (item: T) => string;
-  renderRow?: (item: T, itemAtom: PrimitiveAtom<T>) => React.ReactNode;
-};
+import { ResourceCounterPickerDialog } from './ResourceCounterPickerDialog';
+import { ResourceUsageIcons } from './ResourceUsageIcons';
+import { resourceCounterColumnHeadersSx, resourceCounterGridTemplateColumns, resourceCounterPaperSx } from './styles';
 
 function ResourceCounterRowsComponent<T extends CountedResource>({
   rowsAtom,
   getKey,
   getLabel,
   renderRow,
+  display = 'counter',
 }: ResourceCounterRowsProps<T>) {
   const rowAtoms = useAtomValue(rowsAtom);
   const store = useStore();
 
   return (
     <>
-      {rowAtoms.map((itemAtom) => {
-        const item = store.get(itemAtom);
-        if (renderRow) return renderRow(item, itemAtom);
-        return <ResourceCounterRow key={getKey(item)} itemAtom={itemAtom} label={getLabel(item)} />;
-      })}
+      {rowAtoms.map((itemAtom) => (
+        <ResourceCounterRowSlot
+          key={getKey(store.get(itemAtom))}
+          itemAtom={itemAtom}
+          getLabel={getLabel}
+          renderRow={renderRow}
+          display={display}
+        />
+      ))}
     </>
   );
 }
+
+const areResourceItemsEqual = <T extends CountedResource>(a: T, b: T) =>
+  a.max === b.max && a.usage === b.usage && Object.keys(a).every((key) => a[key as keyof T] === b[key as keyof T]);
+
+function ResourceCounterRowSlotComponent<T extends CountedResource>({
+  itemAtom,
+  getLabel,
+  renderRow,
+  display,
+}: ResourceCounterRowSlotProps<T>) {
+  const itemAtomValue = useMemo(() => selectAtom(itemAtom, (item) => item, areResourceItemsEqual), [itemAtom]);
+  const item = useAtomValue(itemAtomValue);
+  const customRow = renderRow?.(item, itemAtom);
+  if (customRow !== undefined) return customRow;
+  if (display === 'usage-icons') return <ResourceUsageIcons itemAtom={itemAtom} label={getLabel(item)} />;
+  return <ResourceCounterRow itemAtom={itemAtom} label={getLabel(item)} />;
+}
+
+const ResourceCounterRowSlot = memo(ResourceCounterRowSlotComponent) as typeof ResourceCounterRowSlotComponent;
 
 const ResourceCounterRows = memo(ResourceCounterRowsComponent) as typeof ResourceCounterRowsComponent;
-
-function ResourceCounterHeaderComponent<T extends CountedResource>({
-  itemsAtom,
-  options,
-  getKey,
-  createItem,
-  title,
-}: ResourceCounterProps<T>) {
-  const setItems = useSetAtom(itemsAtom);
-  const store = useStore();
-  const [pickerOpen, setPickerOpen] = useState(false);
-  const [availableOptions, setAvailableOptions] = useState<typeof options>([]);
-  const [expandedOptionKey, setExpandedOptionKey] = useState<string | null>(null);
-
-  const openPicker = useCallback(() => {
-    const activeKeys = new Set(
-      store
-        .get(itemsAtom)
-        .filter((item) => item.max > 0)
-        .map(getKey)
-    );
-    setAvailableOptions(options.filter((option) => !activeKeys.has(option.key)));
-    setExpandedOptionKey(null);
-    setPickerOpen(true);
-  }, [getKey, itemsAtom, options, store]);
-
-  const addOption = (option: (typeof options)[number], selection?: (typeof options)[number]) => {
-    if (!option) return;
-    setItems((items) => {
-      const existingItem = items.find((item) => getKey(item) === option.key);
-      const newItem = createItem(option, selection);
-      return existingItem
-        ? items.map((item) => (getKey(item) === option.key ? { ...item, ...newItem, max: 1, usage: 0 } : item))
-        : [...items, newItem];
-    });
-    setExpandedOptionKey(null);
-    setPickerOpen(false);
-  };
-
-  return (
-    <>
-      <EditableListHeader label={title} addItem={openPicker} addItemLabel="Add" />
-      <Dialog open={pickerOpen} onClose={() => { setPickerOpen(false); setExpandedOptionKey(null); }}>
-        <DialogTitle>Add {title}</DialogTitle>
-        <List>
-          {availableOptions.length ? (
-            availableOptions.map((option) => (
-              <React.Fragment key={option.key}>
-                <ListItemButton
-                  onClick={() => {
-                    if (option.children?.length) setExpandedOptionKey((key) => key === option.key ? null : option.key);
-                    else addOption(option);
-                  }}
-                >
-                  <ListItemText primary={option.label} />
-                </ListItemButton>
-                {expandedOptionKey === option.key && option.children?.map((selection) => (
-                  <ListItemButton key={selection.key} sx={{ pl: 5 }} onClick={() => addOption(option, selection)}>
-                    <ListItemText primary={selection.label} />
-                  </ListItemButton>
-                ))}
-              </React.Fragment>
-            ))
-          ) : (
-            <ListItemText sx={{ px: 3, py: 1 }} primary="All resources are already added" />
-          )}
-        </List>
-      </Dialog>
-    </>
-  );
-}
-
-const ResourceCounterHeader = memo(ResourceCounterHeaderComponent) as typeof ResourceCounterHeaderComponent;
 
 const ResourceCounterColumnHeaders = memo(function ResourceCounterColumnHeaders({
   resourceLabel = 'Resource',
@@ -121,7 +66,7 @@ const ResourceCounterColumnHeaders = memo(function ResourceCounterColumnHeaders(
       display="grid"
       gridTemplateColumns={resourceCounterGridTemplateColumns}
       alignItems="center"
-      sx={{ textTransform: 'uppercase', fontSize: '0.7rem' }}
+      sx={resourceCounterColumnHeadersSx}
     >
       <Typography variant="caption" textAlign="center">
         Max.
@@ -137,14 +82,29 @@ const ResourceCounterColumnHeaders = memo(function ResourceCounterColumnHeaders(
 });
 
 function ResourceCounterComponent<T extends CountedResource>(props: ResourceCounterProps<T>) {
-  const { itemsAtom, getKey, getLabel, renderRow, showHeader = true } = props;
+  const { itemsAtom, getKey, getLabel, renderRow, showHeader = 'show', display = 'counter' } = props;
   const rowAtomsAtom = useMemo(() => splitAtom(itemsAtom, getKey), [itemsAtom, getKey]);
 
   return (
-    <Box display={'grid'} component={StyledPaper} variant="outlined" sx={{ p: 1.25 }}>
-      {showHeader && <ResourceCounterHeader {...props} />}
-      <ResourceCounterColumnHeaders resourceLabel={props.resourceLabel} />
-      <ResourceCounterRows rowsAtom={rowAtomsAtom} getKey={getKey} getLabel={getLabel} renderRow={renderRow} />
+    <Box display={'grid'} component={StyledPaper} variant="outlined" sx={resourceCounterPaperSx}>
+      {(props.showHeader === undefined || props.showHeader === 'show') && (
+        <ResourceCounterPickerDialog
+          itemsAtom={props.itemsAtom}
+          options={props.options}
+          getKey={props.getKey}
+          title={props.title}
+          createItem={props.createItem}
+        />
+      )}
+      {showHeader === 'no-button' && <EditableListHeader label={props.title} addItem={undefined} />}
+      {display === 'counter' && <ResourceCounterColumnHeaders resourceLabel={props.resourceLabel} />}
+      <ResourceCounterRows
+        rowsAtom={rowAtomsAtom}
+        getKey={getKey}
+        getLabel={getLabel}
+        renderRow={renderRow}
+        display={display}
+      />
     </Box>
   );
 }

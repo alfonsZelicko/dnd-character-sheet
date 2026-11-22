@@ -6,23 +6,8 @@ import React, { memo, useEffect, useMemo } from 'react';
 import { StandardNumberInput, StyledStandardTextField } from '../number-input';
 import { removeLeadingZeros } from '../../../features/utils';
 import { CountedResource, ResourceCounterRowProps } from './types';
-
-export const resourceCounterGridTemplateColumns = '3.5rem minmax(0, 1fr) 3.5rem';
-export const resourceCounterInputSx = {
-  width: '100%',
-  minWidth: 0,
-  '& input': { fontWeight: 200, fontFamily: 'monospace', fontSize: '0.9rem' },
-};
-export const resourceCounterLabelSx = {
-  ...resourceCounterInputSx,
-  '& input': {
-    ...resourceCounterInputSx['& input'],
-    textAlign: 'center',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-};
+import { resourceCounterInputSx, resourceCounterLabelSx, resourceCounterRowSx } from './styles';
+export { resourceCounterGridTemplateColumns, resourceCounterInputSx, resourceCounterLabelSx } from './styles';
 
 type ResourceFieldProps<T extends CountedResource> = { itemAtom: PrimitiveAtom<T> };
 
@@ -94,17 +79,7 @@ function ResourceCounterRowComponent<T extends CountedResource>({ itemAtom, labe
   if (max < 1) return null;
 
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: resourceCounterGridTemplateColumns,
-        alignItems: 'center',
-        width: '100%',
-        minWidth: 0,
-        borderBottom: 1,
-        borderColor: 'divider',
-      }}
-    >
+    <Box sx={resourceCounterRowSx}>
       <ResourceMaxInput itemAtom={itemAtom} />
       <StyledStandardTextField fullWidth disabled variant="standard" type="text" value={label} sx={resourceCounterLabelSx} />
       <ResourceUsageInput itemAtom={itemAtom} />

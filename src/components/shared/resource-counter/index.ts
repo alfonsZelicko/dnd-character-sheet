@@ -1,8 +1,4 @@
 export * from './ResourceCounter';
-export {
-  ResourceCounterRow,
-  resourceCounterGridTemplateColumns,
-  resourceCounterInputSx,
-  resourceCounterLabelSx,
-} from './ResourceCounterRow';
+export * from './ResourceUsageIcons';
+export * from './ResourceCounterRow';
 export * from './types';

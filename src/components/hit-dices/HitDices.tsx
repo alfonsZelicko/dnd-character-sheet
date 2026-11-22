@@ -21,7 +21,11 @@ const createHitDice = (option: { key: string; label: string }): HitDiceType => (
   usage: 0,
 });
 
-export const HitDices = ({ restMode = 'global', showHeader = true }: ResourceCounterComponentProps) => {
+export const HitDices = ({
+  restMode = 'global',
+  headerMode = 'show',
+  display = 'counter',
+}: ResourceCounterComponentProps) => {
   const setHitDices = useSetAtom(hitDicesAtom);
   const resetHitDices = useCallback(() => {
     setHitDices((items) => items.map((item) => ({ ...item, usage: item.max })));
@@ -44,7 +48,8 @@ export const HitDices = ({ restMode = 'global', showHeader = true }: ResourceCou
         getKey={getKey}
         getLabel={getLabel}
         createItem={createHitDice}
-        showHeader={showHeader}
+        showHeader={headerMode}
+        display={display}
       />
       {(restMode === 'local-controls' || restMode === 'global-controls') && (
         <RestControls

@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 type EditableListHeaderProps = {
   label: string;
-  addItem: () => void;
+  addItem?: () => void;
   addItemLabel?: string;
 };
 
@@ -17,11 +17,13 @@ export const EditableListHeader = ({ label, addItem, addItemLabel = 'Add Item' }
           {label}
         </ComponentLabel>
       </Grid>
-      <Grid>
-        <Button startIcon={<AddIcon />} onClick={addItem}>
-          {addItemLabel}
-        </Button>
-      </Grid>
+      {addItem && (
+        <Grid>
+          <Button startIcon={<AddIcon />} onClick={addItem}>
+            {addItemLabel}
+          </Button>
+        </Grid>
+      )}
     </Grid>
   );
 };
