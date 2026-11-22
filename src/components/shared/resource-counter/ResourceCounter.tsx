@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { useAtomValue, useStore } from 'jotai';
 import { selectAtom, splitAtom } from 'jotai/utils';
-import React, { Fragment, memo, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { EditableListHeader } from '../editable-list-header';
 import { ResourceCounterRow } from './ResourceCounterRow';
 import { CountedResource, ResourceCounterProps, ResourceCounterRowSlotProps, ResourceCounterRowsProps } from './types';
@@ -82,7 +82,7 @@ const ResourceCounterColumnHeaders = memo(function ResourceCounterColumnHeaders(
 });
 
 function ResourceCounterComponent<T extends CountedResource>(props: ResourceCounterProps<T>) {
-  const { itemsAtom, getKey, getLabel, renderRow, showHeader = 'show', display = 'counter' } = props;
+  const { itemsAtom, getKey, getLabel, renderRow, showHeader = 'show', display = 'counter', children } = props;
   const rowAtomsAtom = useMemo(() => splitAtom(itemsAtom, getKey), [itemsAtom, getKey]);
 
   return (
@@ -105,6 +105,7 @@ function ResourceCounterComponent<T extends CountedResource>(props: ResourceCoun
         renderRow={renderRow}
         display={display}
       />
+      {children}
     </Box>
   );
 }

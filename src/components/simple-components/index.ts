@@ -10,3 +10,5 @@ export * from './Race';
 export * from './Name';
 export * from './PassivePerception';
 export * from './SmallInventory';
+export * from './SpellAttack';
+export * from './SpellSave';

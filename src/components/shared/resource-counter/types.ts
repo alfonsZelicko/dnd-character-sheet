@@ -45,6 +45,7 @@ type ResourceCounterBaseProps<T extends CountedResource> = {
   resourceLabel?: string;
   renderRow?: (item: T, itemAtom: PrimitiveAtom<T>) => ReactNode;
   display?: ResourceCounterDisplay;
+  children?: ReactNode;
 };
 
 type ResourceCounterAddProps<T extends CountedResource> = {

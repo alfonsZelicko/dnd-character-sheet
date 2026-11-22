@@ -18,3 +18,6 @@ export const characterDescriptionAtom = atomWithStorage('character-description',
 
 export const noteAtoms = atomWithStorage('notes', ['', '', ''], undefined, { getOnInit: true });
 export const noteAtomsAtom = splitAtom(noteAtoms);
+
+export const spellAttackAtom = atomWithStorage('spell-attack', 0, undefined, { getOnInit: true });
+export const spellSaveAtom = atomWithStorage('spell-save', 0, undefined, { getOnInit: true });

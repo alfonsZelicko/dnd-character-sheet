@@ -110,7 +110,7 @@ export const CharacterPreview = () => (
                 <HitDices headerMode={'hide'} />
               </Grid>
               <Grid size={12}>
-                <SpellSlotCounter headerMode={'no-button'} showCantrips={true} display="usage-icons" />
+                <SpellSlotCounter headerMode={'hide'} showCantrips={false} display="usage-icons" />
               </Grid>
             </Grid>
           </Grid>

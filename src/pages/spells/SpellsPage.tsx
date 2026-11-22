@@ -3,7 +3,7 @@ import React from 'react';
 import { knownSpellsAtom, SpellList, SpellPicker, SpellSlotCounter, spellSlotsAtom } from '../../components/spell';
 import { atom, useAtomValue } from 'jotai';
 import { selectAtom } from 'jotai/utils';
-import { HitDices, RestControls } from '../../components';
+import { HitDices, RestControls, SpellAttack, SpellSave } from '../../components';
 
 const spellLevelsAtom = selectAtom(
   atom((get) => {
@@ -31,6 +31,14 @@ export const SpellsPage = () => {
       <Grid size={{ xs: 12, md: 3 }}>
         <Box display="flex" flexDirection="column" gap={1}>
           <SpellPicker fullWidth />
+          <Grid container size={12} spacing={1}>
+            <Grid size={6}>
+              <SpellAttack />
+            </Grid>
+            <Grid size={6}>
+              <SpellSave />
+            </Grid>
+          </Grid>
           <SpellSlotCounter />
           <HitDices />
           <RestControls ButtonProps={{ variant: 'outlined' }} />

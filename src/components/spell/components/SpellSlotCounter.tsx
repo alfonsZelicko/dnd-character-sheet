@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { PrimitiveAtom } from 'jotai/vanilla/atom';
 import { ResourceCounter, ResourceCounterComponentProps, ResourceCounterRow, ResourceOption } from '../../shared';
@@ -8,6 +8,8 @@ import { SpellSlotCounterItem, spellSlotCounterItemsAtom, spellSlotsAtom } from 
 import { CantripSlotRow } from './CantripSlotRow';
 import { RestControls, RestEvent, useRestSubscription } from '../../rest-controls';
 import { selectAtom } from 'jotai/utils';
+import { spellAttackAtom, spellSaveAtom } from '../../simple-components';
+import { Box, Typography } from '@mui/material';
 
 const options: ResourceOption[] = [
   {
@@ -54,7 +56,7 @@ const renderSlotRow = (
   return <ResourceCounterRow key={slot.level} itemAtom={itemAtom} label={getLabel(slot)} />;
 };
 
-type SpellSlotCounterProps = ResourceCounterComponentProps & { showCantrips?: boolean };
+type SpellSlotCounterProps = ResourceCounterComponentProps & { showCantrips?: boolean; children?: ReactNode };
 
 export const SpellSlotCounter = ({
   restMode = 'global',
@@ -63,6 +65,8 @@ export const SpellSlotCounter = ({
   display = 'counter',
 }: SpellSlotCounterProps) => {
   const setSpellSlots = useSetAtom(spellSlotsAtom);
+  const spellAttack = useAtomValue(spellAttackAtom);
+  const spellSaveDC = useAtomValue(spellSaveAtom);
   const resetSpellSlots = useCallback(
     (restType: RestType) => {
       setSpellSlots((slots) =>
@@ -108,7 +112,18 @@ export const SpellSlotCounter = ({
         renderRow={renderRow}
         showHeader={headerMode}
         display={display}
-      />
+      >
+        <Box>
+          <Box display="flex" justifyContent="space-between">
+            <Typography>Spell Attack:</Typography>
+            <Typography>{spellAttack}</Typography>
+          </Box>
+          <Box display="flex" justifyContent="space-between">
+            <Typography>Spell save DC:</Typography>
+            <Typography>{spellSaveDC}</Typography>
+          </Box>
+        </Box>
+      </ResourceCounter>
       {(restMode === 'local-controls' || restMode === 'global-controls') && (
         <RestControls mode={restMode} onRest={restMode === 'local-controls' ? resetSpellSlots : undefined} />
       )}
