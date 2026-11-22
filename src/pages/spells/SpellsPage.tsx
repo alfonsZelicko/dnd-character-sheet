@@ -28,7 +28,7 @@ export const SpellsPage = () => {
       sx={{ height: { xs: 'auto', md: 'calc(100dvh - 81px)' }, minHeight: 0, alignContent: 'flex-start' }}
       spacing={1}
     >
-      <Grid size={{ xs: 12, md: 2 }}>
+      <Grid size={{ xs: 12, md: 3 }}>
         <Box display="flex" flexDirection="column" gap={1}>
           <SpellPicker fullWidth />
           <SpellSlotCounter />
@@ -36,7 +36,7 @@ export const SpellsPage = () => {
           <RestControls ButtonProps={{ variant: 'outlined' }} />
         </Box>
       </Grid>
-      <Grid size={{ xs: 12, md: 8 }} sx={{ height: { xs: 'auto', md: '100%' }, minHeight: 0 }}>
+      <Grid size={{ xs: 12, md: 9 }} sx={{ height: { xs: 'auto', md: '100%' }, minHeight: 0 }}>
         <Box
           sx={{
             height: { xs: 'auto', md: '100%' },

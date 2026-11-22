@@ -27,13 +27,17 @@ export const spellSlotsAtom = atomWithStorage<SpellSlots>('spell-slots', emptySp
 });
 
 const getSlotCounterItems = (slots: SpellSlots): SpellSlotCounterItem[] =>
-  slots.map((slot, level) => ({ level, max: slot?.max ?? 0, usage: slot?.usage ?? 0, ...(level === 10 && slot?.pactLevel ? { pactLevel: slot.pactLevel } : {}) }));
+  slots.map((slot, level) => {
+    if (!slot) return { level, max: 0, usage: 0 };
+    return {
+      level,
+      max: slot.max,
+      usage: slot.usage,
+      ...(level === 10 && slot.pactLevel ? { pactLevel: slot.pactLevel } : {}),
+    };
+  });
 
-export const spellSlotCounterItemsAtom = atom<
-  SpellSlotCounterItem[],
-  [SetStateAction<SpellSlotCounterItem[]>],
-  void
->(
+export const spellSlotCounterItemsAtom = atom<SpellSlotCounterItem[], [SetStateAction<SpellSlotCounterItem[]>], void>(
   (get) => getSlotCounterItems(get(spellSlotsAtom)),
   (get, set, update) => {
     const currentItems = getSlotCounterItems(get(spellSlotsAtom));
@@ -42,9 +46,14 @@ export const spellSlotCounterItemsAtom = atom<
 
     nextItems.forEach(({ level, max, usage, pactLevel }) => {
       if (level === 0) return;
-      nextSlots[level] = max > 0
-        ? { max, usage: Math.min(max, usage), ...(level === 10 ? { pactLevel: pactLevel ?? nextSlots[level]?.pactLevel ?? 1 } : {}) }
-        : null;
+      nextSlots[level] =
+        max > 0
+          ? {
+              max,
+              usage: Math.min(max, usage),
+              ...(level === 10 ? { pactLevel: pactLevel ?? nextSlots[level]?.pactLevel ?? 1 } : {}),
+            }
+          : null;
     });
 
     set(spellSlotsAtom, nextSlots);

@@ -107,10 +107,10 @@ export const CharacterPreview = () => (
 
             <Grid container sx={{ gridArea: 'hitdices', display: 'flex' }}>
               <Grid size={12}>
-                <HitDices showHeader={false} />
+                <HitDices headerMode={'hide'} />
               </Grid>
               <Grid size={12}>
-                <SpellSlotCounter showHeader={false} showCantrips={true} />
+                <SpellSlotCounter headerMode={'no-button'} showCantrips={true} display="usage-icons" />
               </Grid>
             </Grid>
           </Grid>

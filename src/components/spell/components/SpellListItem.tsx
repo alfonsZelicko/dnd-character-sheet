@@ -1,9 +1,9 @@
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Box, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import { useSetAtom } from 'jotai';
 import React, { memo } from 'react';
 import { knownSpellsAtom, SpellAtom } from '../atoms';
-import { SchoolName, schoolIconConfig } from '../types';
+import { schoolIconConfig, SchoolName } from '../types';
+import { RemoveButton } from '../../shared';
 
 export type SpellListItemProps = { level: number; spell: SpellAtom };
 
@@ -29,9 +29,13 @@ export const SpellListItem = memo(function SpellListItem({ level, spell }: Spell
       <Typography sx={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
         {spell.name}
       </Typography>
-      <IconButton size="small" aria-label={`Remove ${spell.name}`} onClick={removeSpell} sx={{ flexShrink: 0, ml: 'auto' }}>
-        <DeleteOutlineIcon fontSize="small" />
-      </IconButton>
+      <RemoveButton
+        onClick={removeSpell}
+        wrapperSx={{ flexShrink: 0, ml: 'auto' }}
+        tooltip={`Remove ${spell.name}`}
+        ariaLabel={`Remove ${spell.name}`}
+        IconProps={{ fontSize: 'small' }}
+      />
     </Box>
   );
 });
