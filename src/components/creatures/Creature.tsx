@@ -148,7 +148,7 @@ const CreaturePortrait = ({ creatureAtom }: { creatureAtom: PrimitiveAtom<Creatu
     <CharacterImage
       atom={portraitAtom}
       maxSizeMB={0.5}
-      sx={{ flex: 1, height: '100%', backgroundSize: 'contain' }}
+      sx={{ flex: 1, height: '100%', backgroundSize: 'contain', aspectRatio: 'inherit' }}
       applyMaskOverride={false}
     />
   );
