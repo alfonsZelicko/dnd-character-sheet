@@ -1,4 +1,5 @@
 import { SxProps, Theme } from '@mui/material';
+import { MainColor } from '../../utils';
 
 const NOTE_LINE_HEIGHT_REM = 1.5;
 const PADDING = '4px';
@@ -46,6 +47,7 @@ export const getNotesSx = (rowCount: number, fullWidth: boolean): SxProps<Theme>
     overflowWrap: 'anywhere',
     whiteSpace: 'pre-wrap',
     position: 'relative',
+    color: MainColor,
     fontFamily: 'Special Elite',
     fontSize: '1rem',
     fontWeight: 200,

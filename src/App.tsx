@@ -4,7 +4,7 @@ import { CssBaseline, GlobalStyles, ThemeProvider } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import { themeColorsAtom } from './utils/colors';
-import { createAppTheme } from './utils/theme';
+import { createAppTheme } from './utils';
 import { FirstRunDialog } from './features/FirstRunDialog';
 
 export const App = () => {

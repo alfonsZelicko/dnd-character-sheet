@@ -1,8 +1,9 @@
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { NumberLabelInput } from '../shared';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { currentHitPointsAtom, maxHitPointsAtom, temporaryHitPointsAtom } from './atoms';
 import { removeLeadingZeros } from '../../features/utils';
+import { RestEvent, useRestSubscription } from '../rest-controls';
 
 export const TemporaryHitPoints = () => {
   const [temporaryHitPoints, setTemporaryHitPoints] = useAtom(temporaryHitPointsAtom);
@@ -20,6 +21,14 @@ export const TemporaryHitPoints = () => {
 
 export const CurrentHitPoints = () => {
   const [currentHitPoints, setCurrentHitPoints] = useAtom(currentHitPointsAtom);
+  const maxHitPoints = useAtomValue(maxHitPointsAtom);
+  const handleRest = useCallback(
+    (event: RestEvent) => {
+      if (event === 'long-rest') setCurrentHitPoints(maxHitPoints);
+    },
+    [maxHitPoints, setCurrentHitPoints]
+  );
+  useRestSubscription('global', handleRest);
 
   return (
     <NumberLabelInput

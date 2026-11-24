@@ -79,6 +79,7 @@ const SpellSlotUsageInput = memo(function SpellSlotUsageInput({ level }: SpellSl
           setSpellSlots((slots) => setSpellLevelUsage(slots, level, Number.isFinite(value) ? value : 0));
         },
       }}
+      StyledLabelProps={{ sx: { fontWeight: 400, fontFamily: 'Special Elite' } }}
     />
   );
 });

@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 import { knownSpellsAtom } from '../atoms';
 import { schoolIconConfig, SchoolName, SpellListItemProps } from '../types';
 import { RemoveButton } from '../../shared';
-import CheckBoxTwoToneIcon from '@mui/icons-material/CheckBoxTwoTone';
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 
 export const SpellListItem = memo(function SpellListItem({ level, spell }: SpellListItemProps) {
   const setKnownSpells = useSetAtom(knownSpellsAtom);
@@ -43,7 +43,7 @@ export const SpellListItem = memo(function SpellListItem({ level, spell }: Spell
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
-          color: isPrepared ? 'text.primary' : 'text.disabled',
+          color: isPrepared ? '--app-main-color' : 'text.disabled',
         }}
       >
         {spell.name}
@@ -53,7 +53,7 @@ export const SpellListItem = memo(function SpellListItem({ level, spell }: Spell
           size="small"
           checked={isPrepared}
           onChange={togglePrepared}
-          checkedIcon={<CheckBoxTwoToneIcon />}
+          checkedIcon={<CheckBoxOutlinedIcon />}
           inputProps={{ 'aria-label': `Prepare ${spell.name}` }}
           sx={{ flexShrink: 0, p: 0.5 }}
         />
