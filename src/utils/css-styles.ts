@@ -32,7 +32,9 @@ export const mergeSx = (...sxProps: (SxProps<Theme> | undefined)[]): SxProps<The
 
 export const scrollBackgroundSx = {
   backgroundImage: `url(${appBg})`,
-  backgroundSize: '100% 100%',
-  backgroundPosition: 'center center',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center top',
+  backgroundAttachment: 'fixed',
   backgroundRepeat: 'no-repeat',
+  minHeight: '100dvh',
 };
