@@ -24,8 +24,8 @@ describe('SpellList', () => {
     const store = createStore();
     store.set(knownSpellsAtom, [
       [
-        { name: 'Eldritch Blast', school: 'V' },
-        { name: 'Fire Bolt', school: 'V' },
+        { name: 'Eldritch Blast', school: 'V', prepared: false },
+        { name: 'Fire Bolt', school: 'V', prepared: false },
       ],
     ]);
 
@@ -37,7 +37,7 @@ describe('SpellList', () => {
     renderSpy.mockClear();
 
     act(() => {
-      store.set(knownSpellsAtom, (levels) => [[...(levels[0] ?? []), { name: 'Light', school: 'V' }]]);
+      store.set(knownSpellsAtom, (levels) => [[...(levels[0] ?? []), { name: 'Light', school: 'V', prepared: false }]]);
     });
 
     expect(renderSpy.mock.calls).toEqual([['Light']]);

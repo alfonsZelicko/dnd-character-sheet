@@ -1,4 +1,4 @@
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage } from '../../features/indexedDbStorage';
 import { Abilities, AbilityItemType } from './types';
 
 export const getAbilityFullName = (ability: Abilities): string | undefined => {

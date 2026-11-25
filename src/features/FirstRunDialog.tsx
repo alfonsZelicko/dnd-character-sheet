@@ -5,14 +5,16 @@ import {
   needsDemoCharacterSeed,
   seedDemoCharacterIfEmpty,
 } from './characterData';
+import { flushIndexedDbWrites } from './indexedDbStorage';
 
-export const FirstRunDialog = ({ children }: { children: ReactNode }) => {
-  const [open, setOpen] = useState(() => needsDemoCharacterSeed());
+export const FirstRunDialog = ({ children, storage = localStorage }: { children: ReactNode; storage?: Storage }) => {
+  const [open, setOpen] = useState(() => needsDemoCharacterSeed(storage));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleStartBlank = () => {
-    markDemoCharacterChoice();
+  const handleStartBlank = async () => {
+    markDemoCharacterChoice(storage);
+    await flushIndexedDbWrites();
     setOpen(false);
   };
 
@@ -25,15 +27,16 @@ export const FirstRunDialog = ({ children }: { children: ReactNode }) => {
       const response = await fetch(demoCharacterUrl);
       if (!response.ok) throw new Error('The demo character file is not available yet.');
 
-      const wasSeeded = seedDemoCharacterIfEmpty(await response.text());
+      const wasSeeded = seedDemoCharacterIfEmpty(await response.text(), storage);
       if (!wasSeeded) {
         throw new Error(
-          needsDemoCharacterSeed()
+          needsDemoCharacterSeed(storage)
             ? 'The demo character file does not contain character data.'
             : 'A character is already saved in this browser, so the sample was not loaded.'
         );
       }
 
+      await flushIndexedDbWrites();
       window.location.reload();
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : 'The demo character could not be loaded.');

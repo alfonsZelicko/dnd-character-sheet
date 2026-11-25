@@ -31,6 +31,7 @@ import { optionsWeaponsOnPreviewAtom } from '../../components/attack-list/atoms'
 import { StandardNumberInput, StyledPaper } from '../../components';
 import { APP_VERSION } from '../../features/version';
 import { resetCharacterData } from '../../features/characterData';
+import { flushIndexedDbWrites, indexedDbCharacterStorage } from '../../features/indexedDbStorage';
 
 const getColorPickerValue = (color: string): string => {
   if (/^#[\da-f]{6}$/i.test(color)) return color;
@@ -58,8 +59,9 @@ const CharacterDataSection = memo(function CharacterDataSection() {
     event.target.value = '';
   };
 
-  const handleResetCharacter = () => {
-    resetCharacterData();
+  const handleResetCharacter = async () => {
+    resetCharacterData(indexedDbCharacterStorage as Storage);
+    await flushIndexedDbWrites();
     window.location.reload();
   };
 

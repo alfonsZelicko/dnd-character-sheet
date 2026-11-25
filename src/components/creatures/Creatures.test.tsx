@@ -7,6 +7,7 @@ import { Creatures } from './Creatures';
 import { CreatureType } from './types';
 import { ThemeProvider } from '@mui/material';
 import { theme } from '../../utils';
+import { indexedDbCharacterStorage } from '../../features/indexedDbStorage';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -76,7 +77,7 @@ describe('Creatures add/remove', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /add creature/i }));
 
-    expect(JSON.parse(localStorage.getItem('creatures') ?? '[]')).toHaveLength(1);
+    expect(JSON.parse(indexedDbCharacterStorage.getItem('creatures') ?? '[]')).toHaveLength(1);
   });
 
   it('removes the correct creature by index', () => {
@@ -90,19 +91,19 @@ describe('Creatures add/remove', () => {
     });
     fireEvent.click(removeButtons[0]);
 
-    const stored: CreatureType[] = JSON.parse(localStorage.getItem('creatures') ?? '[]');
+    const stored: CreatureType[] = JSON.parse(indexedDbCharacterStorage.getItem('creatures') ?? '[]');
     expect(stored).toHaveLength(1);
     expect(stored[0].name).toBe('Goblin');
   });
 
-  it('persists added creatures to localStorage', () => {
+  it('persists added creatures to IndexedDB storage', () => {
     const store = makeStore([]);
     renderCreatures(store);
 
     fireEvent.click(screen.getByRole('button', { name: /add creature/i }));
     fireEvent.click(screen.getByRole('button', { name: /add creature/i }));
 
-    expect(JSON.parse(localStorage.getItem('creatures') ?? '[]')).toHaveLength(2);
+    expect(JSON.parse(indexedDbCharacterStorage.getItem('creatures') ?? '[]')).toHaveLength(2);
   });
 });
 

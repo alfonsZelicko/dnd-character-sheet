@@ -1,4 +1,4 @@
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage } from '../../features/indexedDbStorage';
 import { Abilities } from '../abilities/types';
 import { SkillsList, SkillsType, SkillType } from './types';
 

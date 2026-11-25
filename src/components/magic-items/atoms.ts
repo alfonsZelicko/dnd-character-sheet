@@ -1,4 +1,5 @@
-import { atomWithStorage, splitAtom } from 'jotai/utils';
+import { splitAtom } from 'jotai/utils';
+import { atomWithStorage } from '../../features/indexedDbStorage';
 import { MagicItemType } from './types';
 
 const initialMagicItems: MagicItemType[] = Array.from({ length: 5 }, () => ({
@@ -7,10 +8,5 @@ const initialMagicItems: MagicItemType[] = Array.from({ length: 5 }, () => ({
   attunement: 'not-attuned' as const,
 }));
 
-export const MagicItemAtoms = atomWithStorage<MagicItemType[]>(
-  'magic-item-atoms',
-  initialMagicItems,
-  undefined,
-  { getOnInit: true }
-);
+export const MagicItemAtoms = atomWithStorage<MagicItemType[]>('magic-item-atoms', initialMagicItems, undefined);
 export const MagicItemAtomsAtom = splitAtom(MagicItemAtoms);

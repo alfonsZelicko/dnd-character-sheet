@@ -3,7 +3,7 @@ import {
   createCharacterBackup,
   markDemoCharacterChoice,
   migrateCharacterData,
-  migrateLocalStorage,
+  migrateCharacterStorage,
   needsDemoCharacterSeed,
   parseCharacterBackup,
   resetCharacterData,
@@ -138,7 +138,7 @@ describe('character backup data', () => {
   it('upgrades stored schema version without inventing missing character keys', () => {
     localStorage.setItem('name', 'Mira');
 
-    migrateLocalStorage(localStorage);
+    migrateCharacterStorage(localStorage);
 
     expect(localStorage.getItem('name')).toBe('Mira');
     expect(localStorage.getItem('character-data-schema-version')).toBe('2');

@@ -1,4 +1,5 @@
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
+import { createJSONStorage } from 'jotai/utils';
+import { atomWithStorage, indexedDbCharacterStorage } from '../../features/indexedDbStorage';
 import { HitDiceType } from './types';
 
 const initialHitDiceAtomValue: HitDiceType[] = [
@@ -8,7 +9,7 @@ const initialHitDiceAtomValue: HitDiceType[] = [
   { die: 'd12', max: 0, usage: 0 },
 ];
 
-const jsonStorage = createJSONStorage<HitDiceType[]>(() => localStorage);
+const jsonStorage = createJSONStorage<HitDiceType[]>(() => indexedDbCharacterStorage);
 const hitDiceStorage = {
   ...jsonStorage,
   getItem: (key: string, initialValue: HitDiceType[]) =>

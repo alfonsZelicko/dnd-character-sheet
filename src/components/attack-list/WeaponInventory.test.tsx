@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { AttackAtoms } from './atoms';
 import { WeaponInventory } from './WeaponInventory';
+import { indexedDbCharacterStorage } from '../../features/indexedDbStorage';
 
 describe('WeaponInventory', () => {
   it('adds and removes weapon records and persists the list', () => {
@@ -12,10 +13,10 @@ describe('WeaponInventory', () => {
     render(<Provider store={store}><WeaponInventory /></Provider>);
 
     fireEvent.click(screen.getByRole('button', { name: /add weapon/i }));
-    expect(JSON.parse(localStorage.getItem('attacks-list') ?? '[]')).toHaveLength(2);
+    expect(JSON.parse(indexedDbCharacterStorage.getItem('attacks-list') ?? '[]')).toHaveLength(2);
 
     fireEvent.click(screen.getByRole('button', { name: 'Remove Dagger' }));
-    expect(JSON.parse(localStorage.getItem('attacks-list') ?? '[]')).toHaveLength(1);
-    expect(JSON.parse(localStorage.getItem('attacks-list') ?? '[]')[0].attackName).toBe('');
+    expect(JSON.parse(indexedDbCharacterStorage.getItem('attacks-list') ?? '[]')).toHaveLength(1);
+    expect(JSON.parse(indexedDbCharacterStorage.getItem('attacks-list') ?? '[]')[0].attackName).toBe('');
   });
 });

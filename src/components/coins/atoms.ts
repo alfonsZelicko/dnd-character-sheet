@@ -1,4 +1,4 @@
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage } from '../../features/indexedDbStorage';
 
 const initGoldCoinsAtomsValue: number = 0;
 const initSilverCoinsAtomsValue: number = 0;

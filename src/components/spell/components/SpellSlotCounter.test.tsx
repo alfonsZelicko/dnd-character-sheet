@@ -30,6 +30,7 @@ describe('SpellSlotCounter', () => {
     const dialog = screen.getByRole('dialog');
     expect(within(dialog).queryByText('Cantrip')).not.toBeInTheDocument();
     fireEvent.click(within(dialog).getByText('1st level spell slot'));
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Add' }));
     expect(store.get(spellSlotsAtom)[1]).toEqual({ max: 1, usage: 0 });
   });
 });

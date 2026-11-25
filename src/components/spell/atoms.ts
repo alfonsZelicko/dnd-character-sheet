@@ -1,14 +1,12 @@
 import { atom } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage } from '../../features/indexedDbStorage';
 import { SetStateAction } from 'react';
 import { SpellAtom } from './types';
 
 /** Known spells grouped by spell level (0 through 9). */
 // Read storage synchronously when a new Jotai store is created so the first
 // update after a page refresh starts from the saved spells instead of `[]`.
-export const knownSpellsAtom = atomWithStorage<SpellAtom[][]>('known-spells', [], undefined, {
-  getOnInit: true,
-});
+export const knownSpellsAtom = atomWithStorage<SpellAtom[][]>('known-spells', [], undefined);
 
 export type SpellSlotResource = { max: number; usage: number; pactLevel?: number };
 export type SpellSlots = Array<SpellSlotResource | null>;
@@ -20,9 +18,7 @@ const emptySpellSlots = (): SpellSlots => {
   return slots;
 };
 
-export const spellSlotsAtom = atomWithStorage<SpellSlots>('spell-slots', emptySpellSlots(), undefined, {
-  getOnInit: true,
-});
+export const spellSlotsAtom = atomWithStorage<SpellSlots>('spell-slots', emptySpellSlots(), undefined);
 
 const getSlotCounterItems = (slots: SpellSlots): SpellSlotCounterItem[] =>
   slots.map((slot, level) => {

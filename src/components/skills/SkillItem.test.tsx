@@ -7,6 +7,7 @@ import { proficiencyBonusAtom } from '../simple-components';
 import { skillAtom } from './atoms';
 import { SkillItem } from './SkillItem';
 import { Abilities } from '../abilities/types';
+import { indexedDbCharacterStorage } from '../../features/indexedDbStorage';
 
 describe('SkillItem', () => {
   it('combines ability, proficiency, expertise, and manual modifiers', () => {
@@ -36,6 +37,6 @@ describe('SkillItem', () => {
 
     fireEvent.change(screen.getByPlaceholderText('+'), { target: { value: '4', name: 'modifier' } });
 
-    expect(JSON.parse(localStorage.getItem('skill-athletics') ?? 'null').modifier).toBe(4);
+    expect(JSON.parse(indexedDbCharacterStorage.getItem('skill-athletics') ?? 'null').modifier).toBe(4);
   });
 });

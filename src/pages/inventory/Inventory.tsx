@@ -1,19 +1,17 @@
 import React from 'react';
 import { Grid2 as Grid } from '@mui/material';
 import {
+  ArmorInventory,
   BackpackAtomsAtom,
   Coins,
   InventoryList,
   MagicItems,
   QuickSlotAtomsAtom,
   WeaponInventory,
-  ArmorInventory,
 } from '../../components';
 import { useAtomValue } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
 import { Notes } from '../../components/notes';
-
-const InventoryNotesAtom = atomWithStorage<string>('inventory-notes', '', undefined, { getOnInit: true });
+import { InventoryNotesAtom } from './atoms';
 
 export const Inventory = () => {
   const backpackItems = useAtomValue(BackpackAtomsAtom);

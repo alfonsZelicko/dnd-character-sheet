@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { ArmorAtoms } from './atoms';
 import { ArmorInventory } from './ArmorInventory';
+import { indexedDbCharacterStorage } from '../../features/indexedDbStorage';
 
 describe('ArmorInventory', () => {
   beforeEach(() => localStorage.clear());
@@ -33,7 +34,7 @@ describe('ArmorInventory', () => {
       target: { value: 'A dark leather jacket' },
     });
 
-    expect(JSON.parse(localStorage.getItem('armor-items') ?? '[]')[0]).toMatchObject({
+    expect(JSON.parse(indexedDbCharacterStorage.getItem('armor-items') ?? '[]')[0]).toMatchObject({
       category: 'Light',
       name: 'Studded Leather',
       defense: '12 + Dex',
@@ -51,10 +52,10 @@ describe('ArmorInventory', () => {
     );
 
     fireEvent.click(screen.getByRole('button', { name: /add armor/i }));
-    expect(JSON.parse(localStorage.getItem('armor-items') ?? '[]')).toHaveLength(2);
+    expect(JSON.parse(indexedDbCharacterStorage.getItem('armor-items') ?? '[]')).toHaveLength(2);
 
     fireEvent.click(screen.getByRole('button', { name: 'Remove Plate' }));
-    expect(JSON.parse(localStorage.getItem('armor-items') ?? '[]')).toHaveLength(1);
-    expect(JSON.parse(localStorage.getItem('armor-items') ?? '[]')[0].name).toBe('');
+    expect(JSON.parse(indexedDbCharacterStorage.getItem('armor-items') ?? '[]')).toHaveLength(1);
+    expect(JSON.parse(indexedDbCharacterStorage.getItem('armor-items') ?? '[]')[0].name).toBe('');
   });
 });

@@ -1,3 +1,3 @@
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage } from '../../features/indexedDbStorage';
 
 export const inspirationAtom = atomWithStorage('inspiration', false);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tooltip } from '@mui/material';
-import { createCharacterBackup, parseCharacterBackup, writeCharacterData } from './characterData';
+import { createCharacterBackupFromData, parseCharacterBackup, writeCharacterData } from './characterData';
+import { flushIndexedDbWrites, getIndexedDbData, indexedDbCharacterStorage } from './indexedDbStorage';
 
 export { storedOrDefault } from './storedDefaults';
 
@@ -12,10 +13,10 @@ export const calculateAbilityModifier = (abilityScore: number): number => Math.f
 export const removeLeadingZeros = (value: string | number): string =>
   typeof value === 'string' ? value.replace(/^0+(?=\d)/, '') : removeLeadingZeros(value.toString());
 
-
 /*  ---- import/export helpers ---- */
-export function exportLocalStorageToJSON(includeOptions = true): void {
-  const json = JSON.stringify(createCharacterBackup(localStorage, includeOptions), null, 2);
+export async function exportLocalStorageToJSON(includeOptions = true): Promise<void> {
+  const data = await getIndexedDbData();
+  const json = JSON.stringify(createCharacterBackupFromData(data, includeOptions), null, 2);
   const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -32,18 +33,24 @@ export async function importJSONFileToLocalStorage(
   reloadPage: () => void = () => window.location.reload()
 ): Promise<void> {
   try {
-    const data = parseCharacterBackup(await file.text());
-    writeCharacterData(localStorage, data);
+    await importCharacterBackupData(await file.text());
 
     reloadPage();
   } catch (error) {
     console.error('Could not import character data:', error);
-    alert(error instanceof Error ? `Import failed: ${error.message}` : 'Import failed. Please choose a valid JSON file.');
+    alert(
+      error instanceof Error ? `Import failed: ${error.message}` : 'Import failed. Please choose a valid JSON file.'
+    );
   }
 }
 
-const slides = ['Character Preview', 'Inventory'];
+export async function importCharacterBackupData(json: string): Promise<void> {
+  const data = parseCharacterBackup(json);
+  writeCharacterData(indexedDbCharacterStorage as Storage, data);
+  await flushIndexedDbWrites();
+}
 
+const slides = ['Character Preview', 'Inventory'];
 
 //TODO: imho this is no more usefull - remove it?
 export const renderIndicator = (

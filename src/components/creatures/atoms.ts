@@ -1,4 +1,5 @@
-import { atomWithStorage, splitAtom } from 'jotai/utils';
+import { splitAtom } from 'jotai/utils';
+import { atomWithStorage } from '../../features/indexedDbStorage';
 import { CreatureType } from './types';
 
 export const emptyCreature = (): CreatureType => ({
@@ -24,8 +25,6 @@ export const emptyCreature = (): CreatureType => ({
   traits: '',
 });
 
-export const creaturesAtom = atomWithStorage<CreatureType[]>('creatures', [emptyCreature()], undefined, {
-  getOnInit: true,
-});
+export const creaturesAtom = atomWithStorage<CreatureType[]>('creatures', [emptyCreature()], undefined);
 
 export const creatureAtomsAtom = splitAtom(creaturesAtom);

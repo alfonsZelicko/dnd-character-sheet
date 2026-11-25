@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
-import { atomWithStorage, splitAtom } from 'jotai/utils';
+import { splitAtom } from 'jotai/utils';
+import { atomWithStorage } from '../../features/indexedDbStorage';
 import { SetStateAction } from 'react';
 
 export const armorAtom = atomWithStorage('armor', 0);
@@ -33,10 +34,10 @@ export const currentHitPointsAtom = atom(
 );
 
 export const speedAtom = atomWithStorage('speed', 0);
-export const characterDescriptionAtom = atomWithStorage('character-description', '', undefined, { getOnInit: true });
+export const characterDescriptionAtom = atomWithStorage('character-description', '', undefined);
 
-export const noteAtoms = atomWithStorage('notes', ['', '', ''], undefined, { getOnInit: true });
+export const noteAtoms = atomWithStorage('notes', ['', '', ''], undefined);
 export const noteAtomsAtom = splitAtom(noteAtoms);
 
-export const spellAttackAtom = atomWithStorage('spell-attack', 0, undefined, { getOnInit: true });
-export const spellSaveAtom = atomWithStorage('spell-save', 0, undefined, { getOnInit: true });
+export const spellAttackAtom = atomWithStorage('spell-attack', 0, undefined);
+export const spellSaveAtom = atomWithStorage('spell-save', 0, undefined);

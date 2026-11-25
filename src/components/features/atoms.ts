@@ -1,4 +1,5 @@
-import { atomWithStorage, splitAtom } from 'jotai/utils';
+import { splitAtom } from 'jotai/utils';
+import { atomWithStorage } from '../../features/indexedDbStorage';
 import { FeatureItemType, RestType } from './types';
 
 const initFeatureAtomsValue: FeatureItemType[] = [

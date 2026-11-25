@@ -1,4 +1,4 @@
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage } from '../../features/indexedDbStorage';
 
 export const CharacterPictureAtom = atomWithStorage<string | null>('character-picture', null);
 

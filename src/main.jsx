@@ -2,7 +2,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import { Provider } from 'jotai';
-import { migrateLocalStorage } from './features/characterData.ts';
+import { migrateCharacterStorage } from './features/characterData.ts';
+import { flushIndexedDbWrites, indexedDbCharacterStorage, initializeIndexedDbStorage } from './features/indexedDbStorage.ts';
 
 document.documentElement.setAttribute('spellcheck', 'false');
 
@@ -28,27 +29,16 @@ const renderCompatibilityError = (error) => {
   );
 };
 
-const initializeApp = () => {
+const initializeApp = async () => {
   try {
-    migrateLocalStorage(localStorage);
+    await initializeIndexedDbStorage();
+    migrateCharacterStorage(indexedDbCharacterStorage);
+    await flushIndexedDbWrites();
     renderApp();
   } catch (error) {
     renderCompatibilityError(error);
   }
 };
 
-// const originalSetItem = Storage.prototype.setItem;
-//
-// Storage.prototype.setItem = function (key, value) {
-//   console.time(`localStorage: ${key}`);
-//
-//   try {
-//     console.log(`${key}: ${(value.length / 1024).toFixed(2)} KB`);
-//     return originalSetItem.call(this, key, value);
-//   } finally {
-//     console.timeEnd(`localStorage: ${key}`);
-//   }
-// };
-
-initializeApp();
+void initializeApp();
 ``;

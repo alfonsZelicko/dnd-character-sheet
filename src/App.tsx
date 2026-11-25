@@ -6,6 +6,7 @@ import { useAtomValue } from 'jotai';
 import { themeColorsAtom } from './utils/colors';
 import { createAppTheme } from './utils';
 import { FirstRunDialog } from './features/FirstRunDialog';
+import { indexedDbCharacterStorage } from './features/indexedDbStorage';
 
 export const App = () => {
   const colors = useAtomValue(themeColorsAtom);
@@ -31,7 +32,7 @@ export const App = () => {
           },
         }}
       />
-      <FirstRunDialog>
+      <FirstRunDialog storage={indexedDbCharacterStorage as Storage}>
         <BrowserRouter>
           <MainContainer />
         </BrowserRouter>

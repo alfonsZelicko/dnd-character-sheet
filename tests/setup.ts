@@ -1,6 +1,8 @@
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
-import { afterEach } from 'vitest';
+import { afterEach, beforeEach } from 'vitest';
+import 'fake-indexeddb/auto';
+import { flushIndexedDbWrites, indexedDbCharacterStorage, initializeIndexedDbStorage } from '../src/features/indexedDbStorage';
 
 // ProseMirror queries layout rectangles while handling keyboard edits. jsdom has
 // no layout engine, so provide the empty geometry values a browser normally returns.
@@ -15,7 +17,13 @@ Range.prototype.getBoundingClientRect ??= () => ({
   toJSON: () => ({}),
 });
 
-afterEach(() => {
+beforeEach(async () => {
+  await initializeIndexedDbStorage();
+});
+
+afterEach(async () => {
   cleanup();
+  indexedDbCharacterStorage.clear();
+  await flushIndexedDbWrites();
   localStorage.clear();
 });

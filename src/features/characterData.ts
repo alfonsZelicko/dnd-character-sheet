@@ -88,13 +88,16 @@ const splitData = (data: MigratedCharacterData, includeOptions = true): BackupDa
   return { character, ...(includeOptions ? { options } : {}) };
 };
 
-export function migrateLocalStorage(storage: Storage): void {
+export function migrateCharacterStorage(storage: Storage): void {
   const savedVersion = storage.getItem(schemaVersionStorageKey);
   const sourceVersion = savedVersion === null ? 0 : Number(savedVersion);
   const currentData = Object.fromEntries(
     Array.from({ length: storage.length }, (_, index) => storage.key(index))
       .filter((key): key is string => key !== null && key !== schemaVersionStorageKey && key !== demoSeedStorageKey)
-      .map((key) => [key, storage.getItem(key) ?? ''])
+      .flatMap((key) => {
+        const value = storage.getItem(key);
+        return value === null && key === 'character-picture' ? [] : [[key, value ?? '']];
+      })
   );
   const migratedData = migrateCharacterData(currentData, sourceVersion);
 
@@ -111,6 +114,10 @@ export function createCharacterBackup(storage: Storage = localStorage, includeOp
       .filter((key): key is string => key !== null && key !== schemaVersionStorageKey && key !== demoSeedStorageKey)
       .map((key) => [key, storage.getItem(key) ?? ''])
   );
+  return createCharacterBackupFromData(data, includeOptions);
+}
+
+export function createCharacterBackupFromData(data: Record<string, string>, includeOptions = true): CharacterBackup {
   const { character, options } = splitData(data);
 
   return {

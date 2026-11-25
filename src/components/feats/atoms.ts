@@ -1,4 +1,5 @@
-import { atomWithStorage, splitAtom } from 'jotai/utils';
+import { splitAtom } from 'jotai/utils';
+import { atomWithStorage } from '../../features/indexedDbStorage';
 //import { FeatType } from './types';
 
 /*const initFeatAtomValue: FeatType[] = [
@@ -29,5 +30,5 @@ import { atomWithStorage, splitAtom } from 'jotai/utils';
 ];*/
 
 // export const FeatAtoms = atomWithStorage<FeatType[]>('featsAtom', initFeatAtomValue);
-export const FeatAtoms = atomWithStorage<string[]>('featsAtom', ['', '', '', ''], undefined, { getOnInit: true });
+export const FeatAtoms = atomWithStorage<string[]>('featsAtom', ['', '', '', ''], undefined);
 export const FeatAtomsAtom = splitAtom(FeatAtoms);
