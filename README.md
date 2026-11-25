@@ -10,7 +10,7 @@ The demo is published automatically from `main` when `.github/workflows/deploy-d
   <img src="dev-utils/screen.jpg" alt="Screenshot" width="50%">
 </div>
 
-Behold, traveler, and lend thine ear. This humble work is my personal endeavor, wherein I tinker with curious libraries of the React realm, most notably [Jotai](https://github.com/pmndrs/jotai) and [MUI](https://mui.com/). The creation takes the shape of a character scroll for the great game of DnD. All memories are kept within the browser’s own hidden vault, `localStorage`, so the demo may remain ever light and wholly static.
+Behold, traveler, and lend thine ear. This humble work is my personal endeavor, wherein I tinker with curious libraries of the React realm, most notably [Jotai](https://github.com/pmndrs/jotai) and [MUI](https://mui.com/). The creation takes the shape of a character scroll for the great game of DnD. Character data is kept in the browser’s IndexedDB, so the demo can remain light and wholly static. Nothing is sent to a server.
 
 This journal has been carefully attuned for full-screen use upon a tablet, where it feels most at home. Should any soul desire it shaped for a different resolution or device, I would gladly reforge it.
 
@@ -18,9 +18,14 @@ This journal has been carefully attuned for full-screen use upon a tablet, where
 
 - **Character Preview** presents character statistics, abilities, skills, saving throws, and notes. Notes support rich-text formatting such as bold and italics.
 - **Inventory** keeps backpack items, quick-slot items, coins, and a separate list of weapons. Weapons can be added to or removed from the list.
+- **Spells** lets you search the bundled spell list, add known spells, mark them as prepared, track spell slots (including Pact Magic), and view spell attack and save values. Spell slots reset through the app’s short- and long-rest controls.
 - **Options** lets you export character data or a full backup, import JSON files, choose or reset app colors, set display preferences, and choose how many weapons appear on Character Preview (two by default).
-- Character data and app preferences are stored locally in the browser. A full backup contains separate `character` and `options` sections; a character-only export omits `options`, and importing one leaves current app preferences in place.
+- Character data and app preferences are stored locally in the browser’s IndexedDB. A full backup contains separate `character` and `options` sections; a character-only export omits `options`, and importing one leaves current app preferences in place. Older flat JSON exports and earlier versioned backups remain supported.
 - On first launch, visitors without saved character data can choose to load a sample character from `public/demo-character.json` or start with a blank sheet. Existing character data and app options are never replaced by the sample.
+
+### Spell Data
+
+Spell data is bundled with the app and generated from the 5eTools dataset by `dev-utils/sync-spells.ts`. The normal sync and production build include the minimal fields needed for spell search and selection. To generate the full spell records for local development, run `pnpm sync:spells:full`. Generated files live under `src/data/spells/`; do not edit them by hand.
 
 ## Project Setup
 
@@ -63,15 +68,15 @@ Component tests live next to their components. Broader tests that cover shared a
 
 ## Development Rules: Persistent Data and Backups
 
-Components persist their state in `localStorage` through Jotai `atomWithStorage`. The storage key is the durable identity of each value, so changing a key can otherwise make existing data appear to vanish.
+Components persist their state in IndexedDB through Jotai `atomWithStorage` and the adapter in `src/features/indexedDbStorage.ts`. The storage key is the durable identity of each value, so changing a key can otherwise make existing data appear to vanish. The app initializes IndexedDB before loading the components that access character atoms.
 
 - Keep character keys for data belonging to a character (for example `name`, `features`, or `backpack-atom`).
 - Prefix new app preference keys with `options_` (for example `options_weapons-on-preview`). Existing preference keys are also recognized: `theme-colors`, `showIncDecButtons`, and `character-picture-mask`.
-- Adding a persisted key, or an optional field on an existing stored object, does not require a schema bump. Absent keys stay unset in localStorage and backups. Atoms use their initial value when a key is missing; object fields that are not present are `undefined` and must be treated as the feature default via `storedOrDefault` in `src/features/storedDefaults.ts`.
-- If a persisted key is renamed, removed, or its stored value shape becomes incompatible, update `src/features/characterData.ts`: increment `CHARACTER_DATA_SCHEMA_VERSION` and add a migration from the previous schema version in `migrations`. Migrations run one version at a time and are used for both local data and imported backups. Do not edit or delete old migrations; add the next step.
+- Adding a persisted key, or an optional field on an existing stored object, does not require a schema bump. Absent keys stay unset in IndexedDB and backups. Atoms use their initial value when a key is missing; object fields that are not present are `undefined` and must be treated as the feature default via `storedOrDefault` in `src/features/storedDefaults.ts`.
+- If a persisted key is renamed, removed, or its stored value shape becomes incompatible, update `src/features/characterData.ts`: increment `CHARACTER_DATA_SCHEMA_VERSION` and add a migration from the previous schema version in `migrations`. Migrations run one version at a time for local IndexedDB data and imported backups. Do not edit or delete old migrations; add the next step.
 - If a new option key is introduced, add it to the `options_` namespace so exports keep it in the `options` section. If an existing option key does not use that prefix, add it to `optionKeys` in `characterData.ts`.
 - Keep `appVersion` sourced from `package.json` through Vite's `__APP_VERSION__` define. Bump the package version for a release; compatibility migrations are driven by `CHARACTER_DATA_SCHEMA_VERSION`, not by the app version.
-- Preserve import compatibility when changing the backup shape. `parseCharacterBackup` must continue to recognize old flat exports and schema v1 backups, and tests should cover each supported format plus the current character-only and full-backup formats.
+- Preserve import compatibility when changing the backup shape. `parseCharacterBackup` must continue to recognize old flat JSON exports and schema v1 backups, and tests should cover each supported format plus the current character-only and full-backup formats. The `Storage` interface used by backup helpers is an adapter over IndexedDB in the app; references to local storage formats describe legacy export compatibility.
 
 ## TODO / Roadmap
 
