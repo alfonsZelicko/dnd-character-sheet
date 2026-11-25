@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { indexedDbCharacterStorage, initializeIndexedDbStorage } from './indexedDbStorage';
 import { importCharacterBackupData } from './utils';
 import { characterDescriptionAtom } from '../components';
+import { MagicItemAtoms } from '../components/magic-items/atoms';
 import { InventoryNotesAtom } from '../pages';
 
 describe('IndexedDB character import', () => {
@@ -27,7 +28,9 @@ describe('IndexedDB character import', () => {
         notes: JSON.stringify(['<p>small note</p>']),
         featsAtom: JSON.stringify(['<p>feat description</p>']),
         'inventory-notes': JSON.stringify('<p>inventory note</p>'),
-        'magic-items': JSON.stringify([{ description: '<p>magic item note</p>' }]),
+        'magic-item-atoms': JSON.stringify([
+          { name: 'Ring of Testing', description: '<p>magic item note</p>', attunement: 'attuned' },
+        ]),
         creatures: JSON.stringify(creatures),
         'character-picture': 'data:image/png;base64,Y2hhcmFjdGVy',
       },
@@ -46,6 +49,7 @@ describe('IndexedDB character import', () => {
       <>
         <output data-testid="character-description">{useAtomValue(characterDescriptionAtom)}</output>
         <output data-testid="inventory-notes">{useAtomValue(InventoryNotesAtom)}</output>
+        <output data-testid="magic-items">{JSON.stringify(useAtomValue(MagicItemAtoms))}</output>
       </>
     );
     render(
@@ -55,5 +59,6 @@ describe('IndexedDB character import', () => {
     );
     expect(await screen.findByTestId('character-description')).toHaveTextContent('<p>description</p>');
     expect(await screen.findByTestId('inventory-notes')).toHaveTextContent('<p>inventory note</p>');
+    expect(await screen.findByTestId('magic-items')).toHaveTextContent('<p>magic item note</p>');
   });
 });

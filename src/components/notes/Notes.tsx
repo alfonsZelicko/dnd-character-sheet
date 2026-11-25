@@ -31,7 +31,6 @@ export function Notes({
   placeholder = 'Some notes',
   fullWidth = true,
   disabled = false,
-  sx,
   multiline: _multiline,
   variant: _variant,
   id,
