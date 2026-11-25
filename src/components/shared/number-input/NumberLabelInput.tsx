@@ -1,6 +1,6 @@
 import React from 'react';
-import { InputPlacement, NumberInputWrapper } from './NumberInputWrapper';
-import { NumberLabelInputProps } from './types';
+import { NumberInputWrapper } from './NumberInputWrapper';
+import { InputPlacement, NumberLabelInputProps } from './types';
 import { StyledLabel } from '../text-input';
 import { dottedBorder, mergeSx } from '../../../utils';
 import { SxProps, Theme } from '@mui/material';
@@ -22,9 +22,9 @@ export const NumberLabelInput = ({
   size,
   inputPlacement = 'left',
 }: NumberLabelInputProps) => (
-  <NumberInputWrapper size={size} inputPlacement={inputPlacement} NumberInputProps={{ ...NumberInputProps }}>
+  <NumberInputWrapper size={size} inputPlacement={inputPlacement} NumberInputProps={NumberInputProps}>
     <StyledLabel
-      variant={'body1'}
+      variant="body1"
       {...StyledLabelProps}
       sx={mergeSx(
         getPlacementSx(inputPlacement),
@@ -34,9 +34,8 @@ export const NumberLabelInput = ({
           height: '3rem',
           padding: '6px',
           alignContent: 'center',
-          // backdropFilter: 'blur(5px)',
         },
-        StyledLabelProps?.sx ? StyledLabelProps?.sx : {}
+        StyledLabelProps?.sx || {}
       )}
     >
       {label}

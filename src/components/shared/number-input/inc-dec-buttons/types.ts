@@ -1,12 +1,24 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { SliderProps } from '@mui/material/Slider';
 import { ActionButtonType } from '../types';
+import { SxProps } from '@mui/material';
 
-export type IncDecButtonsType = {
-  callAction(setNew: ActionButtonType): void; //Dispatch<SetStateAction<number>>;
-  anchorEl: (EventTarget & (HTMLInputElement | HTMLTextAreaElement)) | null;
-  setAnchorEl: Dispatch<SetStateAction<(EventTarget & (HTMLInputElement | HTMLTextAreaElement)) | null>>;
+export type IncDecButtonType = 'button' | 'slider';
+
+export type IncDecButtonAddon = {
+  incDecButtonType?: IncDecButtonType;
+  SliderProps?: SliderProps;
 };
 
-export type WrapperType = Omit<IncDecButtonsType, 'callAction'> & { children: ReactNode };
+export type IncDecButtonsProps = {
+  callAction(setNew: ActionButtonType): void;
+  anchorEl: (EventTarget & (HTMLInputElement | HTMLTextAreaElement)) | null;
+  setAnchorEl: Dispatch<SetStateAction<(EventTarget & (HTMLInputElement | HTMLTextAreaElement)) | null>>;
+} & IncDecButtonAddon;
 
-export type ButtonsType = Pick<IncDecButtonsType, 'callAction'>;
+export type ButtonsProps = Pick<IncDecButtonsProps, 'callAction'>;
+
+export type WrapperProps = Omit<IncDecButtonsProps, 'callAction'> & {
+  children: ReactNode;
+  sx?: SxProps;
+};

@@ -8,6 +8,8 @@ const CombinedNumberInput = ({
   onChange,
   value,
   InputComponent,
+  incDecButtonType = 'button',
+  SliderProps = {},
   ...restProps
 }: NumberInputProps & {
   InputComponent: React.ElementType;
@@ -59,7 +61,13 @@ const CombinedNumberInput = ({
   return (
     <>
       {showIncButtons && (
-        <IncrementDecrementButtons callAction={handleChange} anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+        <IncrementDecrementButtons
+          callAction={handleChange}
+          anchorEl={anchorEl}
+          incDecButtonType={incDecButtonType}
+          setAnchorEl={setAnchorEl}
+          SliderProps={SliderProps}
+        />
       )}
       <InputComponent onFocus={handleFocus} onBlur={handleBlur} value={value} onChange={onChange} {...restProps} />
     </>

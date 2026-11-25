@@ -36,6 +36,14 @@ export const CurrentHitPoints = () => {
         value: removeLeadingZeros(currentHitPoints),
         onChange: (e) => setCurrentHitPoints(+e.target.value),
       }}
+      incDecButtonType={'slider'}
+      SliderProps={{
+        value: currentHitPoints,
+        min: 0,
+        max: maxHitPoints,
+        step: 1,
+        onChange: (_e, value) => setCurrentHitPoints(+value),
+      }}
       label="Current HP"
     />
   );

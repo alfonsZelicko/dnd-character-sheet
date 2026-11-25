@@ -1,22 +1,21 @@
 import { Grid2Props, TextFieldProps, TypographyProps } from '@mui/material';
-import React, { ChangeEvent, ReactNode } from 'react';
-import { InputPlacement } from './NumberInputWrapper';
+import { ReactNode } from 'react';
 import { TextFieldVariants } from '@mui/material/TextField/TextField';
+import { IncDecButtonAddon } from './inc-dec-buttons/types';
+
+export type InputPlacement = 'left' | 'right';
+
+export type InputWrapperProps = Omit<Pick<Grid2Props, 'size'>, 'label'> & {
+  children?: ReactNode;
+  NumberInputProps?: TextFieldProps;
+  inputPlacement?: InputPlacement;
+  ContainerProps?: Grid2Props;
+};
 
 export type NumberInputProps = Omit<TextFieldProps, 'variant'> & {
   showIncButtons?: boolean;
   variant?: TextFieldVariants;
-};
-
-export type BaseNumberInputProps = {
-  showIncButtons: boolean;
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-  value: unknown;
-  anchorEl: (EventTarget & (HTMLInputElement | HTMLTextAreaElement)) | null;
-  setAnchorEl: React.Dispatch<React.SetStateAction<(EventTarget & (HTMLInputElement | HTMLTextAreaElement)) | null>>;
-  restProps: NumberInputProps;
-  InputComponent: React.ElementType;
-};
+} & IncDecButtonAddon;
 
 export type ActionButtonType = 1 | -1;
 

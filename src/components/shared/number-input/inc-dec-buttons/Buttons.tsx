@@ -2,7 +2,7 @@ import { Button, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import React, { ReactNode } from 'react';
-import { ButtonsType } from './types';
+import { ButtonsProps } from './types';
 import { buttonStyles } from './styles';
 
 const ActionButton = ({ icon, action }: { icon: ReactNode; action: () => void }) => (
@@ -11,7 +11,7 @@ const ActionButton = ({ icon, action }: { icon: ReactNode; action: () => void })
   </Button>
 );
 
-export const Buttons = ({ callAction }: ButtonsType) => {
+export const Buttons = ({ callAction }: ButtonsProps) => {
   return (
     <Stack spacing={0.5} direction="column" alignItems="center">
       <ActionButton icon={<AddIcon />} action={() => callAction(+1)} />

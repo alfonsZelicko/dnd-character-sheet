@@ -1,17 +1,19 @@
-import { IncDecButtonsType, WrapperType } from './types';
+import { IncDecButtonsProps, WrapperProps } from './types';
 import { Buttons } from './Buttons';
 import React from 'react';
-import { useAtomValue } from 'jotai/index';
+import { useAtomValue } from 'jotai';
 import { showIncDecButtonsAtom } from './atoms';
 import { Popover } from '@mui/material';
 import { WrapperPaperSx } from './styles';
+import Slider from '@mui/material/Slider';
+import { mergeSx } from '../../../../utils';
 
-export const Wrapper = ({ children, anchorEl, setAnchorEl }: WrapperType) => {
+export const Wrapper = ({ children, anchorEl, setAnchorEl, sx = {} }: WrapperProps) => {
   const showIncDecButtons = useAtomValue(showIncDecButtonsAtom);
 
   return (
     <Popover
-      open={showIncDecButtons && document.activeElement == anchorEl}
+      open={showIncDecButtons && Boolean(anchorEl)}
       anchorEl={anchorEl}
       onClose={() => setAnchorEl(null)}
       anchorOrigin={{
@@ -23,9 +25,12 @@ export const Wrapper = ({ children, anchorEl, setAnchorEl }: WrapperType) => {
         horizontal: 'left',
       }}
       disableAutoFocus
+      disableEnforceFocus
+      disableRestoreFocus
       slotProps={{
         paper: {
-          sx: WrapperPaperSx,
+          className: 'popover-content',
+          sx: mergeSx(WrapperPaperSx, sx),
         },
       }}
     >
@@ -34,9 +39,18 @@ export const Wrapper = ({ children, anchorEl, setAnchorEl }: WrapperType) => {
   );
 };
 
-/* TODO: it is not working well - need to repair it again*/
-export const IncrementDecrementButtons = ({ callAction, ...restProps }: IncDecButtonsType) => (
-  <Wrapper {...restProps}>
-    <Buttons callAction={callAction} />
-  </Wrapper>
-);
+export const IncrementDecrementButtons = ({
+  incDecButtonType,
+  SliderProps,
+  callAction,
+  ...wrapperProps
+}: IncDecButtonsProps) => {
+  const isSlider = incDecButtonType === 'slider';
+  const content = isSlider ? <Slider {...SliderProps} orientation="vertical" /> : <Buttons callAction={callAction} />;
+
+  return (
+    <Wrapper {...wrapperProps} sx={isSlider ? { height: 150, overflow: 'visible' } : undefined}>
+      {content}
+    </Wrapper>
+  );
+};
