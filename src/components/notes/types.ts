@@ -9,6 +9,8 @@ interface ExtendedBoxProps extends BoxProps {
 
 export type NoteProps = Omit<TextFieldProps, 'variant'> & {
   variant?: TextFieldVariants;
-  atom: PrimitiveAtom<string>;
   WrapperProps?: ExtendedBoxProps;
-};
+} & (
+  | { atom: PrimitiveAtom<string>; arrayIndex?: never }
+  | { atom: PrimitiveAtom<string[]>; arrayIndex: number }
+);

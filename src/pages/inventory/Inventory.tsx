@@ -52,6 +52,7 @@ export const Inventory = () => {
         <ArmorInventory />
         <Notes
           atom={InventoryNotesAtom}
+          arrayIndex={0}
           rows={0}
           placeholder="Inventory notes"
           WrapperProps={{ sx: { flex: 1, minHeight: 0 } }}

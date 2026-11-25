@@ -34,7 +34,7 @@ export const currentHitPointsAtom = atom(
 );
 
 export const speedAtom = atomWithStorage('speed', 0);
-export const characterDescriptionAtom = atomWithStorage('character-description', '', undefined);
+export const characterDescriptionAtom = atomWithStorage<string[]>('character-description', [''], undefined);
 
 export const noteAtoms = atomWithStorage('notes', ['', '', ''], undefined);
 export const noteAtomsAtom = splitAtom(noteAtoms);

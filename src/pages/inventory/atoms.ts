@@ -1,3 +1,3 @@
-import { atomWithStorage } from '../../features/indexedDbStorage';
+import { atomWithStorage } from '../../features';
 
-export const InventoryNotesAtom = atomWithStorage<string>('inventory-notes', '', undefined, { getOnInit: false });
+export const InventoryNotesAtom = atomWithStorage<string[]>('inventory-notes', [''], undefined);

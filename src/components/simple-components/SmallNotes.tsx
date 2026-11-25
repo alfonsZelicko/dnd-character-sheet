@@ -5,5 +5,5 @@ import { TextFieldVariants } from '@mui/material/TextField/TextField';
 import { Notes } from '../notes';
 
 export const SmallNotes = ({ ...restProps }: Omit<TextFieldProps, 'variant'> & { variant?: TextFieldVariants }) => {
-  return <Notes rows={5} multiline {...restProps} atom={characterDescriptionAtom} />;
+  return <Notes rows={5} multiline {...restProps} atom={characterDescriptionAtom} arrayIndex={0} />;
 };
