@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { IDBFactory } from 'fake-indexeddb';
 import { createStore } from 'jotai';
+import { RESET } from 'jotai/utils';
 
 type StorageModule = typeof import('./indexedDbStorage');
 
@@ -119,6 +120,54 @@ describe('indexedDbStorage', () => {
 
       vi.stubGlobal('indexedDB', new IDBFactory());
       await expect(mod.initializeIndexedDbStorage()).resolves.toBeUndefined();
+    });
+
+    it('deduplicates concurrent initializeIndexedDbStorage calls', async () => {
+      await seedIndexedDb([['name', 'Gandalf']]);
+      const openSpy = vi.spyOn(indexedDB, 'open');
+
+      await Promise.all([
+        mod.initializeIndexedDbStorage(),
+        mod.initializeIndexedDbStorage(),
+        mod.initializeIndexedDbStorage(),
+      ]);
+
+      expect(openSpy).toHaveBeenCalledTimes(1);
+      expect(mod.indexedDbCharacterStorage.getItem('name')).toBe('Gandalf');
+    });
+
+    it('removes pre-existing IndexedDB keys when removeItem is called before init', async () => {
+      await seedIndexedDb([
+        ['keep', 'yes'],
+        ['delete-me', 'no'],
+      ]);
+
+      mod.indexedDbCharacterStorage.removeItem('delete-me');
+      await mod.initializeIndexedDbStorage();
+
+      expect(mod.indexedDbCharacterStorage.getItem('keep')).toBe('yes');
+      expect(mod.indexedDbCharacterStorage.getItem('delete-me')).toBeNull();
+      expect(await readAllFromIndexedDb()).toEqual({ keep: 'yes' });
+    });
+
+    it('returns null from getItem for non-string values while getIndexedDbValue returns raw value', async () => {
+      await seedIndexedDb([['raw-object', { hp: 42 }]]);
+      await mod.initializeIndexedDbStorage();
+
+      expect(mod.indexedDbCharacterStorage.getItem('raw-object')).toBeNull();
+      expect(mod.getIndexedDbValue('raw-object')).toEqual({ hp: 42 });
+    });
+
+    it('deletes entry from IndexedDB when setIndexedDbValue is called with undefined', async () => {
+      await mod.initializeIndexedDbStorage();
+      mod.setIndexedDbValue('temp', 'abc');
+      await mod.flushIndexedDbWrites();
+
+      mod.setIndexedDbValue('temp', undefined);
+      await mod.flushIndexedDbWrites();
+
+      expect(mod.getIndexedDbValue('temp')).toBeUndefined();
+      expect(await readAllFromIndexedDb()).toEqual({});
     });
   });
 
@@ -250,6 +299,41 @@ describe('indexedDbStorage', () => {
       const brokenAtom = mod.atomWithStorage('corrupted', { ok: true });
 
       expect(store.get(brokenAtom)).toEqual({ ok: true });
+    });
+
+    it('hydrates module-level atoms created before initialization once initialized', async () => {
+      await seedIndexedDb([['character-name', 'Boromir']]);
+
+      const nameAtom = mod.atomWithStorage('character-name', 'Default');
+      await mod.initializeIndexedDbStorage();
+
+      const store = createStore();
+      expect(store.get(nameAtom)).toBe('Boromir');
+    });
+
+    it('throws when getOnInit is explicitly set to true before initialization', () => {
+      const eagerAtom = mod.atomWithStorage('character-name', 'Default', undefined, { getOnInit: true });
+      const store = createStore();
+
+      expect(() => store.get(eagerAtom)).toThrow(
+        'IndexedDB storage must be initialized before character atoms are accessed.'
+      );
+    });
+
+    it('supports RESET symbol and custom storage override', async () => {
+      await mod.initializeIndexedDbStorage();
+
+      const store = createStore();
+      const noteAtom = mod.atomWithStorage('note', 'Initial');
+
+      store.set(noteAtom, 'Updated');
+      await mod.flushIndexedDbWrites();
+      expect((await readAllFromIndexedDb()).note).toBe('Updated');
+
+      store.set(noteAtom, RESET);
+      await mod.flushIndexedDbWrites();
+      expect(store.get(noteAtom)).toBe('Initial');
+      expect(await readAllFromIndexedDb()).toEqual({});
     });
   });
 

@@ -1,15 +1,18 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.tsx';
 import { Provider } from 'jotai';
-import { migrateCharacterStorage } from './features/characterData.ts';
-import { flushIndexedDbWrites, indexedDbCharacterStorage, initializeIndexedDbStorage } from './features/indexedDbStorage.ts';
+import {
+  flushIndexedDbWrites,
+  indexedDbCharacterStorage,
+  initializeIndexedDbStorage,
+  migrateCharacterStorage,
+} from './features';
 
 document.documentElement.setAttribute('spellcheck', 'false');
 
 const root = createRoot(document.getElementById('root'));
 
-const renderApp = () =>
+const renderApp = (App) =>
   root.render(
     <StrictMode>
       <Provider>
@@ -34,11 +37,11 @@ const initializeApp = async () => {
     await initializeIndexedDbStorage();
     migrateCharacterStorage(indexedDbCharacterStorage);
     await flushIndexedDbWrites();
-    renderApp();
+    const { default: App } = await import('./App');
+    renderApp(App);
   } catch (error) {
     renderCompatibilityError(error);
   }
 };
 
 void initializeApp();
-``;

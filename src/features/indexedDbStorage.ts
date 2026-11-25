@@ -6,14 +6,17 @@ type SyncStorage<Value> = {
   removeItem: (key: string) => void;
 };
 
-const databaseName = 'dnd-character-sheet';
-const storeName = 'values';
+const DATABASE_NAME = 'dnd-character-sheet';
+const STORE_NAME = 'values';
+const UNSET = Symbol('UNSET');
+
 const cache = new Map<string, unknown>();
-const pendingWrites = new Map<string, unknown>();
+const pendingMutations = new Map<string, unknown | typeof UNSET>();
 let pendingClear = false;
+let initialized = false;
+let initPromise: Promise<void> | undefined;
 let databasePromise: Promise<IDBDatabase> | undefined;
 let writeQueue = Promise.resolve();
-let initialized = false;
 
 const hasIndexedDb = (): boolean => typeof indexedDB !== 'undefined';
 
@@ -25,16 +28,19 @@ const assertInitialized = (): void => {
 
 const openDatabase = (): Promise<IDBDatabase> => {
   if (databasePromise) return databasePromise;
+
   const opening = new Promise<IDBDatabase>((resolve, reject) => {
-    const request = indexedDB.open(databaseName, 1);
-    request.onupgradeneeded = () => request.result.createObjectStore(storeName);
+    const request = indexedDB.open(DATABASE_NAME, 1);
+    request.onupgradeneeded = () => request.result.createObjectStore(STORE_NAME);
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
   });
+
   databasePromise = opening.catch((error: unknown) => {
     databasePromise = undefined;
     throw error;
   });
+
   return databasePromise;
 };
 
@@ -50,8 +56,8 @@ const transact = async <T>(
 ): Promise<T> => {
   const db = await openDatabase();
   return new Promise<T>((resolve, reject) => {
-    const tx = db.transaction(storeName, mode);
-    const request = action(tx.objectStore(storeName));
+    const tx = db.transaction(STORE_NAME, mode);
+    const request = action(tx.objectStore(STORE_NAME));
     if (request) {
       request.onerror = () => reject(request.error);
     }
@@ -61,12 +67,71 @@ const transact = async <T>(
   });
 };
 
-const persist = (key: string, value: unknown): void => {
+const persistEntry = (key: string, value: unknown): void => {
   if (!hasIndexedDb()) return;
   enqueueWrite(async () => {
     if (value === undefined) await transact('readwrite', (store) => store.delete(key));
     else await transact('readwrite', (store) => store.put(value, key));
   }, key);
+};
+
+const readAllRecords = async (): Promise<Array<[string, unknown]>> => {
+  const db = await openDatabase();
+  return new Promise<Array<[string, unknown]>>((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const keysRequest = store.getAllKeys();
+    const valuesRequest = store.getAll();
+
+    tx.oncomplete = () => {
+      const keys = keysRequest.result;
+      const values = valuesRequest.result;
+      resolve(keys.map((key, index) => [String(key), values[index]]));
+    };
+    tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error);
+  });
+};
+
+const hydrateCache = (records: Array<[string, unknown]>): void => {
+  if (pendingClear) {
+    cache.clear();
+  } else {
+    for (const [key, value] of records) {
+      if (!cache.has(key)) {
+        cache.set(key, value);
+      }
+    }
+  }
+
+  for (const [key, value] of pendingMutations) {
+    if (value === UNSET) cache.delete(key);
+    else cache.set(key, value);
+  }
+};
+
+const flushPendingMutationsToDb = (): void => {
+  if (pendingClear) {
+    pendingClear = false;
+    enqueueWrite(() => transact('readwrite', (store) => store.clear()), 'all character data');
+  }
+
+  for (const [key, value] of pendingMutations) {
+    persistEntry(key, value === UNSET ? undefined : value);
+  }
+  pendingMutations.clear();
+};
+
+const recordMutation = (key: string, value: unknown | typeof UNSET): void => {
+  if (value === UNSET) cache.delete(key);
+  else cache.set(key, value);
+
+  if (hasIndexedDb() && !initialized) {
+    pendingMutations.set(key, value);
+    return;
+  }
+
+  persistEntry(key, value === UNSET ? undefined : value);
 };
 
 export const flushIndexedDbWrites = async (): Promise<void> => {
@@ -79,50 +144,21 @@ export const initializeIndexedDbStorage = async (): Promise<void> => {
     initialized = true;
     return;
   }
+  if (initPromise) return initPromise;
 
-  const db = await openDatabase();
-  const records = await new Promise<Array<[string, unknown]>>((resolve, reject) => {
-    const tx = db.transaction(storeName, 'readonly');
-    const store = tx.objectStore(storeName);
-    const keysRequest = store.getAllKeys();
-    const valuesRequest = store.getAll();
-
-    tx.oncomplete = () => {
-      const keys = keysRequest.result;
-      const values = valuesRequest.result;
-      resolve(keys.map((key, index) => [String(key), values[index]]));
-    };
-    tx.onerror = () => reject(tx.error);
-    tx.onabort = () => reject(tx.error);
-  });
-
-  if (pendingClear) {
-    cache.clear();
-  } else {
-    for (const [key, value] of records) {
-      if (!cache.has(key)) {
-        cache.set(key, value);
-      }
+  initPromise = (async () => {
+    try {
+      const records = await readAllRecords();
+      hydrateCache(records);
+      initialized = true;
+      flushPendingMutationsToDb();
+      await flushIndexedDbWrites();
+    } finally {
+      initPromise = undefined;
     }
-  }
+  })();
 
-  for (const [key, value] of pendingWrites) {
-    if (value === undefined) cache.delete(key);
-    else cache.set(key, value);
-  }
-
-  initialized = true;
-
-  if (pendingClear) {
-    pendingClear = false;
-    enqueueWrite(() => transact('readwrite', (store) => store.clear()), 'all character data');
-  }
-
-  for (const [key, value] of pendingWrites) {
-    persist(key, value);
-  }
-  pendingWrites.clear();
-  await flushIndexedDbWrites();
+  return initPromise;
 };
 
 export const indexedDbCharacterStorage = {
@@ -138,20 +174,16 @@ export const indexedDbCharacterStorage = {
     return typeof value === 'string' ? value : null;
   },
   setItem(key: string, value: string) {
-    cache.set(key, value);
-    if (hasIndexedDb() && !initialized) pendingWrites.set(key, value);
-    else persist(key, value);
+    recordMutation(key, value);
   },
   removeItem(key: string) {
-    cache.delete(key);
-    if (hasIndexedDb() && !initialized) pendingWrites.set(key, undefined);
-    else persist(key, undefined);
+    recordMutation(key, UNSET);
   },
   clear() {
     cache.clear();
     if (hasIndexedDb() && !initialized) {
       pendingClear = true;
-      pendingWrites.clear();
+      pendingMutations.clear();
       return;
     }
     if (!hasIndexedDb()) return;
@@ -194,7 +226,7 @@ export function atomWithStorage<Value>(
   key: string,
   initialValue: Value,
   storage?: SyncStorage<Value>,
-  { getOnInit = false, ...restOptions }: { getOnInit?: boolean } = {}
+  { getOnInit = initialized, ...restOptions }: { getOnInit?: boolean } = {}
 ) {
   const selectedStorage =
     storage ?? ((typeof initialValue === 'string' ? stringStorage : jsonStorage) as SyncStorage<Value>);
@@ -242,5 +274,5 @@ export const normalizeLegacyBlobValues = async (): Promise<void> => {
 export const setIndexedDbValue = (key: string, value: unknown): void => {
   assertInitialized();
   cache.set(key, value);
-  persist(key, value);
+  persistEntry(key, value);
 };
