@@ -1,13 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
   createCharacterBackup,
-  markDemoCharacterChoice,
   migrateCharacterData,
   migrateCharacterStorage,
-  needsDemoCharacterSeed,
   parseCharacterBackup,
   resetCharacterData,
-  seedDemoCharacterIfEmpty,
   writeCharacterData,
 } from './characterData';
 
@@ -99,28 +96,6 @@ describe('character backup data', () => {
     expect(localStorage.getItem('attacks-list')).toBeNull();
     expect(localStorage.getItem('options_weapons-on-preview')).toBe('4');
     expect(localStorage.getItem('theme-colors')).toBe('{}');
-  });
-
-  it('offers the demo only before the visitor has made a first-run choice or entered character data', () => {
-    localStorage.setItem('theme-colors', '{}');
-    expect(needsDemoCharacterSeed()).toBe(true);
-
-    markDemoCharacterChoice();
-    expect(needsDemoCharacterSeed()).toBe(false);
-  });
-
-  it('seeds a demo character only into empty character storage and preserves app options', () => {
-    localStorage.setItem('theme-colors', '{"main":"visitor"}');
-    const demoFile = JSON.stringify(currentBackup({ name: 'Sample hero' }, { 'theme-colors': '{"main":"sample"}' }));
-
-    expect(seedDemoCharacterIfEmpty(demoFile)).toBe(true);
-    expect(localStorage.getItem('name')).toBe('Sample hero');
-    expect(localStorage.getItem('theme-colors')).toBe('{"main":"visitor"}');
-    expect(seedDemoCharacterIfEmpty(demoFile)).toBe(false);
-
-    localStorage.setItem('name', 'Visitor hero');
-    expect(seedDemoCharacterIfEmpty(demoFile)).toBe(false);
-    expect(localStorage.getItem('name')).toBe('Visitor hero');
   });
 
   it('leaves missing additive keys unset so feature defaults apply', () => {

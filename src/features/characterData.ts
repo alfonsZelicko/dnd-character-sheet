@@ -2,7 +2,6 @@ import { APP_VERSION } from './version';
 
 export const CHARACTER_DATA_SCHEMA_VERSION = 2;
 const schemaVersionStorageKey = 'character-data-schema-version';
-const demoSeedStorageKey = 'demo-character-seeded';
 const backupFormat = 'dnd-character-sheet';
 
 export type CharacterData = Record<string, string>;
@@ -81,7 +80,7 @@ const splitData = (data: MigratedCharacterData, includeOptions = true): BackupDa
   const options: MigratedCharacterData = {};
 
   for (const [key, value] of Object.entries(data)) {
-    if (key === schemaVersionStorageKey || key === demoSeedStorageKey) continue;
+    if (key === schemaVersionStorageKey) continue;
     (isOptionKey(key) ? options : character)[key] = value;
   }
 
@@ -93,7 +92,7 @@ export function migrateCharacterStorage(storage: Storage): void {
   const sourceVersion = savedVersion === null ? 0 : Number(savedVersion);
   const currentData = Object.fromEntries(
     Array.from({ length: storage.length }, (_, index) => storage.key(index))
-      .filter((key): key is string => key !== null && key !== schemaVersionStorageKey && key !== demoSeedStorageKey)
+      .filter((key): key is string => key !== null && key !== schemaVersionStorageKey)
       .flatMap((key) => {
         const value = storage.getItem(key);
         return value === null && key === 'character-picture' ? [] : [[key, value ?? '']];
@@ -111,7 +110,7 @@ export function migrateCharacterStorage(storage: Storage): void {
 export function createCharacterBackup(storage: Storage = localStorage, includeOptions = true): CharacterBackup {
   const data = Object.fromEntries(
     Array.from({ length: storage.length }, (_, index) => storage.key(index))
-      .filter((key): key is string => key !== null && key !== schemaVersionStorageKey && key !== demoSeedStorageKey)
+      .filter((key): key is string => key !== null && key !== schemaVersionStorageKey)
       .map((key) => [key, storage.getItem(key) ?? ''])
   );
   return createCharacterBackupFromData(data, includeOptions);
@@ -133,42 +132,15 @@ export function createCharacterBackupFromData(data: Record<string, string>, incl
   };
 }
 
-export function needsDemoCharacterSeed(storage: Storage = localStorage): boolean {
-  if (storage.getItem(demoSeedStorageKey) === 'true') return false;
-
-  return !Array.from({ length: storage.length }, (_, index) => storage.key(index)).some(
-    (key) => key !== null && key !== schemaVersionStorageKey && key !== demoSeedStorageKey && !isOptionKey(key)
-  );
-}
-
-export function seedDemoCharacterIfEmpty(json: string, storage: Storage = localStorage): boolean {
-  if (!needsDemoCharacterSeed(storage)) return false;
-
-  const { character } = parseCharacterBackup(json);
-  if (Object.keys(character).length === 0) return false;
-
-  writeCharacterData(storage, { character });
-  storage.setItem(demoSeedStorageKey, 'true');
-  return true;
-}
-
-export function markDemoCharacterChoice(storage: Storage = localStorage): void {
-  storage.setItem(demoSeedStorageKey, 'true');
-}
-
 export function resetCharacterData(storage: Storage = localStorage): void {
   Array.from({ length: storage.length }, (_, index) => storage.key(index))
     .filter(
       (key): key is string =>
         key !== null &&
         key !== schemaVersionStorageKey &&
-        key !== demoSeedStorageKey &&
         !isOptionKey(key)
     )
     .forEach((key) => storage.removeItem(key));
-  // Resetting the character starts the first-run flow again, where the user
-  // can choose a blank sheet or load the sample character.
-  storage.removeItem(demoSeedStorageKey);
 }
 
 export function parseCharacterBackup(json: string): BackupData {
@@ -201,7 +173,6 @@ export function writeCharacterData(storage: Storage, data: BackupData): void {
     (key): key is string =>
       key !== null &&
       key !== schemaVersionStorageKey &&
-      key !== demoSeedStorageKey &&
       (!isOptionKey(key) || data.options !== undefined)
   );
   keysToReplace.forEach((key) => storage.removeItem(key));

@@ -5,8 +5,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import { themeColorsAtom } from './utils/colors';
 import { createAppTheme } from './utils';
-import { FirstRunDialog } from './components';
-import { indexedDbCharacterStorage } from './features';
 
 export const App = () => {
   const colors = useAtomValue(themeColorsAtom);
@@ -32,11 +30,9 @@ export const App = () => {
           },
         }}
       />
-      <FirstRunDialog storage={indexedDbCharacterStorage as Storage}>
-        <BrowserRouter>
-          <MainContainer />
-        </BrowserRouter>
-      </FirstRunDialog>
+      <BrowserRouter>
+        <MainContainer />
+      </BrowserRouter>
     </ThemeProvider>
   );
 };

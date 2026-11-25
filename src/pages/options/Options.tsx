@@ -30,7 +30,7 @@ import { DefaultThemeColors, ThemeColors, themeColorsAtom } from '../../utils/co
 import { optionsWeaponsOnPreviewAtom } from '../../components/attack-list/atoms';
 import { StandardNumberInput, StyledPaper } from '../../components';
 import { APP_VERSION } from '../../features/version';
-import { resetCharacterData } from '../../features/characterData';
+import { parseCharacterBackup, resetCharacterData, writeCharacterData } from '../../features/characterData';
 import { flushIndexedDbWrites, indexedDbCharacterStorage } from '../../features/indexedDbStorage';
 
 const getColorPickerValue = (color: string): string => {
@@ -52,6 +52,8 @@ const CharacterDataSection = memo(function CharacterDataSection() {
   const importInputRef = useRef<HTMLInputElement>(null);
   const [exportMenuAnchor, setExportMenuAnchor] = useState<null | HTMLElement>(null);
   const [confirmResetOpen, setConfirmResetOpen] = useState(false);
+  const [loadDemoOnReset, setLoadDemoOnReset] = useState(false);
+  const [resetError, setResetError] = useState('');
 
   const handleImportFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -60,9 +62,24 @@ const CharacterDataSection = memo(function CharacterDataSection() {
   };
 
   const handleResetCharacter = async () => {
-    resetCharacterData(indexedDbCharacterStorage as Storage);
-    await flushIndexedDbWrites();
-    window.location.reload();
+    setResetError('');
+    try {
+      let demoCharacter: ReturnType<typeof parseCharacterBackup>['character'] | undefined;
+      if (loadDemoOnReset) {
+        const response = await fetch(new URL('demo-character.json', window.location.href));
+        if (!response.ok) throw new Error('The demo character file is not available yet.');
+
+        demoCharacter = parseCharacterBackup(await response.text()).character;
+        if (Object.keys(demoCharacter).length === 0) throw new Error('The demo character file contains no character data.');
+      }
+
+      resetCharacterData(indexedDbCharacterStorage as Storage);
+      if (demoCharacter) writeCharacterData(indexedDbCharacterStorage as Storage, { character: demoCharacter });
+      await flushIndexedDbWrites();
+      window.location.reload();
+    } catch (error) {
+      setResetError(error instanceof Error ? error.message : 'The character could not be reset.');
+    }
   };
 
   return (
@@ -158,10 +175,16 @@ const CharacterDataSection = memo(function CharacterDataSection() {
         <DialogContent>
           <DialogContentText>
             This will permanently remove this character's saved data from this browser. App settings will not be
-            changed.
+            changed. {loadDemoOnReset && 'The demo character will be loaded afterward.'}
           </DialogContentText>
+          {resetError && <DialogContentText color="error">{resetError}</DialogContentText>}
         </DialogContent>
         <DialogActions>
+          <FormControlLabel
+            sx={{ mr: 'auto', ml: 1 }}
+            control={<Checkbox checked={loadDemoOnReset} onChange={(event) => setLoadDemoOnReset(event.target.checked)} />}
+            label="Load demo character after reset"
+          />
           <Button onClick={() => setConfirmResetOpen(false)}>Cancel</Button>
           <Button color="error" variant="contained" onClick={handleResetCharacter}>
             Reset character
