@@ -12,6 +12,45 @@ document.documentElement.setAttribute('spellcheck', 'false');
 
 const root = createRoot(document.getElementById('root'));
 
+const renderLoading = (message) =>
+  root.render(
+    <main
+      role="status"
+      aria-live="polite"
+      style={{
+        alignItems: 'center',
+        background: 'gray',
+        boxSizing: 'border-box',
+        color: '#222',
+        display: 'flex',
+        flexDirection: 'column',
+        fontFamily: 'sans-serif',
+        gap: 16,
+        height: '100dvh',
+        justifyContent: 'center',
+        left: 0,
+        overflow: 'hidden',
+        position: 'fixed',
+        top: 0,
+        width: '100vw',
+      }}
+    >
+      <div
+        aria-hidden="true"
+        style={{
+          animation: 'app-loading-spin 0.8s linear infinite',
+          border: '4px solid rgba(0, 0, 0, 0.2)',
+          borderRadius: '50%',
+          borderTopColor: '#222',
+          height: 40,
+          width: 40,
+        }}
+      />
+      <style>{'@keyframes app-loading-spin { to { transform: rotate(360deg); } }'}</style>
+      <span>{message}</span>
+    </main>
+  );
+
 const renderApp = (App) =>
   root.render(
     <StrictMode>
@@ -34,9 +73,13 @@ const renderCompatibilityError = (error) => {
 
 const initializeApp = async () => {
   try {
+    renderLoading('Otevírám databázi postavy…');
     await initializeIndexedDbStorage();
+    renderLoading('Kontroluji a upravuji uložená data…');
     migrateCharacterStorage(indexedDbCharacterStorage);
+    renderLoading('Dokončuji ukládání dat…');
     await flushIndexedDbWrites();
+    renderLoading('Spouštím aplikaci…');
     const { default: App } = await import('./App');
     renderApp(App);
   } catch (error) {

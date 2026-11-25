@@ -9,7 +9,7 @@ export const AppPages = {
   },
   Spells: {
     id: 'spells',
-    label: 'Spells (Beta)',
+    label: 'Spells',
   },
   Creatures: {
     id: 'creatures',

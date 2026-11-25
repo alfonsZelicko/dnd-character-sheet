@@ -32,6 +32,7 @@ import { StandardNumberInput, StyledPaper } from '../../components';
 import { APP_VERSION } from '../../features/version';
 import { parseCharacterBackup, resetCharacterData, writeCharacterData } from '../../features/characterData';
 import { flushIndexedDbWrites, indexedDbCharacterStorage } from '../../features/indexedDbStorage';
+import { AppPages } from '../../utils/pages';
 
 const getColorPickerValue = (color: string): string => {
   if (/^#[\da-f]{6}$/i.test(color)) return color;
@@ -76,6 +77,9 @@ const CharacterDataSection = memo(function CharacterDataSection() {
       resetCharacterData(indexedDbCharacterStorage as Storage);
       if (demoCharacter) writeCharacterData(indexedDbCharacterStorage as Storage, { character: demoCharacter });
       await flushIndexedDbWrites();
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set('page', AppPages.CharacterPreview.id);
+      window.history.replaceState(null, '', `${window.location.pathname}?${searchParams}${window.location.hash}`);
       window.location.reload();
     } catch (error) {
       setResetError(error instanceof Error ? error.message : 'The character could not be reset.');
