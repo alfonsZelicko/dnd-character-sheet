@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { FirstRunDialog } from './FirstRunDialog';
-import { needsDemoCharacterSeed } from './characterData';
+import { needsDemoCharacterSeed } from '../../../features/characterData';
 
 describe('FirstRunDialog', () => {
   it('asks new visitors and remembers when they choose a blank sheet', async () => {

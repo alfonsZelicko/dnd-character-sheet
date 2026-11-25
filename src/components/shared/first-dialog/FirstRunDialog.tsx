@@ -1,11 +1,20 @@
 import React, { ReactNode, useState } from 'react';
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Typography } from '@mui/material';
 import {
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Stack,
+  Typography,
+} from '@mui/material';
+import {
+  flushIndexedDbWrites,
   markDemoCharacterChoice,
   needsDemoCharacterSeed,
   seedDemoCharacterIfEmpty,
-} from './characterData';
-import { flushIndexedDbWrites } from './indexedDbStorage';
+} from '../../../features';
 
 export const FirstRunDialog = ({ children, storage = localStorage }: { children: ReactNode; storage?: Storage }) => {
   const [open, setOpen] = useState(() => needsDemoCharacterSeed(storage));
@@ -51,7 +60,9 @@ export const FirstRunDialog = ({ children, storage = localStorage }: { children:
         <DialogTitle id="first-run-dialog-title">Welcome to the DnD Character Sheet</DialogTitle>
         <DialogContent>
           <Stack spacing={1}>
-            <Typography>Would you like to explore the app with a sample character, or start with a blank sheet?</Typography>
+            <Typography>
+              Would you like to explore the app with a sample character, or start with a blank sheet?
+            </Typography>
             {error && (
               <Typography color="error" role="alert">
                 {error}
