@@ -1,16 +1,23 @@
 import React from 'react';
-import { createStore, Provider } from 'jotai';
+import { atom, createStore, Provider } from 'jotai';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import { CharacterPictureAtom } from './atoms';
-import { CharacterImage } from './CharacterImage';
+import { describe, expect, it, vi } from 'vitest';
+import { ImagePreview } from './ImagePreview';
 
 describe('CharacterImage', () => {
-  it('stores a selected image as a data URL', async () => {
+  it('stores a resized WebP portrait as a Blob', async () => {
+    const portraitAtom = atom<Blob | null>(null);
+    vi.stubGlobal('createImageBitmap', vi.fn(async () => ({ width: 640, height: 480, close: vi.fn() })));
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:portrait');
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({ drawImage: vi.fn() } as any);
+    vi.spyOn(HTMLCanvasElement.prototype, 'toBlob').mockImplementation((callback) => {
+      callback(new Blob(['compressed'], { type: 'image/webp' }));
+    });
     const store = createStore();
     const { container } = render(
       <Provider store={store}>
-        <CharacterImage atom={CharacterPictureAtom} />
+        <ImagePreview atom={portraitAtom} storeAsBlob />
       </Provider>
     );
     const input = container.querySelector('input[type="file"]');
@@ -18,14 +25,16 @@ describe('CharacterImage', () => {
 
     fireEvent.change(input!, { target: { files: [image] } });
 
-    await waitFor(() => expect(store.get(CharacterPictureAtom)).toMatch(/^data:image\/png;base64,/));
+    await waitFor(() => expect(store.get(portraitAtom)).toMatchObject({ type: 'image/webp' }));
+    vi.unstubAllGlobals();
   });
 
   it('silently ignores non-image and oversized files', () => {
+    const portraitAtom = atom<Blob | null>(null);
     const store = createStore();
     const { container } = render(
       <Provider store={store}>
-        <CharacterImage atom={CharacterPictureAtom} />
+        <ImagePreview atom={portraitAtom} storeAsBlob />
       </Provider>
     );
 
@@ -36,7 +45,7 @@ describe('CharacterImage', () => {
     fireEvent.change(input!, { target: { files: [notImage] } });
     fireEvent.change(input!, { target: { files: [oversizedImage] } });
 
-    expect(store.get(CharacterPictureAtom)).toBeNull();
+    expect(store.get(portraitAtom)).toBeNull();
     expect(screen.getByText('Drop character portrait here')).toBeInTheDocument();
   });
 });

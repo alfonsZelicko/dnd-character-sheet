@@ -8,7 +8,7 @@ import { RemoveButton, StyledPaper, TextInput } from '../shared';
 import { CreatureAbilities, CreatureCombatStats } from './components';
 import { CreatureFieldInputProps, CreatureItemProps, CreatureType } from './types';
 import { mergeSx } from '../../utils';
-import { CharacterImage } from '../character-image';
+import { ImagePreview } from '../character-image';
 
 // ─── CreatureFieldInput ───────────────────────────────────────────────────────
 
@@ -145,7 +145,7 @@ const CreaturePortrait = ({ creatureAtom }: { creatureAtom: PrimitiveAtom<Creatu
   );
 
   return (
-    <CharacterImage
+    <ImagePreview
       atom={portraitAtom}
       maxSizeMB={0.5}
       sx={{ flex: 1, height: '100%', backgroundSize: 'contain', aspectRatio: 'inherit' }}

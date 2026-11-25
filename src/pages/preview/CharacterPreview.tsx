@@ -3,13 +3,13 @@ import {
   AbilityListView,
   Armor,
   AttackList,
-  CharacterImage as CharacterPicture,
   CurrentHitPoints,
   DeathSaves,
   Exhaustion,
   FeatList,
   FeatureList,
   HitDices,
+  ImagePreview as CharacterPicture,
   Initiative,
   Inspiration,
   LvlAndClass,
@@ -118,7 +118,7 @@ export const CharacterPreview = () => (
             </Grid>
           </Grid>
           <Grid size={12} justifyContent={'center'} display={'flex'}>
-            <CharacterPicture atom={CharacterPictureAtom} />
+            <CharacterPicture atom={CharacterPictureAtom} storeAsBlob />
           </Grid>
           <Grid size={12} sx={{ mt: 'auto' }}>
             <SmallNotes rows={5} variant={'outlined'} placeholder={'Character description'} />
